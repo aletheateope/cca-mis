@@ -1,0 +1,5 @@
+@import url("/cca/css/variables.css");
+
+.swal-container {
+  background-color: var(--primary-background);
+}

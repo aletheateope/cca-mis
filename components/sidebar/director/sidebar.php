@@ -1,3 +1,5 @@
+<?php require_once '../../../sql/session_check.php' ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,7 +26,7 @@
                 <a href=""><span>Director</span></a>
             </li>
             <li class="active">
-                <a href="#">
+                <a href="/cca/pages/director/dashboard.php">
                     <i class="icon bi bi-grid-1x2-fill"></i>
                     <span>Dashboard</span>
                 </a>

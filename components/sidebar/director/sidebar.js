@@ -52,7 +52,6 @@ function tooltip() {
     placement: "right",
     interactive: true,
     onShow() {
-      // Hide all other tooltips before showing this one
       tippy.hideAll();
     },
     appendTo: () => document.body,
@@ -70,7 +69,6 @@ function tooltip() {
     appendTo: () => document.body,
     interactive: true,
     onShow() {
-      // Hide all other tooltips before showing this one
       tippy.hideAll();
     },
   });
@@ -84,7 +82,6 @@ function tooltip() {
     appendTo: () => document.body,
     interactive: true,
     onShow() {
-      // Hide all other tooltips before showing this one
       tippy.hideAll();
     },
   });
@@ -98,7 +95,6 @@ function tooltip() {
     appendTo: () => document.body,
     interactive: true,
     onShow() {
-      // Hide all other tooltips before showing this one
       tippy.hideAll();
     },
   });
@@ -112,7 +108,6 @@ function tooltip() {
     appendTo: () => document.body,
     interactive: true,
     onShow() {
-      // Hide all other tooltips before showing this one
       tippy.hideAll();
     },
   });
@@ -126,7 +121,6 @@ function tooltip() {
     appendTo: () => document.body,
     interactive: true,
     onShow() {
-      // Hide all other tooltips before showing this one
       tippy.hideAll();
     },
   });
@@ -140,7 +134,6 @@ function tooltip() {
     appendTo: () => document.body,
     interactive: true,
     onShow() {
-      // Hide all other tooltips before showing this one
       tippy.hideAll();
     },
   });

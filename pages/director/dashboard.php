@@ -1,4 +1,4 @@
-<?//php require_once '../../sql/session_check.php' ?>
+<?php require_once '../../sql/session_check.php'?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,8 +14,14 @@
     <!-- BOOTSTRAP ICONS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+    <!-- ANIMATE.CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
     <!-- OWN STYLES (STYLES)-->
     <link rel="stylesheet" href="../../css/styles.css" />
+
+    <!-- OWN STYLES (SWEET ALERT 2) -->
+    <link rel="stylesheet" href="../../components/sweealert2/alert.css">
 
     <!-- OWN STYLES (TIPPY) -->
     <link rel="stylesheet" href="../../css/tippy.css">
@@ -37,31 +43,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // Assuming these PHP variables are already set
-        const userEmail =
-            "<?php echo $_SESSION['user_email']; ?>";
-        const userId =
-            "<?php echo $_SESSION['user_id']; ?>";
-        const userRole =
-            "<?php echo $_SESSION['user_role']; ?>";
-        const dateCreated =
-            "<?php echo $_SESSION['date_created']; ?>";
-        const firstName =
-            "<?php echo $_SESSION['first_name']; ?>";
-        const lastName =
-            "<?php echo $_SESSION['last_name']; ?>";
-
-        // Log the information for director role only
-        console.log("Email:", userEmail);
-        console.log("User ID:", userId);
-        console.log("Role:", userRole);
-        console.log("First Name:", firstName);
-        console.log("Last Name:", lastName);
-        console.log("Date Created:", dateCreated);
-    </script>
-
     <!-- BOOTSTRAP -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
@@ -73,6 +54,9 @@
 
     <!-- SWEET ALERT 2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- OWN SCRIPT (SWEET ALERT 2) -->
+    <script src="/cca/components/sweealert2/alert.js"></script>
 </body>
 
 </html>
