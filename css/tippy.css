@@ -1,0 +1,26 @@
+@import url("variables.css");
+
+.tippy-box[data-theme~="light"] {
+  /* background-color: var(--primary-background); */
+  background-color: var(--primary-background);
+  color: var(--primary-text);
+}
+
+.no-bullets li {
+  display: flex;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 6px;
+}
+
+.no-bullets,
+.no-bullets a {
+  list-style: none;
+  text-decoration: none;
+  width: 100%;
+  color: var(--primary-text);
+}
+
+.no-bullets li:hover {
+  background-color: var(--secondary-background);
+}

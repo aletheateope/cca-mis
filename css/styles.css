@@ -1,0 +1,17 @@
+@import url("variables.css");
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--secondary-background);
+  font-family: var(--font-family);
+  color: var(--primary-text);
+}
+
+.col-auto,
+.col {
+  padding: 0px;
+}
