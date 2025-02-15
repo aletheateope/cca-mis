@@ -1,4 +1,4 @@
-<?php require_once '../../../sql/session_check.php' ?>
+<?php //require_once '../../../sql/session_check.php'?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +22,7 @@
                 </button>
             </li>
             <li>
-                <i class="profile-image"></i>
+                <i class="profile-icon"></i>
                 <a href=""><span>Director</span></a>
             </li>
             <li class="active">
@@ -43,7 +43,7 @@
                         <li><a href="#">Chorale</a></li>
                         <li><a href="#">Dulangsining</a></li>
                         <li><a href="#">Euphoria</a></li>
-                        <li><a href="#">Hiraya</a></li>
+                        <li><a href="#">FDC</a></li>
                         <li><a href="#">Kultura Teknika</a></li>
                         <li><a href="#">Search</a></li>
                     </div>

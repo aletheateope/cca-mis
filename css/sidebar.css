@@ -62,7 +62,7 @@
   }
 }
 
-.sidebar .profile-image {
+.sidebar .profile-icon {
   background-color: gray;
   width: 40px;
   height: 40px;
@@ -127,6 +127,7 @@
 .sidebar > ul > li > a:nth-child(2) {
   font-size: var(--large);
   font-weight: var(--semi-bold);
+  text-wrap: wrap;
 }
 
 .sidebar .sub-menu {

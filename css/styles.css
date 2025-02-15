@@ -13,5 +13,74 @@ body {
 
 .col-auto,
 .col {
-  padding: 0px;
+  padding: 0;
+  margin: 0;
+}
+
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12 {
+  padding: 0;
+}
+
+.container-fluid {
+  padding: 0;
+  margin: 0;
+}
+
+.row {
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.page-header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-content {
+  background-color: var(--primary-background);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+}
+
+h1 {
+  font-size: var(--extra-extra-large);
+  font-weight: var(--regular);
+}
+
+h2 {
+  font-size: var(--extra-large);
+}
+
+h3 {
+  font-size: var(--large);
+  padding: 0 !important;
+}
+
+h4 {
+  font-size: var(--regular);
+}
+
+p {
+  font-size: var(--regular);
 }

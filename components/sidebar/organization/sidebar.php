@@ -1,4 +1,7 @@
-<?php require_once '../../../sql/session_check.php' ?>
+<?php //require_once '../../../sql/session_check.php'?>
+
+<!-- Get the current page name -->
+<?php $currentPage = basename($_SERVER['PHP_SELF']);?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,18 +25,20 @@
                 </button>
             </li>
             <li>
-                <i class="profile-image"></i>
+                <i class="profile-icon"></i>
                 <a
                     href=""><span><?php echo isset($_SESSION['organization_name']) ? $_SESSION['organization_name'] : 'Organization'; ?></span></a>
             </li>
-            <li class="active">
-                <a href="#">
+            <li
+                class="<?= ($currentPage == 'dashboard.php') ? 'active' : '' ?>">
+                <a href="/cca/pages/organization/dashboard.php">
                     <i class="icon bi bi-grid-1x2-fill"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li
+                class="<?= ($currentPage == 'members.php') ? 'active' : '' ?>">
+                <a href="/cca/pages/organization/members.php">
                     <i class="icon bi bi-people-fill" id="members-btn"></i>
                     <span>Members</span>
                 </a>
