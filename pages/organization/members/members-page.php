@@ -10,7 +10,7 @@
 
     <?php require_once '../../../components/header-links.php' ?>
 
-    <link rel="stylesheet" href="memberspage.css">
+    <link rel="stylesheet" href="members-page.css">
 </head>
 
 <body>
@@ -61,7 +61,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Member</h1>
+                    <h1 class="modal-title fs-5">Add Member</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -124,7 +124,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Member</h1>
+                    <h1 class="modal-title fs-5">Add Member</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -132,8 +132,8 @@
                         <div class="row">
                             <h3>Academic Information</h3>
                             <div class="col-12">
-                                <label for="inputContactNumber" class="form-label">Contact Number</label>
-                                <input type="text" class="form-control" id="inputContactNumber">
+                                <label for="inputStudentNumber" class="form-label">Student Number</label>
+                                <input type="text" class="form-control" id="inputStudentNumber">
                             </div>
                             <div class="col-6">
                                 <label for="inputGender" class="form-label">Gender</label>
@@ -177,6 +177,8 @@
     </div>
 
     <?php require_once '../../../components/footer-links.php'?>
+
+    <script src="/cca/components/cleave.js"></script>
 </body>
 
 </html>

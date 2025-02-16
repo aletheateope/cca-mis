@@ -44,7 +44,7 @@ function closeSubMenu() {
 }
 
 function tooltip() {
-  tippy("#orgMembers-btn", {
+  tippy("#orgMembersBtn", {
     content: "Org. Members",
     theme: "light",
     arrow: false,
@@ -57,7 +57,7 @@ function tooltip() {
     appendTo: () => document.body,
   });
 
-  tippy("#orgMembers-btn", {
+  tippy("#orgMembersBtn", {
     content:
       '<div class="no-bullets"><li><a href="#">Blck Mvmnt</a></li><li><a href="#">Chorale</a><li><a href="#">Dulangsining</a></li><li><a href="#">Euphoria</a></li><li><a href="#">FDC</a></li><li><a href="#">Kultura Teknika</a></li><li><a href="#">Search</a></li></div>',
     theme: "light",
@@ -73,7 +73,7 @@ function tooltip() {
     },
   });
 
-  tippy("#calendar-btn", {
+  tippy("#calendarBtn", {
     content: "Calendar",
     theme: "light",
     arrow: false,
@@ -86,7 +86,7 @@ function tooltip() {
     },
   });
 
-  tippy("#finance-btn", {
+  tippy("#financeBtn", {
     content: "Finance",
     theme: "light",
     arrow: false,
@@ -99,7 +99,7 @@ function tooltip() {
     },
   });
 
-  tippy("#accomplishments-btn", {
+  tippy("#accomplishmentsBtn", {
     content: "Accomplishments",
     theme: "light",
     arrow: false,
@@ -112,7 +112,7 @@ function tooltip() {
     },
   });
 
-  tippy("#accounts-btn", {
+  tippy("#accountsBtn", {
     content: "Accounts",
     theme: "light",
     arrow: false,
@@ -125,11 +125,11 @@ function tooltip() {
     },
   });
 
-  tippy("#logout-btn", {
+  tippy("#logoutBtn", {
     content: "Log Out",
     theme: "light",
     arrow: false,
-    offset: [0, 23],
+    offset: [0, 12],
     placement: "right",
     appendTo: () => document.body,
     interactive: true,

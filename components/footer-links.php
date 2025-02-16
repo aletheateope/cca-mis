@@ -3,6 +3,9 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
 </script>
 
+<!-- FILEPOND -->
+<script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+
 <!-- TIPPY.JS -->
 <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
 <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
@@ -13,5 +16,6 @@
 <!-- OWN SCRIPT (SWEET ALERT 2) -->
 <script src="/cca/components/sweealert2/alert.js"></script>
 
-<!-- FILEPOND -->
-<script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+<!-- CLEAVE.JS -->
+<script src="/cca/node_modules/cleave.js/dist/cleave.min.js"></script>
+<script src="/cca/node_modules/cleave.js/dist/addons/cleave-phone.ph.js"></script>

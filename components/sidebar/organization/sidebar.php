@@ -30,21 +30,21 @@
                     href=""><span><?php echo isset($_SESSION['organization_name']) ? $_SESSION['organization_name'] : 'Organization'; ?></span></a>
             </li>
             <li
-                class="<?= ($currentPage == 'dashboard.php') ? 'active' : '' ?>">
-                <a href="/cca/pages/organization/dashboard.php">
+                class="<?= ($currentPage == 'dashboard-page.php') ? 'active' : '' ?>">
+                <a href="/cca/pages/organization/dashboard-page.php">
                     <i class="icon bi bi-grid-1x2-fill"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li
-                class="<?= ($currentPage == 'members.php') ? 'active' : '' ?>">
-                <a href="/cca/pages/organization/members.php">
-                    <i class="icon bi bi-people-fill" id="members-btn"></i>
+                class="<?= ($currentPage == 'members-page.php') ? 'active' : '' ?>">
+                <a href="/cca/pages/organization/members/members-page.php">
+                    <i class="icon bi bi-people-fill" id="membersBtn"></i>
                     <span>Members</span>
                 </a>
             </li>
             <li>
-                <button onclick="toggleSubMenu(this)" class="dropdown-btn" id="calendar-btn">
+                <button onclick="toggleSubMenu(this)" class="dropdown-btn" id="calendarBtn">
                     <i class="icon bi bi-calendar-event-fill"></i>
                     <span>Calendar</span>
                     <i class="icon iconrotate bi bi-chevron-right"></i>
@@ -57,7 +57,7 @@
                 </ul>
             </li>
             <li>
-                <button onclick="toggleSubMenu(this)" class="dropdown-btn" id="finance-btn">
+                <button onclick="toggleSubMenu(this)" class="dropdown-btn" id="financeBtn">
                     <i class="icon bi bi-file-text-fill"></i>
                     <span>Finance</span>
                     <i class="icon iconrotate bi bi-chevron-right"></i>
@@ -70,7 +70,7 @@
                 </ul>
             </li>
             <li>
-                <button onclick="toggleSubMenu(this)" class="dropdown-btn" id="accomplishments-btn">
+                <button onclick="toggleSubMenu(this)" class="dropdown-btn" id="accomplishmentsBtn">
                     <i class="icon bi bi-calendar-check-fill"></i>
                     <span>Accomplisments</span>
                     <i class="icon iconrotate bi bi-chevron-right"></i>
@@ -83,7 +83,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#" id="logout">
+                <a href="#" id="logoutBtn">
                     <i class="icon bi bi-box-arrow-left"></i>
                     <span>Sign Out</span>
                 </a>

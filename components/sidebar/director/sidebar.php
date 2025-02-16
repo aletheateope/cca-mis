@@ -26,13 +26,13 @@
                 <a href=""><span>Director</span></a>
             </li>
             <li class="active">
-                <a href="/cca/pages/director/dashboard.php">
+                <a href="/cca/pages/director/dashboard-page.php">
                     <i class="icon bi bi-grid-1x2-fill"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li>
-                <button onclick="toggleSubMenu(this)" class="dropdown-btn" id="orgMembers-btn">
+                <button onclick="toggleSubMenu(this)" class="dropdown-btn" id="orgMembersBtn">
                     <i class="icon bi bi-people-fill"></i>
                     <span>Org. Members</span>
                     <i class="icon iconrotate bi bi-chevron-right"></i>
@@ -51,30 +51,30 @@
             </li>
             <li>
                 <a href="#">
-                    <i class="icon bi bi-calendar-event-fill" id="calendar-btn"></i>
+                    <i class="icon bi bi-calendar-event-fill" id="calendarBtn"></i>
                     <span>Calendar</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <i class="icon bi bi-file-text-fill" id="finance-btn"></i>
+                    <i class="icon bi bi-file-text-fill" id="financeBtn"></i>
                     <span>Finance</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <i class="icon bi bi-calendar-check-fill" id="accomplishments-btn"></i>
+                    <i class="icon bi bi-calendar-check-fill" id="accomplishmentsBtn"></i>
                     <span>Accomplishments</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <i class="icon bi bi-person-fill" id="accounts-btn"></i>
+                    <i class="icon bi bi-person-fill" id="accountsBtn"></i>
                     <span>Accounts</span>
                 </a>
             </li>
             <li>
-                <a href="#" id="logout">
+                <a href="#" id="logoutBtn">
                     <i class="icon bi bi-box-arrow-left" id="logout"></i>
                     <span>Sign Out</span>
                 </a>

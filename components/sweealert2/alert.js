@@ -1,6 +1,6 @@
-document.getElementById("logout").addEventListener("click", function () {
+document.getElementById("logoutBtn").addEventListener("click", function () {
   event.preventDefault();
-  console.log("logout");
+  console.log("logoutBtn");
   Swal.fire({
     title: "Are you sure you want to log out?",
     text: "You will be logged out of your account. Do you want to continue?",

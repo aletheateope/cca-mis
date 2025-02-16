@@ -44,7 +44,7 @@ function closeSubMenu() {
 }
 
 function tooltip() {
-  tippy("#members-btn", {
+  tippy("#membersBtn", {
     content: "Members",
     theme: "light",
     arrow: false,
@@ -56,7 +56,7 @@ function tooltip() {
     },
   });
 
-  tippy("#calendar-btn", {
+  tippy("#calendarBtn", {
     content: "Calendar",
     theme: "light",
     arrow: false,
@@ -68,7 +68,7 @@ function tooltip() {
     },
   });
 
-  tippy("#calendar-btn", {
+  tippy("#calendarBtn", {
     content:
       '<div class="no-bullets"><li><a href="#">View Schedules</a></li><li><a href="#">Notification</a></div>',
     theme: "light",
@@ -84,7 +84,7 @@ function tooltip() {
     },
   });
 
-  tippy("#finance-btn", {
+  tippy("#financeBtn", {
     content: "Finance",
     theme: "light",
     arrow: false,
@@ -96,7 +96,7 @@ function tooltip() {
     },
   });
 
-  tippy("#finance-btn", {
+  tippy("#financeBtn", {
     content:
       '<div class="no-bullets"><li><a href="#">View Records</a></li><li><a href="#">My Records</a></div>',
     theme: "light",
@@ -112,7 +112,7 @@ function tooltip() {
     },
   });
 
-  tippy("#accomplishments-btn", {
+  tippy("#accomplishmentsBtn", {
     content: "Accomplishments",
     theme: "light",
     arrow: false,
@@ -124,7 +124,7 @@ function tooltip() {
     },
   });
 
-  tippy("#accomplishments-btn", {
+  tippy("#accomplishmentsBtn", {
     content:
       '<div class="no-bullets"><li><a href="#">View Accomplishments</a></li><li><a href="#">My Accomplishments</a></div>',
     theme: "light",
