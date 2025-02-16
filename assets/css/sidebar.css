@@ -1,5 +1,3 @@
-@import url("variables.css");
-
 .sidebar {
   background-color: var(--primary-background);
   position: sticky;

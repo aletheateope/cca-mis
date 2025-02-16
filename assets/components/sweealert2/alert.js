@@ -1,6 +1,5 @@
 document.getElementById("logoutBtn").addEventListener("click", function () {
   event.preventDefault();
-  console.log("logoutBtn");
   Swal.fire({
     title: "Are you sure you want to log out?",
     text: "You will be logged out of your account. Do you want to continue?",
@@ -27,7 +26,7 @@ document.getElementById("logoutBtn").addEventListener("click", function () {
     },
   }).then((result) => {
     if (result.isConfirmed) {
-      window.location.href = "../../sql/logout.php";
+      window.location.href = "/cca/assets/sql/logout.php";
     }
   });
 });

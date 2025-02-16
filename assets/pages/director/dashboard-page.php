@@ -1,4 +1,4 @@
-<?php //require_once '../../sql/session_check.php'?>
+<?php require_once '../../sql/session_check.php'?>
 
 <!DOCTYPE html>
 <html lang="en">

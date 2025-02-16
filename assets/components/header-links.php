@@ -12,10 +12,10 @@
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
 
 <!-- OWN STYLES (STYLES) -->
-<link rel="stylesheet" href="/cca/css/styles.css" />
+<link rel="stylesheet" href="/cca/assets/css/styles.css" />
 
 <!-- OWN STYLES (SWEET ALERT 2) -->
-<link rel="stylesheet" href="/cca/components/sweealert2/alert.css">
+<link rel="stylesheet" href="/cca/assets/components/sweealert2/alert.css">
 
 <!-- OWN STYLES (TIPPY) -->
-<link rel="stylesheet" href="/cca/css/tippy.css">
+<link rel="stylesheet" href="/cca/assets/css/tippy.css">

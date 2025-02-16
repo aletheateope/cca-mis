@@ -1,4 +1,4 @@
-<?php require_once 'sql/login/login.php';?>
+<?php require_once 'assets/sql/login/login.php';?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,19 +12,19 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <!-- OWN SCRIPT -->
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 
     <!-- OWN SCRIPT -->
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="assets/css/login.css">
 </head>
 
 <body>
     <div class="container">
         <div class="row">
             <div class="col-auto">
-                <img class="bg" src="img/CCA/background.png" alt="">
+                <img class="bg" src="assets/img/CCA/background.png" alt="">
                 <div class="logo-container">
-                    <img class="logo-cca" src="img/CCA/cropped.png" alt="">
+                    <img class="logo-cca" src="assets/img/CCA/cropped.png" alt="">
                     <h5>PLMUN</h5>
                     <p>Center for Culture and the Arts</p>
                 </div>
@@ -34,7 +34,7 @@
                 <button
                     onclick="window.location.href='<?php echo htmlspecialchars($login_url); ?>'"
                     class="login-btn">
-                    <img class="google-icon" src="img/google.png" alt="">
+                    <img class="google-icon" src="assets/img/google.png" alt="">
                     <span>Sign in with Google</span>
                 </button>
             </div>

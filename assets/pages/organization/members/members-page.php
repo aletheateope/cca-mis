@@ -66,7 +66,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="profile-container">
-                        <img class="profile-image" src="/cca/img/blank-profile.png" alt="profile">
+                        <img class="profile-image" src="/cca/assets/img/blank-profile.png" alt="profile">
                         <a class="link" href="">Add Profile</a>
                     </div>
                     <h4>Personal Information</h4>
@@ -178,7 +178,7 @@
 
     <?php require_once '../../../components/footer-links.php'?>
 
-    <script src="/cca/components/cleave.js"></script>
+    <script src="/cca/assets/components/cleave.js"></script>
 </body>
 
 </html>
