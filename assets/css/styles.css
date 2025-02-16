@@ -75,6 +75,7 @@ h2 {
 h3 {
   font-size: var(--large);
   padding: 0 !important;
+  margin: 0;
 }
 
 h4 {
@@ -83,4 +84,8 @@ h4 {
 
 p {
   font-size: var(--regular);
+}
+
+label {
+  margin: 0 !important;
 }

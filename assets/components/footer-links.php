@@ -6,6 +6,11 @@
 <!-- FILEPOND -->
 <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 
+<!-- OWN SCRIPT (FILEPOND) -->
+<script src="https://unpkg.com/filepond-plugin-file-rename/dist/filepond-plugin-file-rename.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+<script src="/cca/assets/components/filepond/filepond.js"></script>
+
 <!-- TIPPY.JS -->
 <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
 <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>

@@ -92,7 +92,7 @@
 
 .login-btn:hover {
   border: solid 1px var(--border-color);
-  background-color: var(--blue);
+  background-color: #4464cf;
   color: var(--active-text);
   .google-icon {
     background-color: var(--primary-background);
