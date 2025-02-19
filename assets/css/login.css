@@ -1,12 +1,10 @@
-@import url("variables.css");
-
 .container {
   height: 100vh;
 }
 
 .row {
   justify-content: center;
-  align-items: center;
+  align-content: center;
   height: 100%;
   width: 100%;
 }

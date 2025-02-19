@@ -1,5 +1,3 @@
-<?php //require_once '../../../sql/session_check.php'?>
-
 <!-- OWN STYLES (SIDEBAR) -->
 <link rel="stylesheet" href="/cca/assets/css/sidebar.css">
 

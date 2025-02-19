@@ -59,7 +59,7 @@ function tooltip() {
 
   tippy("#orgMembersBtn", {
     content:
-      '<div class="no-bullets"><li><a href="#">Blck Mvmnt</a></li><li><a href="#">Chorale</a><li><a href="#">Dulangsining</a></li><li><a href="#">Euphoria</a></li><li><a href="#">FDC</a></li><li><a href="#">Kultura Teknika</a></li><li><a href="#">Search</a></li></div>',
+      '<div class="tippy-no-bullets"><li><a href="#">Blck Mvmnt</a></li><li><a href="#">Chorale</a><li><a href="#">Dulangsining</a></li><li><a href="#">Euphoria</a></li><li><a href="#">FDC</a></li><li><a href="#">Kultura Teknika</a></li><li><a href="#">Search</a></li></div>',
     theme: "light",
     allowHTML: true,
     arrow: false,

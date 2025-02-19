@@ -1,8 +1,14 @@
+// CALCULATE AGE
 function calculateAge() {
   const dob = document.getElementById("inputBirthday").value;
   if (dob) {
     const dobDate = new Date(dob);
     const today = new Date();
+
+    if (dobDate > today) {
+      alert("Invalid date of birth.");
+      return;
+    }
     let age = today.getFullYear() - dobDate.getFullYear();
     const monthDiff = today.getMonth() - dobDate.getMonth();
     const dayDiff = today.getDate() - dobDate.getDate();
@@ -16,7 +22,7 @@ function calculateAge() {
   }
 }
 
-// Load Image
+// LOAD IMAGE
 document
   .getElementById("inputProfile")
   .addEventListener("change", function (event) {
@@ -29,6 +35,7 @@ document
       // When the file is loaded, set it as the source of the image
       reader.onload = function (e) {
         document.getElementById("blank-profile").src = e.target.result;
+        document.getElementById("removeProfile").style.display = "block";
       };
 
       reader.readAsDataURL(file); // Read the file as a data URL
@@ -37,44 +44,106 @@ document
     }
   });
 
-//   Enable Next Button
-const inputFirstName = document.getElementById("inputFirstName");
-const inputMiddleName = document.getElementById("inputMiddleName");
-const inputLastName = document.getElementById("inputLastName");
-const inputBirthday = document.getElementById("inputBirthday");
-const inputAge = document.getElementById("inputAge");
-const inputAddress = document.getElementById("inputAddress");
-const inputContactNumber = document.getElementById("inputContactNumber");
+// REMOVE IMAGE
+function removeProfile() {
+  document.getElementById("inputProfile").value = ""; // Clear the file input
+  document.getElementById("blank-profile").src =
+    "/cca/assets/img/blank-profile.png"; // Reset to default image
+  document.getElementById("removeProfile").style.display = "none"; // Hide "X" icon
+}
 
+// NEXT BUTTON
 const nextButton = document.getElementById("nextButton");
+const inputs = document.querySelectorAll(
+  "#inputFirstName, #inputMiddleName, #inputLastName, #inputBirthday, #inputAge, #inputAddress, #inputContactNumber"
+);
 
-// Function to check if both fields are filled
+// enable next button
 function checkFields() {
-  if (
-    inputFirstName.value.trim() !== "" &&
-    inputMiddleName.value.trim() !== "" &&
-    inputLastName.value.trim() !== "" &&
-    inputBirthday.value !== "" &&
-    inputAge.value.trim() !== "" &&
-    inputAddress.value.trim() !== "" &&
-    inputContactNumber.value.trim() !== ""
-  ) {
-    nextButton.disabled = false; // Enable the button
+  nextButton.disabled = Array.from(inputs).some(
+    (input) => input.value.trim() === ""
+  );
+}
+
+// INPUT EVENT LISTENER
+inputs.forEach((input) => input.addEventListener("input", checkFields));
+
+// Copy name to the title
+nextButton.addEventListener("click", () => {
+  const fullName = `${document.getElementById("inputFirstName").value}
+                    ${document.getElementById("inputMiddleName").value}
+                    ${document.getElementById("inputLastName").value}`.trim();
+  document.getElementById("memberName").textContent = fullName;
+});
+
+// TOOLTIP
+tippy("#removeProfile", {
+  placement: "right",
+  content: "Remove Profile",
+  theme: "light",
+});
+
+// ENABLE DATE LEFT INTPUT IF STATUS "EXITED" OR "TERMINATED"
+document.getElementById("inputState").addEventListener("change", function () {
+  const selectedValue = this.value;
+
+  if (selectedValue === "Exited" || selectedValue === "Terminated") {
+    inputDateLeft.disabled = false;
   } else {
-    nextButton.disabled = true; // Disable the button
+    inputDateLeft.disabled = true;
+  }
+});
+
+// DATE JOINED AND DATE LEFT VALIDATION
+const inputDateJoined = document.getElementById("inputDateJoined");
+const inputDateLeft = document.getElementById("inputDateLeft");
+
+// Add event listener for validation when the input loses focus
+inputDateLeft.addEventListener("blur", validateDates);
+inputDateJoined.addEventListener("blur", validateDates);
+
+function validateDates() {
+  const dateJoinedValue = inputDateJoined.value;
+  const dateLeftValue = inputDateLeft.value;
+
+  // Ensure both inputs are fully entered (length of 10 characters for mm/dd/yyyy)
+  if (dateJoinedValue.length === 10 && dateLeftValue.length === 10) {
+    const dateJoined = new Date(dateJoinedValue);
+    const dateLeft = new Date(dateLeftValue);
+
+    // Check if both dates are valid
+    if (!isNaN(dateJoined.getTime()) && !isNaN(dateLeft.getTime())) {
+      // Compare dates
+      if (dateLeft < dateJoined) {
+        alert(
+          "Invalid input: 'Date Left' cannot be earlier than 'Date Joined'."
+        );
+        inputDateLeft.value = ""; // Clear the invalid date
+      }
+    }
   }
 }
 
-// Add event listeners to the input fields
-inputFirstName.addEventListener("input", checkFields);
-inputMiddleName.addEventListener("input", checkFields);
-inputLastName.addEventListener("input", checkFields);
-inputBirthday.addEventListener("input", checkFields);
-inputAge.addEventListener("input", checkFields);
-inputAddress.addEventListener("input", checkFields);
-inputContactNumber.addEventListener("input", checkFields);
+$(document).ready(function () {
+  $("#addMemberForm").on("submit", function (e) {
+    e.preventDefault();
 
-document.addEventListener("DOMContentLoaded", function () {
-  var myModal = new bootstrap.Modal(document.getElementById("addMemberModal"));
-  myModal.show();
+    var formData = new FormData(this);
+
+    // AJAX request to upload files
+    $.ajax({
+      url: "/cca/assets/pages/organization/members/add-member.php",
+      type: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        alert(response);
+      },
+      error: function (xhr, status, error) {
+        console.log("Error details:", xhr.responseText);
+        alert("Error: " + error);
+      },
+    });
+  });
 });

@@ -70,7 +70,7 @@ function tooltip() {
 
   tippy("#calendarBtn", {
     content:
-      '<div class="no-bullets"><li><a href="#">View Schedules</a></li><li><a href="#">Notification</a></div>',
+      '<div class="tippy-no-bullets"><li><a href="#">View Schedules</a></li><li><a href="#">Notification</a></div>',
     theme: "light",
     allowHTML: true,
     arrow: false,
@@ -98,7 +98,7 @@ function tooltip() {
 
   tippy("#financeBtn", {
     content:
-      '<div class="no-bullets"><li><a href="#">View Records</a></li><li><a href="#">My Records</a></div>',
+      '<div class="tippy-no-bullets"><li><a href="#">View Records</a></li><li><a href="#">My Records</a></div>',
     theme: "light",
     allowHTML: true,
     arrow: false,
@@ -126,7 +126,7 @@ function tooltip() {
 
   tippy("#accomplishmentsBtn", {
     content:
-      '<div class="no-bullets"><li><a href="#">View Accomplishments</a></li><li><a href="#">My Accomplishments</a></div>',
+      '<div class="tippy-no-bullets"><li><a href="#">View Accomplishments</a></li><li><a href="#">My Accomplishments</a></div>',
     theme: "light",
     allowHTML: true,
     arrow: false,

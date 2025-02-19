@@ -8,9 +8,6 @@
 <!-- ANIMATE.CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-<!-- FILEPOND -->
-<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
-
 <!-- OWN STYLES (STYLES) -->
 <link rel="stylesheet" href="/cca/assets/css/styles.css" />
 
@@ -18,4 +15,4 @@
 <link rel="stylesheet" href="/cca/assets/components/sweealert2/alert.css">
 
 <!-- OWN STYLES (TIPPY) -->
-<link rel="stylesheet" href="/cca/assets/css/tippy.css">
+<link rel="stylesheet" href="/cca/assets/components/tippy.css">

@@ -1,4 +1,7 @@
-<?php //require_once '../../sql/session_check.php'?>
+<?php
+//require_once '../../sql/session_check.php';
+//check_role('Organization');
+?>
 
 <!DOCTYPE html>
 <html lang="en">

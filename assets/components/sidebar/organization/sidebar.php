@@ -1,5 +1,3 @@
-<?php //require_once '../../../sql/session_check.php'?>
-
 <!-- Get the current page name -->
 <?php $currentPage = basename($_SERVER['PHP_SELF']);?>
 
@@ -16,8 +14,11 @@
         </li>
         <li>
             <i class="profile-icon"></i>
-            <a
-                href=""><span><?php echo isset($_SESSION['organization_name']) ? $_SESSION['organization_name'] : 'Organization'; ?></span></a>
+            <a href="">
+                <span>
+                    <?php echo isset($_SESSION['organization_name']) ? $_SESSION['organization_name'] : 'Organization'; ?>
+                </span>
+            </a>
         </li>
         <li
             class="<?= ($currentPage == 'dashboard-page.php') ? 'active' : '' ?>">

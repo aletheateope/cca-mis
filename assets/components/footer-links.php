@@ -1,15 +1,11 @@
+<!-- JQUERY -->
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+
 <!-- BOOTSTRAP -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
 </script>
-
-<!-- FILEPOND -->
-<script src="https://unpkg.com/filepond/dist/filepond.js"></script>
-
-<!-- OWN SCRIPT (FILEPOND) -->
-<script src="https://unpkg.com/filepond-plugin-file-rename/dist/filepond-plugin-file-rename.js"></script>
-<script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-<script src="/cca/assets/components/filepond/filepond.js"></script>
 
 <!-- TIPPY.JS -->
 <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>

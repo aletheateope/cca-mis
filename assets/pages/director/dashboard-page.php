@@ -1,4 +1,7 @@
-<?php require_once '../../sql/session_check.php'?>
+<?php
+//require_once '../../sql/session_check.php';
+//check_role('Director');
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,6 +32,15 @@
         </div>
     </div>
     <?php require_once '../../components/footer-links.php' ?>
+
+    <script>
+        // Retrieve the session role from PHP
+        var sessionRole =
+            "<?php echo isset($_SESSION['user_role']) ? $_SESSION['user_role'] : 'undefined'; ?>";
+
+        // Log the role to the console
+        console.log("Session Role: " + sessionRole);
+    </script>
 </body>
 
 </html>

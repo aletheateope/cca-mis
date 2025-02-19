@@ -28,11 +28,12 @@
 }
 
 .add-member-modal .profile-container > .removeProfile {
+  color: var(--red);
+  font-size: 20px;
   position: absolute;
-  top: 3%;
-  right: 41%;
-  width: 20px;
-  height: 20px;
+  cursor: pointer;
+  transform: translate(65px, -78px);
+  display: none;
 }
 
 .add-member-btn .bi-plus {

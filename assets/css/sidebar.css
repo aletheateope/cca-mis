@@ -34,8 +34,7 @@
 }
 
 .sidebar .collapse-btn {
-  display: flex;
-  align-items: center;
+  align-self: center;
   border-radius: 50%;
   padding-left: 6px;
   padding-right: 6px;
@@ -51,7 +50,6 @@
   background: none;
   color: var(--primary-text);
   width: 100%;
-  text-align: left;
   border: none;
   cursor: pointer;
 
@@ -93,7 +91,6 @@
 .sidebar a span,
 .sidebar .dropdown-btn span {
   display: flex;
-  align-items: center;
   flex-grow: 1;
 }
 
