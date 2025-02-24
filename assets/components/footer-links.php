@@ -15,7 +15,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- OWN SCRIPT (SWEET ALERT 2) -->
-<script src="/cca/assets/components/sweealert2/alert.js"></script>
+<script src="/cca/assets/components/sweetalert2/alert.js"></script>
 
 <!-- CLEAVE.JS -->
 <script src="/cca/node_modules/cleave.js/dist/cleave.min.js"></script>

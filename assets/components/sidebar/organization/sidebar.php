@@ -55,8 +55,11 @@
             </button>
             <ul class="sub-menu">
                 <div>
-                    <li><a href="#">View Records</a></li>
-                    <li><a href="#">My Records</a></li>
+                    <li> <a href="#">View Records</a></li>
+                    <li
+                        class="<?= ($currentPage == 'finance-page.php') ? 'active' : '' ?>">
+                        <a href="/cca/assets/pages/organization/finance/finance-page.php">My Records</a>
+                    </li>
                 </div>
             </ul>
         </li>
@@ -69,7 +72,11 @@
             <ul class="sub-menu">
                 <div>
                     <li><a href="#">View Accomplishments</a></li>
-                    <li><a href="#">My Accomplishments</a></li>
+                    <li
+                        class="<?= ($currentPage == 'accomplishments-page.php'|| $currentPage == 'add-activity-page.php') ? 'active' : '' ?>">
+                        <a href="/cca/assets/pages/organization/accomplishments/accomplishments-page.php">My
+                            Accomplishments</a>
+                    </li>
                 </div>
             </ul>
         </li>

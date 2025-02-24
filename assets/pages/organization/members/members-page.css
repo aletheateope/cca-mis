@@ -36,9 +36,6 @@
   display: none;
 }
 
-.add-member-btn .bi-plus {
-  font-size: 1.2rem;
-}
 .profile-container .link {
   color: var(--link);
   font-size: var(--small);

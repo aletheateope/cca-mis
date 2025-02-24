@@ -22,6 +22,17 @@ function calculateAge() {
   }
 }
 
+// ADD PROFILE IMAGE
+document.addEventListener("DOMContentLoaded", function () {
+  const addProfileBtn = document.getElementById("addProfileButton");
+  const inputProfile = document.getElementById("inputProfile");
+
+  addProfileBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    inputProfile.click();
+  });
+});
+
 // LOAD IMAGE
 document
   .getElementById("inputProfile")
@@ -55,13 +66,13 @@ function removeProfile() {
 // NEXT BUTTON
 const nextButton = document.getElementById("nextButton");
 const inputs = document.querySelectorAll(
-  "#inputFirstName, #inputMiddleName, #inputLastName, #inputBirthday, #inputAge, #inputAddress, #inputContactNumber"
+  "#inputFirstName, #inputMiddleName, #inputLastName, #inputBirthday, #inputAge, #inputContactNumber, #inputAddress, #inputEmail"
 );
 
 // enable next button
 function checkFields() {
-  nextButton.disabled = Array.from(inputs).some(
-    (input) => input.value.trim() === ""
+  nextButton.disabled = !Array.from(inputs).every((input) =>
+    input.value.trim()
   );
 }
 
@@ -113,26 +124,25 @@ function validateDates() {
 
     // Check if both dates are valid
     if (!isNaN(dateJoined.getTime()) && !isNaN(dateLeft.getTime())) {
-      // Compare dates
       if (dateLeft < dateJoined) {
         alert(
           "Invalid input: 'Date Left' cannot be earlier than 'Date Joined'."
         );
-        inputDateLeft.value = ""; // Clear the invalid date
+        inputDateLeft.value = "";
       }
     }
   }
 }
 
+// ADD MEMBER TO DATABASE
 $(document).ready(function () {
   $("#addMemberForm").on("submit", function (e) {
     e.preventDefault();
 
-    var formData = new FormData(this);
+    const formData = new FormData(this);
 
-    // AJAX request to upload files
     $.ajax({
-      url: "/cca/assets/pages/organization/members/add-member.php",
+      url: "add-member.php",
       type: "POST",
       data: formData,
       contentType: false,

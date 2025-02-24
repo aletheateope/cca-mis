@@ -22,12 +22,17 @@
                 <?php include '../../components/sidebar/director/sidebar.php' ?>
             </div>
             <div class="col main-content">
-                <h1>Hello World</h1>
-                <ul>
-                    <li>Item 1</li>
-                    <li>Item 2</li>
-                    <li>Item 3</li>
-                </ul>
+                <div class="row">
+                    <div class="col page-header">
+                        <h1>Dashboard</h1>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col content">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -14,8 +14,6 @@ $response = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once '../../../sql/conn.php';
 
-    include_once '../../../sql/plmun-program.php';
-
     $first_name = $_POST['first_name'] ?? null;
     $middle_name = $_POST['middle_name'] ?? null;
     $last_name = $_POST['last_name'] ?? null;
@@ -42,8 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //     echo json_encode($response);
     //     exit;
     // }
+    
+    include_once '../../../sql/plmun-program.php';
 
-    $program_id = $programs[strtok($program, ' -')] ?? null;
 
     $conn->begin_transaction();
     try {
@@ -101,9 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception('Upload error occurred.');
             }
         }
-
-
-
 
         // STUDENT DOCUMENT
         if (isset($_FILES['files']) && $_FILES['files']['error'][0] !== UPLOAD_ERR_NO_FILE) {

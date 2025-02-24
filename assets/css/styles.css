@@ -43,8 +43,8 @@ body {
 }
 
 .main-content {
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 .page-header {
@@ -53,19 +53,34 @@ body {
   width: 100%;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  justify-content: space-between;
+  justify-items: flex-start;
   align-items: center;
 }
 
-.page-content {
+.page-header > :first-child {
+  margin-right: auto;
+}
+
+.page-body {
+  display: grid;
+  gap: 1rem;
+}
+
+.page-body .content {
+  display: grid;
   background-color: var(--primary-background);
   border-radius: var(--border-radius);
   padding: 1rem;
+  gap: 0.625rem;
+}
+
+.back-button {
+  text-decoration: none;
+  color: var(--primary-text);
 }
 
 h1 {
   font-size: var(--extra-extra-large);
-  font-weight: var(--regular);
 }
 
 h2 {
@@ -74,18 +89,33 @@ h2 {
 
 h3 {
   font-size: var(--large);
-  padding: 0 !important;
-  margin: 0;
 }
 
 h4 {
   font-size: var(--regular);
 }
 
+h5 {
+  font-size: var(--small);
+}
+
+h6 {
+  font-size: var(--very-small);
+}
+
 p {
   font-size: var(--regular);
+  margin: 0;
 }
 
 label {
   margin: 0 !important;
+}
+
+.no-border {
+  border: none !important;
+}
+
+.gap {
+  gap: 1rem;
 }

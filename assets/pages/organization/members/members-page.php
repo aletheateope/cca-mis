@@ -28,32 +28,34 @@
                         <h1>Members</h1>
                         <button type="button" class="btn btn-primary add-member-btn" data-bs-toggle="modal"
                             data-bs-target="#addMemberModal">
-                            <span><i class="bi bi-plus"></i> Add Member</span>
+                            <i class="bi bi-plus"></i> Add Member
                         </button>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col page-content">
-                        <table class="table members-table">
-                            <thead>
-                                <tr>
-                                    <th>Box</th>
-                                    <th>Name</th>
-                                    <th>Status</th>
-                                    <th>State</th>
-                                    <th>Date Joined</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col content">
+                            <table class="table members-table">
+                                <thead>
+                                    <tr>
+                                        <th>Box</th>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>State</th>
+                                        <th>Date Joined</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>test</td>
+                                        <td>test</td>
+                                        <td>test</td>
+                                        <td>test</td>
+                                        <td>test</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -73,8 +75,7 @@
                             <img class="profile-image" src="/cca/assets/img/blank-profile.png" alt="profile"
                                 id="blank-profile">
                             <i class="bi bi-x removeProfile" id="removeProfile" onclick="removeProfile()"></i>
-                            <a class="link" href="#" onclick="document.getElementById('inputProfile').click()">Add
-                                Profile</a>
+                            <a class="link" href="" id="addProfileButton">Add Profile</a>
                             <input type="file" name="profile_img" id="inputProfile" style="display: none;"
                                 accept="image/png, image/jpeg, image/jpg" />
                         </div>
@@ -128,7 +129,7 @@
                                 </div>
                                 <div class="col">
                                     <label for="inputEmail" class="form-label">Email</label>
-                                    <input type="text" name="email" class="form-control" id="inputEmail" required>
+                                    <input type="email" name="email" class="form-control" id="inputEmail" required>
                                 </div>
                             </div>
                             <div class="row">
@@ -142,7 +143,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="nextButton" data-bs-target="#addMemberModal2"
-                            data-bs-toggle="modal">Next</button>
+                            data-bs-toggle="modal" disabled>Next</button>
                     </div>
                 </div>
             </div>
@@ -173,20 +174,20 @@
                                 <div class="col">
                                     <label for="inputCourse" class="form-label">Course</label>
                                     <select class="form-select" name="program" id="inputCourse">
-                                        <option selected>BSA - Bachelor of Science in Accountancy</option>
-                                        <option>BAComm - Bachelor of Arts in Communication</option>
-                                        <option>BSPsy - Bachelor of Science in Psychology</option>
-                                        <option>BSBA - Bachelor of Science in Business Administration</option>
-                                        <option>BSCRIM - Bachelor of Science in Criminology</option>
-                                        <option>BSCS - Bachelor of Science in Computer Science</option>
-                                        <option>BSIT - Bachelor of Science in Information Technology</option>
-                                        <option>ACT - Associate in Computer Technology</option>
-                                        <option>MD - Doctor of Medicine</option>
-                                        <option>BEED - Bachelor of Elementary Education</option>
-                                        <option>BSEd - Bachelor of Secondary Education</option>
-                                        <option>BPA - Bachelor of Public Administration</option>
-                                        <option>BAPolSci - Bachelor of Arts in Political Science</option>
-                                        <option>BSSW - Bachelor of Science in Social Work</option>
+                                        <option selected value="1">BSA - Bachelor of Science in Accountancy</option>
+                                        <option value="2">BAComm - Bachelor of Arts in Communication</option>
+                                        <option value="3">BSPsy - Bachelor of Science in Psychology</option>
+                                        <option value="4">BSBA - Bachelor of Science in Business Administration</option>
+                                        <option value="5">BSCRIM - Bachelor of Science in Criminology</option>
+                                        <option value="6">BSCS - Bachelor of Science in Computer Science</option>
+                                        <option value="7">BSIT - Bachelor of Science in Information Technology</option>
+                                        <option value="8">ACT - Associate in Computer Technology</option>
+                                        <option value="9">MD - Doctor of Medicine</option>
+                                        <option value="10">BEED - Bachelor of Elementary Education</option>
+                                        <option value="11">BSEd - Bachelor of Secondary Education</option>
+                                        <option value="12">BPA - Bachelor of Public Administration</option>
+                                        <option value="13">BAPolSci - Bachelor of Arts in Political Science</option>
+                                        <option value="14">BSSW - Bachelor of Science in Social Work</option>
                                     </select>
                                 </div>
                                 <div class="col">
@@ -254,7 +255,12 @@
 
     <?php require_once '../../../components/footer-links.php'?>
 
-    <script src="/cca/assets/components/cleave.js"></script>
+    <script>
+        var cleave = new Cleave("#inputContactNumber", {
+            phone: true,
+            phoneRegionCode: "PH",
+        });
+    </script>
 
     <script src="/cca/assets/pages/organization/members/members-page.js"></script>
 

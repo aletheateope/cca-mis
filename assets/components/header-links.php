@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="/cca/assets/css/styles.css" />
 
 <!-- OWN STYLES (SWEET ALERT 2) -->
-<link rel="stylesheet" href="/cca/assets/components/sweealert2/alert.css">
+<link rel="stylesheet" href="/cca/assets/components/sweetalert2/alert.css">
 
 <!-- OWN STYLES (TIPPY) -->
 <link rel="stylesheet" href="/cca/assets/components/tippy.css">
