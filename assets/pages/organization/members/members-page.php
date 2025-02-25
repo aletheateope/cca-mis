@@ -255,6 +255,8 @@
 
     <?php require_once '../../../components/footer-links.php'?>
 
+    <script src="/cca/assets/pages/organization/members/members-page.js"></script>
+
     <script>
         var cleave = new Cleave("#inputContactNumber", {
             phone: true,
@@ -262,7 +264,6 @@
         });
     </script>
 
-    <script src="/cca/assets/pages/organization/members/members-page.js"></script>
 
 </body>
 

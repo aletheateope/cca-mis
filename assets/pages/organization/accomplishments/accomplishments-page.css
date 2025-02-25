@@ -67,7 +67,7 @@
   border-left: 1px solid var(--border-color);
 }
 
-/* Name List */
+/* Member List */
 .page-body
   > .row:nth-of-type(3)
   > .col
@@ -83,6 +83,7 @@
   padding-right: 0.75rem;
 }
 
+/* Right Column */
 .page-body
   > .row:nth-of-type(3)
   > .col
@@ -93,6 +94,7 @@
   border-right: none;
 }
 
+/* Bottom Row */
 .page-body
   > .row:nth-of-type(3)
   > .col
@@ -115,4 +117,10 @@
   > .row:last-of-type
   .col-4:nth-child(3n + 3):nth-last-child(-n + 1) {
   border-bottom: none;
+}
+
+/* SUBMIT BUTTON */
+.page-body > .row:last-of-type .col {
+  display: flex;
+  justify-content: flex-end;
 }

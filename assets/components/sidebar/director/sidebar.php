@@ -1,5 +1,5 @@
 <!-- OWN STYLES (SIDEBAR) -->
-<link rel="stylesheet" href="/cca/assets/css/sidebar.css">
+<link rel="stylesheet" href="/cca/assets/components/sidebar/sidebar.css">
 
 <aside class="sidebar" id="sidebar">
     <ul>

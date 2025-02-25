@@ -99,8 +99,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 throw new Exception('Upload error occurred.');
             }
+        } else {
+            $stmt4 = $conn->prepare("INSERT INTO profile_image (student_number, user_id, path, date_uploaded) VALUES (?, NULL, NULL, NULL)");
+            if (!$stmt4) {
+                throw new Exception('Database error: ' . $conn->error);
+            }
+            $stmt4->bind_param("i", $student_number);
+            if (!$stmt4->execute()) {
+                throw new Exception('Failed to insert default profile image: ' . $stmt4->error);
+            }
         }
-
+    
         // STUDENT DOCUMENT
         if (isset($_FILES['files']) && $_FILES['files']['error'][0] !== UPLOAD_ERR_NO_FILE) {
             if ($_FILES['files']['error'][0] == UPLOAD_ERR_OK) {

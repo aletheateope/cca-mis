@@ -53,9 +53,9 @@
   color: #c1aa01;
 }
 
-.logo-container p,
-.logo-container h5 {
-  margin: 0;
+.logo-container h3 {
+  color: #c1aa01;
+  font-weight: var(--medium);
 }
 
 .logo-cca {

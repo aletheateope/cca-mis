@@ -64,6 +64,7 @@ body {
 .page-body {
   display: grid;
   gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .page-body .content {
@@ -116,6 +117,11 @@ label {
   border: none !important;
 }
 
-.gap {
+.row-gap {
   gap: 1rem;
+}
+
+.col-gap {
+  display: grid;
+  gap: 0.625rem;
 }
