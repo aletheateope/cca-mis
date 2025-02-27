@@ -77,7 +77,7 @@
                             <i class="bi bi-x removeProfile" id="removeProfile" onclick="removeProfile()"></i>
                             <a class="link" href="" id="addProfileButton">Add Profile</a>
                             <input type="file" name="profile_img" id="inputProfile" style="display: none;"
-                                accept="image/png, image/jpeg, image/jpg" />
+                                accept="image/png, image/jpeg" />
                         </div>
                         <div class="container-fluid">
                             <div class="row">
@@ -238,7 +238,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-12 px-5">
-                                    <input type="file" name="files[]" id="uploadStudentDocument" multiple />
+                                    <input type="file" name="files[]" id="uploadStudentDocument"
+                                        accept="image/png, image/jpeg, application/pdf" multiple />
                                 </div>
                             </div>
                         </div>
@@ -255,16 +256,7 @@
 
     <?php require_once '../../../components/footer-links.php'?>
 
-    <script src="/cca/assets/pages/organization/members/members-page.js"></script>
-
-    <script>
-        var cleave = new Cleave("#inputContactNumber", {
-            phone: true,
-            phoneRegionCode: "PH",
-        });
-    </script>
-
-
+    <script src="members-page.js"></script>
 </body>
 
 </html>
