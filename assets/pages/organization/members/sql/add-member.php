@@ -106,10 +106,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     
         // STUDENT DOCUMENT
-        if (!empty($_FILES['files']['name'][0])) {
-            foreach ($_FILES['files']['tmp_name'] as $key => $tmpName) {
-                if ($_FILES['files']['error'][$key] === UPLOAD_ERR_OK) {
-                    $fileName = $_FILES['files']['name'][$key];
+        if (!empty($_FILES['document']['name'][0])) {
+            foreach ($_FILES['document']['tmp_name'] as $key => $tmpName) {
+                if ($_FILES['document']['error'][$key] === UPLOAD_ERR_OK) {
+                    $fileName = $_FILES['document']['name'][$key];
                     $fileType = mime_content_type($tmpName);
             
                     // Generate unique file name
@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         throw new Exception('Failed to insert document into database: ' . $stmt5->error);
                     }
                 } else {
-                    throw new Exception('Upload error occurred for file: ' . $_FILES['files']['name'][$key]);
+                    throw new Exception('Upload error occurred for file: ' . $_FILES['document']['name'][$key]);
                 }
             }
         }

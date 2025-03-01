@@ -238,7 +238,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12 px-5">
-                                    <input type="file" name="files[]" id="uploadStudentDocument"
+                                    <input type="file" name="document[]" id="uploadStudentDocument"
                                         accept="image/png, image/jpeg, application/pdf" multiple />
                                 </div>
                             </div>

@@ -140,8 +140,8 @@ function validateDates() {
   }
 }
 
-// ADD MEMBER TO DATABASE
 $(document).ready(function () {
+  // FILEPOND
   FilePond.registerPlugin(FilePondPluginFileValidateType);
   FilePond.registerPlugin(FilePondPluginFileRename);
 
@@ -159,6 +159,7 @@ $(document).ready(function () {
     },
   });
 
+  // ADD MEMBER TO DATABASE
   $("#addMemberForm").on("submit", function (e) {
     e.preventDefault();
 
@@ -169,7 +170,7 @@ $(document).ready(function () {
       const renamedFile = new File([file], fileItem.filename, {
         type: file.type,
       }); // Use renamed filename
-      formData.append(`files[]`, renamedFile);
+      formData.append(`document[]`, renamedFile);
     });
 
     $.ajax({

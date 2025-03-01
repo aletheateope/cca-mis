@@ -44,7 +44,7 @@
                                         <div class="splide">
                                             <div class="splide__track">
                                                 <ul class="splide__list">
-                                                    <li class="splide__slide"></li>
+                                                    <!-- <li class="splide__slide"></li> -->
                                                 </ul>
                                             </div>
                                         </div>
@@ -55,8 +55,10 @@
                                         <h5>Drag and Drop <br> or <br> <a href="" id="inputImageButton">Browse</a> Files
                                         </h5>
                                         <h6>Supports JPEG, JPG, PNG</h6>
-                                        <input type="file" name="activity_gallery" id="inputActivityGallery"
-                                            style="display: none;" accept="image/png, image/jpeg, image/jpg" multiple />
+                                        <input type="file" id="storeImgGallery" style="display: none;"
+                                            accept="image/png, image/jpeg" multiple />
+                                        <input type="file" name="activity_gallery[]" id="inputActivityGallery"
+                                            style="display: none;" accept="image/png, image/jpeg" multiple />
                                     </div>
                                 </div>
                             </div>

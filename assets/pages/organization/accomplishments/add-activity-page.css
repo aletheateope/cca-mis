@@ -18,10 +18,43 @@
   margin-bottom: 1rem;
 }
 
-.splide .splide__slide img {
+.splide__slide img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  position: relative;
+}
+
+.splide__slide .image-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  opacity: 0;
+}
+
+.splide__slide .image-overlay button {
+  background: none;
+  border: none;
+  color: white;
+}
+
+.splide__slide .image-overlay button:hover {
+  background: none;
+  border: none;
+  color: var(--red);
+}
+
+.splide__slide:hover .image-overlay {
+  opacity: 1;
 }
 
 /* PARTICIPANTS GRID */
