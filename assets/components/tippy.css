@@ -1,6 +1,30 @@
 .tippy-box[data-theme~="light"] {
   background-color: var(--primary-background);
   color: var(--primary-text);
+  border: 1px solid var(--border-color);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.tippy-box[data-theme~="light-no-border"] {
+  background-color: var(--primary-background);
+  color: var(--primary-text);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.tippy-box[data-theme~="light"][data-placement^="top"] > .tippy-arrow::before {
+  border-top-color: var(--primary-background);
+}
+
+.tippy-box[data-theme~="light"][data-placement^="bottom"]
+  > .tippy-arrow::before {
+  border-bottom-color: var(--primary-background);
+}
+.tippy-box[data-theme~="light"][data-placement^="left"] > .tippy-arrow::before {
+  border-left-color: var(--primary-background);
+}
+.tippy-box[data-theme~="light"][data-placement^="right"]
+  > .tippy-arrow::before {
+  border-right-color: var(--primary-background);
 }
 
 .tippy-no-bullets li {

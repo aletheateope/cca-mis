@@ -3,11 +3,13 @@ let selectedFiles = [];
 // SPLIDE
 document.addEventListener("DOMContentLoaded", function () {
   var splide = new Splide(".splide", {
+    type: "slide",
     autoWidth: true,
     height: "15rem",
     focus: "center",
     perPage: 3,
     gap: "1rem",
+    pagination: true,
   });
   splide.mount();
 
@@ -43,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
             li.innerHTML = `
               <img src="${e.target.result}" alt="Selected Image">
               <div class="image-overlay">
-                  <button type="button">Remove Image</button>
+                  <button type="button" class="remove-img-btn no-style-btn">Remove Image</button>
               </div>
             `;
             li.setAttribute("data-file-name", file.name);
@@ -55,7 +57,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     });
-    console.log(selectedFiles);
   });
 
   list.addEventListener("click", function (event) {
@@ -63,7 +64,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const li = event.target.closest("li");
       const fileName = li.getAttribute("data-file-name");
 
-      // Find the correct file in selectedFiles
       const fileIndex = selectedFiles.findIndex(
         (file) => file.name === fileName
       );
@@ -71,12 +71,9 @@ document.addEventListener("DOMContentLoaded", function () {
         selectedFiles.splice(fileIndex, 1);
       }
 
-      splide.remove(li); // Removes the slide from Splide
+      splide.remove(li);
       li.remove();
       splide.refresh();
-      console.log(
-        `Image removed. Total remaining files: ${selectedFiles.length}`
-      );
     }
   });
 });
@@ -121,6 +118,99 @@ $(document).ready(function () {
   }
 });
 
+// TOGGLE ADD RECOGNITION
+$(document).ready(function () {
+  // Show add recognition button only if checkbox is checked
+  $(".member-checkbox").on("change", function () {
+    const member = $(this).closest(".member");
+    const addRecognitionBtn = member.find(".add-recognition");
+    const labelName = member.find(".form-check label").text();
+
+    addRecognitionBtn.toggle(this.checked);
+
+    // If unchecked, remove any existing recognition form related to this participant
+    if (!this.checked) {
+      $(".recognition-form").each(function () {
+        if ($(this).find("label").text() === labelName) {
+          $(this).remove();
+        }
+      });
+
+      // If there are no more recognition forms, hide the container
+      if ($(".recognition-form").length === 0) {
+        $(".recognition-container").hide();
+      }
+
+      // Remove empty row-gap if it exists
+      $(".recognition-row").each(function () {
+        if ($(this).children(".recognition-form").length === 0) {
+          $(this).remove();
+        }
+      });
+    }
+  });
+
+  // When add recognition button is clicked
+  $(document).on("click", ".add-recognition", function () {
+    var labelName = $(this).siblings(".form-check").find("label").text(); // Get participant name
+
+    // Create a new recognition form
+    var newForm = `
+            <div class="col col-gap recognition-form">
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label">${labelName}</label>
+                        <div class="remove-recognition-btn"><i class="bi bi-x"></i></div>
+                    </div>
+                </div>
+                <input type="text" name="recognition[]" class="form-control">
+            </div>
+        `;
+
+    // Find the last row-gap inside the recognition-container
+    var lastRow = $(".recognition-container .content .recognition-row").last();
+
+    // If no row exists or the last row has 2 forms, create a new row inside .content
+    if (
+      lastRow.length === 0 ||
+      lastRow.children(".recognition-form").length >= 2
+    ) {
+      lastRow = $('<div class="row row-gap recognition-row"></div>');
+      $(".recognition-container .content").append(lastRow);
+    }
+
+    // Append the new form to the last row-gap
+    lastRow.append(newForm);
+
+    // Show the recognition container
+    $(".recognition-container").show();
+
+    tippy(".remove-recognition-btn", {
+      content: "Remove",
+      theme: "light",
+      placement: "top",
+    });
+  });
+
+  // Remove recognition form when clicking remove button
+  $(document).on("click", ".remove-recognition-btn", function () {
+    var formToRemove = $(this).closest(".recognition-form");
+    var parentRow = formToRemove.closest(".recognition-row");
+
+    formToRemove.remove(); // Remove the specific form
+
+    // If the row is empty after removal, remove the row
+    if (parentRow.children(".recognition-form").length === 0) {
+      parentRow.remove();
+    }
+
+    // Hide the recognition container if no forms exist
+    if ($(".recognition-form").length === 0) {
+      $(".recognition-container").hide();
+    }
+  });
+});
+
 // MEMBER SELECTION
 document.addEventListener("DOMContentLoaded", function () {
   const checkboxes = document.querySelectorAll(".member-checkbox");
@@ -139,11 +229,17 @@ document.addEventListener("DOMContentLoaded", function () {
       countCheckedMembers.placeholder =
         "Select participants below to start counting...";
     }
+
+    // If all checkboxes are selected, check "Select All", otherwise uncheck it
+    selectAllCheckbox.checked = checkedCount === checkboxes.length;
   }
 
   // Select All Functionality
   selectAllCheckbox.addEventListener("change", function () {
-    checkboxes.forEach((checkbox) => (checkbox.checked = this.checked));
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = this.checked;
+      $(checkbox).trigger("change"); // Trigger change event to show/hide button
+    });
     updateCount(); // Update count after selecting all
   });
 
@@ -151,6 +247,13 @@ document.addEventListener("DOMContentLoaded", function () {
   checkboxes.forEach((checkbox) =>
     checkbox.addEventListener("change", updateCount)
   );
+});
+
+// TIPPY
+tippy("#addRecognition", {
+  content: "Add Recognition",
+  theme: "light",
+  placement: "top",
 });
 
 // SUBMIT BUTTON
@@ -164,6 +267,36 @@ $(document).ready(function () {
 
     selectedFiles.forEach((file) => {
       formData.append("activity_gallery[]", file);
+    });
+
+    $(".member-checkbox:checked").each(function () {
+      let studentNumber = $(this).val();
+      let memberName = $(this).siblings("label").text().trim(); // Get the name of the selected member
+
+      formData.append("student_numbers[]", studentNumber);
+      console.log(`Student Number: ${studentNumber}, Name: ${memberName}`);
+
+      // Find recognition inputs with matching label name
+      $(".recognition-form").each(function () {
+        let recognitionLabel = $(this).find("label").text().trim(); // Get recognition label
+
+        if (recognitionLabel === memberName) {
+          let recognitionValue = $(this)
+            .find("input[name='recognition[]']")
+            .val()
+            .trim();
+
+          if (recognitionValue !== "") {
+            formData.append(
+              `recognition[${studentNumber}][]`,
+              recognitionValue
+            );
+            console.log(
+              `Recognition for ${studentNumber}: ${recognitionValue}`
+            );
+          }
+        }
+      });
     });
 
     $.ajax({

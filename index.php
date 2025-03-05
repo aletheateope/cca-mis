@@ -23,9 +23,9 @@
     <div class="container">
         <div class="row">
             <div class="col-auto">
-                <img class="bg" src="assets/img/CCA/background.png" alt="">
+                <img class="bg" src="assets/img/cca/background.png" alt="">
                 <div class="logo-container">
-                    <img class="logo-cca" src="assets/img/CCA/cropped.png" alt="">
+                    <img class="logo-cca" src="assets/img/cca/cca-mark.png" alt="">
                     <h3>PLMUN</h3>
                     <p>Center for Culture and the Arts</p>
                 </div>

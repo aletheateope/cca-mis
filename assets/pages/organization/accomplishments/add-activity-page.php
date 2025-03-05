@@ -2,7 +2,9 @@
 //require_once '../../sql/session_check.php';
 //check_role('Organization');
 ?>
+<?php session_start();?>
 
+<?php include_once 'sql/get-report-id.php'?>
 <?php require_once 'sql/active-members.php'?>
 
 <!DOCTYPE html>
@@ -72,11 +74,15 @@
                                     <option value=""></option>
                                 </select>
                                 <label for="inputTitle" class="form-label">Activity Title</label>
-                                <input type="text" name="title" class="form-control" id="inputTitle">
+                                <input type="text" name="title" class="form-control" id="inputTitle" required>
+
                                 <label for="inputDescription" class="form-label">Description</label>
-                                <textarea class="form-control" name="description" id="inputDescription"></textarea>
+                                <textarea class="form-control" name="description" id="inputDescription"
+                                    required></textarea>
+
                                 <label for="inputLocation" class="form-label">Location</label>
-                                <input type="text" name="location" class="form-control" id="inputLocation">
+                                <input type="text" name="location" class="form-control" id="inputLocation" required>
+
                                 <div class="row row-gap">
                                     <div class="col col-gap">
                                         <label for="inputStartDate" class="form-label">Start Date</label>
@@ -94,11 +100,12 @@
                                 <h3>Attendance</h3>
                                 <label for="inputTargetMembers" class="form-label">Target Number of Members</label>
                                 <input type="number" name="target_participants" class="form-control"
-                                    id="inputTargetMembers">
+                                    id="inputTargetMembers" required>
 
                                 <label for="inputMembersAttended" class="form-label">Members Attended</label>
-                                <input type="number" name="participants" class="form-control" id="inputMembersAttended"
-                                    placeholder="Select participants below to start counting..." readonly>
+                                <input type="number" name="actual_participants" class="form-control"
+                                    id="inputMembersAttended"
+                                    placeholder="Select participants below to start counting..." readonly required>
 
                                 <h4>Participants</h4>
                                 <div class="row">
@@ -128,20 +135,31 @@
                                                     <?php while ($row = mysqli_fetch_assoc($result)) {?>
                                                     <div class="col-4 member">
                                                         <div class="form-check">
-                                                            <input class="form-check-input member-checkbox"
-                                                                type="checkbox" value=""
+                                                            <input type="checkbox"
+                                                                class="form-check-input member-checkbox"
+                                                                name="participants[]"
+                                                                value="<?php echo $row['student_number']; ?>"
                                                                 id="student_number_<?php echo $row['student_number']?>">
                                                             <label class="form-check-label"
                                                                 for="student_number_<?php echo $row['student_number']?>">
                                                                 <?php echo $row ['first_name']. ' ' . $row['last_name'];?>
                                                             </label>
                                                         </div>
+                                                        <div class="add-recognition" id="addRecognition"><i
+                                                                class="bi bi-plus"></i></div>
                                                     </div>
                                                     <?php }?>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row recognition-container">
+                            <div class="col content">
+                                <h3>Recognition</h3>
+                                <div class="row row-gap recognition-row">
                                 </div>
                             </div>
                         </div>
@@ -174,24 +192,27 @@
                                     </div>
                                 </div>
                                 <label for="inputBudgetUtilized" class="form-label">Budget Utilized</label>
-                                <input type="text" name="budget_utilized" class="form-control" id="inputBudgetUtilized">
+                                <input type="text" name="budget_utilized" class="form-control" id="inputBudgetUtilized"
+                                    placeholder="0" required>
                                 <h4>Remarks</h4>
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-check form-check-inline">
                                             <input type="radio" name="remark" class="form-check-input"
-                                                id="radioAccomplished1" checked>
+                                                id="radioAccomplished1" value="1" checked>
                                             <label class="form-check-label" for="radioAccomplished1">
                                                 Accomplished
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input type="radio" name="remark" class="form-check-input"
-                                                id="radioAccomplished2">
+                                                id="radioAccomplished2" value="2">
                                             <label class="form-check-label" for="radioAccomplished2">
                                                 Accomplished but did not meet the target number of members.
                                             </label>
                                         </div>
+                                        <input type="hidden" name="report_id"
+                                            value="<?= $report_id ?>">
                                     </div>
                                 </div>
                             </div>

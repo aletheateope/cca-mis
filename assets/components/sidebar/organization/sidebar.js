@@ -46,7 +46,7 @@ function closeSubMenu() {
 function tooltip() {
   tippy("#membersBtn", {
     content: "Members",
-    theme: "light",
+    theme: "light-no-border",
     arrow: false,
     offset: [0, 23],
     placement: "right",
@@ -58,7 +58,7 @@ function tooltip() {
 
   tippy("#calendarBtn", {
     content: "Calendar",
-    theme: "light",
+    theme: "light-no-border",
     arrow: false,
     offset: [0, 12],
     placement: "right",
@@ -71,7 +71,7 @@ function tooltip() {
   tippy("#calendarBtn", {
     content:
       '<div class="tippy-no-bullets"><li><a href="#">View Schedules</a></li><li><a href="#">Notification</a></div>',
-    theme: "light",
+    theme: "light-no-border",
     allowHTML: true,
     arrow: false,
     offset: [0, 12],
@@ -86,7 +86,7 @@ function tooltip() {
 
   tippy("#financeBtn", {
     content: "Finance",
-    theme: "light",
+    theme: "light-no-border",
     arrow: false,
     offset: [0, 12],
     placement: "right",
@@ -99,7 +99,7 @@ function tooltip() {
   tippy("#financeBtn", {
     content:
       '<div class="tippy-no-bullets"><li><a href="#">View Records</a></li><li><a href="#">My Records</a></div>',
-    theme: "light",
+    theme: "light-no-border",
     allowHTML: true,
     arrow: false,
     offset: [0, 12],
@@ -114,7 +114,7 @@ function tooltip() {
 
   tippy("#accomplishmentsBtn", {
     content: "Accomplishments",
-    theme: "light",
+    theme: "light-no-border",
     arrow: false,
     offset: [0, 12],
     placement: "right",
@@ -127,7 +127,7 @@ function tooltip() {
   tippy("#accomplishmentsBtn", {
     content:
       '<div class="tippy-no-bullets"><li><a href="#">View Accomplishments</a></li><li><a href="#">My Accomplishments</a></div>',
-    theme: "light",
+    theme: "light-no-border",
     allowHTML: true,
     arrow: false,
     offset: [0, 12],

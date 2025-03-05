@@ -46,7 +46,7 @@ function closeSubMenu() {
 function tooltip() {
   tippy("#orgMembersBtn", {
     content: "Org. Members",
-    theme: "light",
+    theme: "light-no-border",
     arrow: false,
     offset: [0, 12],
     placement: "right",
@@ -60,7 +60,7 @@ function tooltip() {
   tippy("#orgMembersBtn", {
     content:
       '<div class="tippy-no-bullets"><li><a href="#">Blck Mvmnt</a></li><li><a href="#">Chorale</a><li><a href="#">Dulangsining</a></li><li><a href="#">Euphoria</a></li><li><a href="#">FDC</a></li><li><a href="#">Kultura Teknika</a></li><li><a href="#">Search</a></li></div>',
-    theme: "light",
+    theme: "light-no-border",
     allowHTML: true,
     arrow: false,
     offset: [0, 12],
@@ -75,7 +75,7 @@ function tooltip() {
 
   tippy("#calendarBtn", {
     content: "Calendar",
-    theme: "light",
+    theme: "light-no-border",
     arrow: false,
     offset: [0, 23],
     placement: "right",
@@ -88,7 +88,7 @@ function tooltip() {
 
   tippy("#financeBtn", {
     content: "Finance",
-    theme: "light",
+    theme: "light-no-border",
     arrow: false,
     offset: [0, 23],
     placement: "right",
@@ -101,7 +101,7 @@ function tooltip() {
 
   tippy("#accomplishmentsBtn", {
     content: "Accomplishments",
-    theme: "light",
+    theme: "light-no-border",
     arrow: false,
     offset: [0, 23],
     placement: "right",
@@ -114,7 +114,7 @@ function tooltip() {
 
   tippy("#accountsBtn", {
     content: "Accounts",
-    theme: "light",
+    theme: "light-no-border",
     arrow: false,
     offset: [0, 23],
     placement: "right",
@@ -127,7 +127,7 @@ function tooltip() {
 
   tippy("#logoutBtn", {
     content: "Log Out",
-    theme: "light",
+    theme: "light-no-border",
     arrow: false,
     offset: [0, 12],
     placement: "right",

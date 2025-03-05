@@ -25,3 +25,7 @@
 <!-- CLEAVE.JS -->
 <script src="/cca/node_modules/cleave.js/dist/cleave.min.js"></script>
 <script src="/cca/node_modules/cleave.js/dist/addons/cleave-phone.ph.js"></script>
+
+<!-- JSPDF -->
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>

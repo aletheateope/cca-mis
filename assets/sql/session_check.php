@@ -1,7 +1,6 @@
 <?php
 function check_role($required_role)
 {
-
     session_start();
     
     // Check if the user is logged in
@@ -16,5 +15,4 @@ function check_role($required_role)
         header("Location: /cca/assets/pages/access-denied.php");
         exit();
     }
-
 }

@@ -42,14 +42,10 @@
 }
 
 .splide__slide .image-overlay button {
-  background: none;
-  border: none;
   color: white;
 }
 
 .splide__slide .image-overlay button:hover {
-  background: none;
-  border: none;
   color: var(--red);
 }
 
@@ -108,6 +104,24 @@
   padding-right: 0.75rem;
 }
 
+.member {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.member .form-check {
+  margin-right: auto;
+}
+
+.add-recognition {
+  display: none;
+}
+
+.add-recognition:hover {
+  cursor: pointer;
+}
+
 /* Right Column */
 .page-body
   > .row:nth-of-type(3)
@@ -148,4 +162,21 @@
 .page-body > .row:last-of-type .col {
   display: flex;
   justify-content: flex-end;
+}
+
+.recognition-container {
+  display: none;
+}
+
+.recognition-container .recognition-form .row:first-of-type > .col {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.recognition-form .remove-recognition-btn {
+  font-size: 1.2rem;
+  color: var(--red);
+  cursor: pointer;
 }
