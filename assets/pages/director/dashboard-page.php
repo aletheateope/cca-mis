@@ -2,7 +2,6 @@
 //require_once '../../sql/session_check.php';
 //check_role('Director');
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,14 +21,14 @@
                 <?php include '../../components/sidebar/director/sidebar.php' ?>
             </div>
             <div class="col main-content">
-                <div class="row">
-                    <div class="col page-header">
+                <div class="row page-header">
+                    <div class="col">
                         <h1>Dashboard</h1>
                     </div>
                 </div>
                 <div class="page-body">
-                    <div class="row">
-                        <div class="col content">
+                    <div class="row content">
+                        <div class="col">
                         </div>
                     </div>
                 </div>

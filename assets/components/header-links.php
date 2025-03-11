@@ -8,9 +8,6 @@
 <!-- ANIMATE.CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-<!-- FILEPOND -->
-<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
-
 <!-- OWN STYLES (STYLES) -->
 <link rel="stylesheet" href="/cca/assets/css/styles.css" />
 

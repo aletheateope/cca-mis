@@ -1,3 +1,5 @@
+<?php $currentPage = basename($_SERVER['PHP_SELF']);?>
+
 <!-- OWN STYLES (SIDEBAR) -->
 <link rel="stylesheet" href="/cca/assets/components/sidebar/sidebar.css">
 
@@ -13,7 +15,8 @@
             <i class="profile-icon"></i>
             <a href=""><span>Director</span></a>
         </li>
-        <li class="active">
+        <li
+            class="<?= ($currentPage == 'dashboard-page.php') ? 'active' : '' ?>">
             <a href="/cca/assets/pages/director/dashboard-page.php">
                 <i class="icon bi bi-grid-1x2-fill"></i>
                 <span>Dashboard</span>
@@ -37,8 +40,9 @@
                 </div>
             </ul>
         </li>
-        <li>
-            <a href="#">
+        <li
+            class="<?= ($currentPage == 'calendar-page.php') ? 'active' : '' ?>">
+            <a href="/cca/assets//pages/director/calendar/calendar-page.php">
                 <i class="icon bi bi-calendar-event-fill" id="calendarBtn"></i>
                 <span>Calendar</span>
             </a>

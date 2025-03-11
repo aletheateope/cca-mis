@@ -21,8 +21,8 @@
                 <?php include '../../../components/sidebar/organization/sidebar.php' ?>
             </div>
             <div class="col main-content">
-                <div class="row">
-                    <div class="col page-header">
+                <div class="row page-header">
+                    <div class="col">
                         <h1>Finance</h1>
                         <button type="button" class="btn btn-primary add-member-btn" data-bs-toggle="modal"
                             data-bs-target="#addMemberModal">
@@ -30,9 +30,12 @@
                         </button>
                     </div>
                 </div>
-                <div class="page-body">
-                    <div class="row">
-                        <div class="col content">
+                <div class="row page-body">
+                    <div class="col">
+                        <div class="row content">
+                            <div class="col">
+
+                            </div>
                         </div>
                     </div>
                 </div>

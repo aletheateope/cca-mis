@@ -20,6 +20,8 @@
   --blue: #4464cf;
   --red: #e0201a;
 
+  --danger: #ba1515;
+
   /* FONT SIZES */
   --very-small: 0.75rem; /* 12px */
   --small: 0.875rem; /* 14px */
@@ -120,4 +122,9 @@ h6 {
   font-weight: 400;
   line-height: 1.2;
   color: var(--primary-text);
+}
+
+/* FULLCALENDAR */
+.fc .fc-toolbar-title {
+  font-size: var(--extra-large);
 }

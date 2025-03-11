@@ -1,0 +1,15 @@
+<script>
+    console.log(
+        "User ID:", <?php echo json_encode($_SESSION['user_id']); ?>
+    )
+</script>
+
+
+CSS
+<?php require_once BASE_PATH . '/assets/components/header-links.php' ?>
+
+SIDEBAR
+<?php include BASE_PATH . '/assets/components/sidebar/director/sidebar.php' ?>
+
+SCRIPTS
+<?php require_once BASE_PATH . '/assets/components/footer-links.php' ?>

@@ -3,6 +3,8 @@
 //check_role('Organization');
 ?>
 
+<?php include_once '../../../sql/temporary_session.php'?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,6 +14,9 @@
     <title>Members</title>
 
     <?php require_once '../../../components/header-links.php' ?>
+
+    <!-- FILEPOND -->
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="members-page.css">
 </head>
@@ -23,8 +28,8 @@
                 <?php include '../../../components/sidebar/organization/sidebar.php' ?>
             </div>
             <div class="col main-content">
-                <div class="row">
-                    <div class="col page-header">
+                <div class="row page-header">
+                    <div class="col">
                         <h1>Members</h1>
                         <button type="button" class="btn btn-primary add-member-btn" data-bs-toggle="modal"
                             data-bs-target="#addMemberModal">
@@ -32,29 +37,31 @@
                         </button>
                     </div>
                 </div>
-                <div class="page-body">
-                    <div class="row">
-                        <div class="col content">
-                            <table class="table members-table">
-                                <thead>
-                                    <tr>
-                                        <th>Box</th>
-                                        <th>Name</th>
-                                        <th>Status</th>
-                                        <th>State</th>
-                                        <th>Date Joined</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>test</td>
-                                        <td>test</td>
-                                        <td>test</td>
-                                        <td>test</td>
-                                        <td>test</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                <div class="row page-body">
+                    <div class="col">
+                        <div class="row content">
+                            <div class="col">
+                                <table class="table members-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Box</th>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                            <th>State</th>
+                                            <th>Date Joined</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>test</td>
+                                            <td>test</td>
+                                            <td>test</td>
+                                            <td>test</td>
+                                            <td>test</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -256,7 +263,19 @@
 
     <?php require_once '../../../components/footer-links.php'?>
 
+    <!-- FILEPOND -->
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js">
+    </script>
+    <script src="https://unpkg.com/filepond-plugin-file-rename/dist/filepond-plugin-file-rename.js"></script>
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+
     <script src="members-page.js"></script>
+
+    <script>
+        console.log(
+            "User ID:", <?php echo json_encode($_SESSION['user_id']); ?>
+        );
+    </script>
 </body>
 
 </html>

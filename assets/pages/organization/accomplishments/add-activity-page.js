@@ -156,7 +156,7 @@ $(document).ready(function () {
 
     // Create a new recognition form
     var newForm = `
-            <div class="col col-gap recognition-form">
+            <div class="col recognition-form">
                 <div class="row">
                     <div class="col">
                         <label class="form-label">${labelName}</label>
@@ -168,7 +168,7 @@ $(document).ready(function () {
         `;
 
     // Find the last row-gap inside the recognition-container
-    var lastRow = $(".recognition-container .content .recognition-row").last();
+    var lastRow = $(".recognition-container .recognition-row").last();
 
     // If no row exists or the last row has 2 forms, create a new row inside .content
     if (
@@ -176,7 +176,7 @@ $(document).ready(function () {
       lastRow.children(".recognition-form").length >= 2
     ) {
       lastRow = $('<div class="row row-gap recognition-row"></div>');
-      $(".recognition-container .content").append(lastRow);
+      $(".recognition-container > .col").append(lastRow);
     }
 
     // Append the new form to the last row-gap
@@ -185,6 +185,14 @@ $(document).ready(function () {
     // Show the recognition container
     $(".recognition-container").show();
 
+    // Destroy previous tooltips to prevent duplication
+    $(".remove-recognition-btn").each(function () {
+      if (this._tippy) {
+        this._tippy.destroy();
+      }
+    });
+
+    // Reinitialize tippy
     tippy(".remove-recognition-btn", {
       content: "Remove",
       theme: "light",

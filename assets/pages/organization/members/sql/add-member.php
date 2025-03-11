@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $documentDirectory = '../../../../../uploads/student-document/';
 $profileImgDirectory = '../../../../../uploads/profile-img/';
 

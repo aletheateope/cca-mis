@@ -1,0 +1,9 @@
+.calendar a {
+  color: var(--primary-text);
+  text-decoration: none;
+}
+
+.request-event-modal .modal-body .row .col {
+  display: grid;
+  gap: 1rem;
+}

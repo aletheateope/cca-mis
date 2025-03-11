@@ -1,0 +1,35 @@
+.calendar a {
+  color: var(--primary-text);
+  text-decoration: none;
+}
+
+.table i {
+  font-size: 20px;
+}
+
+.icon-approve {
+  color: var(--active-background);
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.icon-reject {
+  color: var(--danger);
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.last-column {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* MODAL */
+.add-event-modal .modal-body .row .col {
+  display: grid;
+  gap: 1rem;
+}

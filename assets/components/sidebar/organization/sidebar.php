@@ -42,7 +42,10 @@
             </button>
             <ul class="sub-menu">
                 <div>
-                    <li><a href="#">View Schedules</a></li>
+                    <li
+                        class="<?= ($currentPage == 'calendar-page.php') ? 'active' : '' ?>">
+                        <a href="/cca/assets/pages/organization/calendar/calendar-page.php">View Schedules</a>
+                    </li>
                     <li><a href="#">Notification</a></li>
                 </div>
             </ul>

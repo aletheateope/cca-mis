@@ -27,8 +27,8 @@
                 <?php include '../../../components/sidebar/organization/sidebar.php' ?>
             </div>
             <div class="col main-content">
-                <div class="row">
-                    <div class="col page-header">
+                <div class="row page-header">
+                    <div class="col">
                         <h1>My Accomplishments</h1>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addAccomplishmentModal">
@@ -36,40 +36,42 @@
                         </button>
                     </div>
                 </div>
-                <div class="page-body">
-                    <?php foreach ($accomplishments as $year => $months) { ?>
-                    <div class="row">
-                        <div class="col content">
-                            <div class="row">
-                                <div class="col-12 content-header">
-                                    <h2><?php echo $year?>
-                                    </h2>
-                                    <button type="button" id="addActivityButton" data-bs-toggle="modal"
-                                        data-bs-target="#addActivityModal">
-                                        <i class="bi bi-plus-lg"></i>
-                                    </button>
+                <div class="row page-body">
+                    <div class="col">
+                        <?php foreach ($accomplishments as $year => $months) { ?>
+                        <div class="row content">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12 content-header">
+                                        <h2><?php echo $year?>
+                                        </h2>
+                                        <button type="button" id="addActivityButton" data-bs-toggle="modal"
+                                            data-bs-target="#addActivityModal">
+                                            <i class="bi bi-plus-lg"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 content-list">
-                                    <ul class="list-group">
-                                        <?php foreach ($months as $month) { ?>
-                                        <li class="list-group-item">
-                                            <h4><?php echo $month['name']?>
-                                            </h4>
-                                            <button type="button" class="no-style-btn generatePDF"
-                                                data-month="<?php echo $month['id']?>"
-                                                data-year="<?php echo $year?>">
-                                                <i class="bi bi-file-earmark-arrow-down"></i>
-                                            </button>
-                                        </li>
-                                        <?php } ?>
-                                    </ul>
+                                <div class="row">
+                                    <div class="col-12 content-list">
+                                        <ul class="list-group">
+                                            <?php foreach ($months as $month) { ?>
+                                            <li class="list-group-item">
+                                                <h4><?php echo $month['name']?>
+                                                </h4>
+                                                <button type="button" class="no-style-btn generatePDF"
+                                                    data-month="<?php echo $month['id']?>"
+                                                    data-year="<?php echo $year?>">
+                                                    <i class="bi bi-file-earmark-arrow-down"></i>
+                                                </button>
+                                            </li>
+                                            <?php } ?>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <?php } ?>
                     </div>
-                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -157,10 +159,14 @@
 
     <?php require_once '../../../components/footer-links.php' ?>
 
+
+    <!-- JSPDF -->
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+
     <script src="accomplishments-page.js"></script>
 
     <script>
-        // Output user_id to the console
         console.log(
             "User ID:", <?php echo json_encode($_SESSION['user_id']); ?>
         );
