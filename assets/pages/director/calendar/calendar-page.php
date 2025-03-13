@@ -41,52 +41,6 @@
                             <div class="calendar" id='calendar'></div>
                         </div>
                     </div>
-                    <div class="row content">
-                        <div class="col">
-                            <h3>Event Approvals</h3>
-
-                            <div class="row">
-                                <div class="col">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Organization Name</th>
-                                                <th scope="col">Event Title</th>
-                                                <th scope="col">Location</th>
-                                                <th scope="col">Start Date</th>
-                                                <th scope="col">End Date</th>
-                                                <th scope="col">
-                                                    <div class="last-column">Action</div>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php while ($row = mysqli_fetch_assoc($result)) {?>
-                                            <tr>
-                                                <td><?php echo $row['organization']?>
-                                                </td>
-                                                <td><?php echo $row['title'];?>
-                                                </td>
-                                                <td><?php echo $row['location'];?>
-                                                </td>
-                                                <td><?php echo $row['start_date'];?>
-                                                </td>
-                                                <td><?php echo $row['end_date'];?>
-                                                </td>
-                                                <td>
-                                                    <div class="last-column">
-                                                        <i class="bi bi-check-square-fill icon-approve"></i>
-                                                        <i class="bi bi-x-square-fill icon-reject"></i>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <?php }?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
