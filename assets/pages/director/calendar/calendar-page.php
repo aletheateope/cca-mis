@@ -41,8 +41,8 @@
                             <div class="calendar" id='calendar'></div>
                         </div>
                     </div>
-                    <div class="row event-approval">
-                    </div>
+                    <!-- <div class="row event-approval">
+                    </div> -->
                 </div>
             </div>
             <div class="col-auto event-approval-panel">
@@ -52,13 +52,15 @@
                     </div>
                 </div>
 
-
+                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                <?php if (is_null($row['start_time']) && is_null($row['end_time'])) { ?>
                 <div class="row event-request-card">
                     <div class="col">
                         <div class="row title">
                             <div class="col">
                                 <img src="/cca/assets/img/blank-profile.png" alt="" class="image">
-                                <h4>Organization Name</h4>
+                                <h4><?php echo $row['organization']?>
+                                </h4>
                             </div>
                             <div class="col-auto">
                                 <h6>All Day</h6>
@@ -66,18 +68,21 @@
                         </div>
                         <div class="row body">
                             <div class="col">
-                                <h4>Panagbenga Festival</h4>
-                                <p>A vibrant flower festival with grand floral floats, street performances, and cultural
-                                    exhibitions.</p>
+                                <h4><?php echo $row['title']?>
+                                </h4>
+                                <p><?php echo $row['description']?>
+                                </p>
 
                                 <div class="row date">
                                     <div class="col">
-                                        <h4>End Date</h4>
-                                        <p>03/20/2025 8:00am</p>
+                                        <h4>Start Date</h4>
+                                        <p><?php echo date("F j, Y", strtotime($row['start_date']))?>
+                                        </p>
                                     </div>
                                     <div class="col">
                                         <h4>End Date</h4>
-                                        <p>03/20/2025 8:00pm</p>
+                                        <p><?php echo date("F j, Y", strtotime($row['end_date']))?>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -92,8 +97,77 @@
                         </div>
                     </div>
                 </div>
+                <?php } else { ?>
+                <div class="row event-request-card">
+                    <div class="col">
+                        <div class="row title">
+                            <div class="col">
+                                <img src="/cca/assets/img/blank-profile.png" alt="" class="image">
+                                <h4><?php echo $row['organization']?>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="row body">
+                            <div class="col">
+                                <h4><?php echo $row['title']?>
+                                </h4>
+                                <p><?php echo $row['description']?>
+                                </p>
+
+                                <div class="row date">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h4>Start Date</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p> <?php echo date("F j, Y", strtotime($row['start_date']))?>
+                                                </p>
+                                            </div>
+                                            <div class="col">
+                                                <p><?php echo date("g:i A", strtotime($row['start_time']))?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row date">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h4>End Date</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <?php echo date("F j, Y", strtotime($row['end_date']));?>
+                                            </div>
+                                            <div class="col">
+                                                <p><?php echo date("g:i A", strtotime($row['end_time']))?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row button-row">
+                            <div class="col">
+                                <button type="button" class="approve-btn no-style-btn">Approve</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="reject-btn no-style-btn">Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php  }?>
+                <?php } ?>
             </div>
         </div>
+    </div>
     </div>
 
     <form id="addEventForm" enctype="multipart/form-data">

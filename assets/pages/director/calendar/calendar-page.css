@@ -1,9 +1,13 @@
+.page-body {
+  margin-bottom: 0;
+}
+
 .calendar a {
   color: var(--primary-text);
   text-decoration: none;
 }
 
-/* EVENT APPROVAL PANEL */
+/* PANEL: EVENT APPROVAL */
 .event-approval-panel {
   width: 25rem;
   height: 100vh;
@@ -19,7 +23,7 @@
   }
 }
 
-/* EVENT REQUEST CARD */
+/* CARD: EVENT REQUEST */
 .event-request-card {
   background-color: var(--secondary-background);
   padding: 1rem;
@@ -61,6 +65,10 @@
       gap: 12px;
 
       .date {
+        gap: 1rem;
+        .row {
+          gap: 1rem;
+        }
         .col {
           gap: 0;
         }
