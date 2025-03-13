@@ -11,6 +11,40 @@ body {
   color: var(--primary-text);
 }
 
+h1 {
+  font-size: var(--extra-extra-large);
+}
+
+h2 {
+  font-size: var(--extra-large);
+}
+
+h3 {
+  font-size: var(--large);
+}
+
+h4 {
+  font-size: var(--regular);
+}
+
+h5 {
+  font-size: var(--small);
+}
+
+h6 {
+  font-size: var(--very-small);
+}
+
+p {
+  font-size: var(--regular);
+  margin: 0;
+}
+
+label {
+  margin: 0 !important;
+}
+
+/* BOOTSTRAP */
 .col-auto,
 .col {
   padding: 0;
@@ -42,6 +76,7 @@ body {
   padding: 0;
 }
 
+/* CUSTOM */
 .main-content {
   display: flex;
   flex-direction: column;
@@ -90,39 +125,6 @@ body {
 .back-button {
   text-decoration: none;
   color: var(--primary-text);
-}
-
-h1 {
-  font-size: var(--extra-extra-large);
-}
-
-h2 {
-  font-size: var(--extra-large);
-}
-
-h3 {
-  font-size: var(--large);
-}
-
-h4 {
-  font-size: var(--regular);
-}
-
-h5 {
-  font-size: var(--small);
-}
-
-h6 {
-  font-size: var(--very-small);
-}
-
-p {
-  font-size: var(--regular);
-  margin: 0;
-}
-
-label {
-  margin: 0 !important;
 }
 
 .no-border {

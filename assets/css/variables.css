@@ -20,7 +20,10 @@
   --blue: #4464cf;
   --red: #e0201a;
 
+  /* --success:; */
   --danger: #ba1515;
+  /* --warning:; */
+  /* --info:; */
 
   /* FONT SIZES */
   --very-small: 0.75rem; /* 12px */

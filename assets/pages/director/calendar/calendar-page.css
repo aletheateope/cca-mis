@@ -3,33 +3,123 @@
   text-decoration: none;
 }
 
-.table i {
-  font-size: 20px;
-}
-
-.icon-approve {
-  color: var(--active-background);
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.icon-reject {
-  color: var(--danger);
-
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.last-column {
+/* EVENT APPROVAL PANEL */
+.event-approval-panel {
+  width: 25rem;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: var(--primary-background);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  padding: 1rem;
   gap: 1rem;
+
+  h3 {
+    font-weight: var(--medium);
+  }
+}
+
+/* EVENT REQUEST CARD */
+.event-request-card {
+  background-color: var(--secondary-background);
+  padding: 1rem;
+
+  > .col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .title {
+    border-bottom: 1px solid var(--primary-text);
+    padding-bottom: 0.625rem;
+
+    .col,
+    .col-auto {
+      display: flex;
+      flex-direction: row;
+      gap: 0.625rem;
+      align-items: center;
+
+      .image {
+        width: 25px;
+        height: 25px;
+        background-color: var(--);
+        border-radius: 50%;
+      }
+
+      h4 {
+        font-weight: var(--medium);
+      }
+    }
+  }
+
+  .body {
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .date {
+        .col {
+          gap: 0;
+        }
+      }
+    }
+  }
+
+  .button-row {
+    gap: 1rem;
+
+    .col {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+      button {
+        width: 100%;
+        padding-top: 2px;
+        padding-bottom: 2px;
+      }
+      .approve-btn {
+        background-color: var(--active-background);
+        color: var(--active-text);
+      }
+      .reject-btn {
+        background-color: var(--red);
+        color: var(--active-text);
+      }
+    }
+  }
 }
 
 /* MODAL */
 .add-event-modal .modal-body .row .col {
   display: grid;
   gap: 1rem;
+}
+
+/* MEDIA QUERIES */
+/* Mobile */
+@media (max-width: 576px) {
+}
+
+/* Tablet */
+@media (min-width: 576px) {
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+}
+
+/* Large Desktop */
+@media (min-width: 992px) {
+}
+
+/* Extra Large Desktop */
+@media (min-width: 1200px) {
+}
+
+/* Extra Extra Large Desktop */
+@media (min-width: 1400px) {
 }

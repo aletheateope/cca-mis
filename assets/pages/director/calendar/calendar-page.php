@@ -41,6 +41,56 @@
                             <div class="calendar" id='calendar'></div>
                         </div>
                     </div>
+                    <div class="row event-approval">
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto event-approval-panel">
+                <div class="row title">
+                    <div class="col">
+                        <h3>Event Approvals</h3>
+                    </div>
+                </div>
+
+
+                <div class="row event-request-card">
+                    <div class="col">
+                        <div class="row title">
+                            <div class="col">
+                                <img src="/cca/assets/img/blank-profile.png" alt="" class="image">
+                                <h4>Organization Name</h4>
+                            </div>
+                            <div class="col-auto">
+                                <h6>All Day</h6>
+                            </div>
+                        </div>
+                        <div class="row body">
+                            <div class="col">
+                                <h4>Panagbenga Festival</h4>
+                                <p>A vibrant flower festival with grand floral floats, street performances, and cultural
+                                    exhibitions.</p>
+
+                                <div class="row date">
+                                    <div class="col">
+                                        <h4>End Date</h4>
+                                        <p>03/20/2025 8:00am</p>
+                                    </div>
+                                    <div class="col">
+                                        <h4>End Date</h4>
+                                        <p>03/20/2025 8:00pm</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row button-row">
+                            <div class="col">
+                                <button type="button" class="approve-btn no-style-btn">Approve</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="reject-btn no-style-btn">Reject</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
