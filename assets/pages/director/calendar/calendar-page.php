@@ -89,10 +89,12 @@
                         </div>
                         <div class="row button-row">
                             <div class="col">
-                                <button type="button" class="approve-btn no-style-btn">Approve</button>
+                                <button type="button" class="approve-btn no-style-btn"
+                                    data-id="<?php echo $row['event_request_id']?>">Approve</button>
                             </div>
                             <div class="col">
-                                <button type="button" class="reject-btn no-style-btn">Reject</button>
+                                <button type="button" class="reject-btn no-style-btn"
+                                    data-id="<?php echo $row['event_request_id']?>">Reject</button>
                             </div>
                         </div>
                     </div>
@@ -155,10 +157,12 @@
                         </div>
                         <div class="row button-row">
                             <div class="col">
-                                <button type="button" class="approve-btn no-style-btn">Approve</button>
+                                <button type="button" class="approve-btn no-style-btn"
+                                    data-id="<?php echo $row['event_request_id']?>">Approve</button>
                             </div>
                             <div class="col">
-                                <button type="button" class="reject-btn no-style-btn">Reject</button>
+                                <button type="button" class="reject-btn no-style-btn"
+                                    data-id="<?php echo $row['event_request_id']?>">Reject</button>
                             </div>
                         </div>
                     </div>

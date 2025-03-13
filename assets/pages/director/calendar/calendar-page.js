@@ -21,6 +21,18 @@ tippy(".icon-reject", {
   placement: "top",
 });
 
+document.querySelectorAll(".approve-btn").forEach((button) => {
+  button.addEventListener("click", function () {
+    let eventRequestId = this.getAttribute("data-id");
+  });
+});
+
+document.querySelectorAll(".reject-btn").forEach((button) => {
+  button.addEventListener("click", function () {
+    let eventRequestId = this.getAttribute("data-id");
+  });
+});
+
 // document.addEventListener("DOMContentLoaded", function () {
 //   function adjustEventApprovalPanel() {
 //     const panel = document.querySelector(".event-approval-panel");
