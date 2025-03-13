@@ -8,6 +8,34 @@ document.addEventListener("DOMContentLoaded", function () {
   calendar.render();
 });
 
+// TOGGLE EVENT TIME
+document.addEventListener("DOMContentLoaded", function () {
+  const allDayCheckbox = document.getElementById("allDay");
+  const eventTimeDiv = document.getElementById("eventTime");
+  const startTimeInput = document.getElementById("inputStartTime");
+  const endTimeInput = document.getElementById("inputEndTime");
+
+  function toggleEventTime() {
+    if (allDayCheckbox.checked) {
+      eventTimeDiv.style.display = "none";
+      startTimeInput.value = "";
+      endTimeInput.value = "";
+      startTimeInput.removeAttribute("required");
+      endTimeInput.removeAttribute("required");
+    } else {
+      eventTimeDiv.style.display = "flex";
+      startTimeInput.required = true;
+      endTimeInput.required = true;
+    }
+  }
+
+  // Initial check on page load
+  toggleEventTime();
+
+  // Add event listener
+  allDayCheckbox.addEventListener("change", toggleEventTime);
+});
+
 // SUBMIT REQUEST EVENT
 $(document).ready(function () {
   $("#requestEventForm").on("submit", function (e) {

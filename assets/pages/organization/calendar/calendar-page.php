@@ -59,27 +59,36 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputTitle" class="form-label">Title</label>
-                                <input type="text" name="title" class="form-control" id="inputTitle">
+                                <input type="text" name="title" class="form-control" id="inputTitle" required>
 
                                 <label for="inputDescription" class="form-label">Description</label>
-                                <textarea type="text" name="description" class="form-control"
-                                    id="inputDescription"></textarea>
+                                <textarea type="text" name="description" class="form-control" id="inputDescription"
+                                    required></textarea>
 
                                 <label for="inputLocation" class="form-label">Location</label>
-                                <input type="text" name="location" class="form-control" id="inputLocation">
+                                <input type="text" name="location" class="form-control" id="inputLocation" required>
 
                                 <div class="row row-gap">
                                     <div class="col">
                                         <label for="inputStartDate" class="form-label">Start Date</label>
-                                        <input type="date" name="start_date" class="form-control" id="inputStartDate">
+                                        <input type="date" name="start_date" class="form-control" id="inputStartDate"
+                                            required>
                                     </div>
                                     <div class="col">
                                         <label for="inputEndDate" class="form-label">End Date</label>
-                                        <input type="date" name="end_date" class="form-control" id="inputEndDate">
+                                        <input type="date" name="end_date" class="form-control" id="inputEndDate"
+                                            required>
                                     </div>
                                 </div>
 
-                                <div class="row row-gap">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="allDay">
+                                    <label class="form-check-label" for="allDay">
+                                        All Day
+                                    </label>
+                                </div>
+
+                                <div class="row row-gap" id="eventTime">
                                     <div class="col">
                                         <label for="inputStartTime" class="label-form">Start Time</label>
                                         <input type="time" name="start_time" class="form-control" id="inputStartTime">

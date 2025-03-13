@@ -7,9 +7,9 @@ $sql = "SELECT account_organization.name as organization, title, location, start
         FROM event_request
         INNER JOIN account_organization
             ON account_organization.organization_id = event_request.organization_id
-        INNER JOIN event_status
-            ON event_status.event_id = event_request.event_id
-        WHERE event_status.status = 'Pending'";
+        INNER JOIN event_request_status
+            ON event_request_status.event_request_id = event_request.event_request_id
+        WHERE event_request_status.status = 'Pending'";
 
 $stmt = $conn->prepare($sql);
 $stmt->execute();
