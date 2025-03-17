@@ -34,7 +34,7 @@ h2 {
 }
 
 .content-list li:hover {
-  background-color: var(--secondary-background);
+  background-color: var(--hovered);
 }
 
 .add-activity-modal .modal-body .col {

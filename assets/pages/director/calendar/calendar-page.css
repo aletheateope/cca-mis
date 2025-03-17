@@ -94,7 +94,7 @@
         color: var(--active-text);
       }
       .reject-btn {
-        background-color: var(--red);
+        background-color: var(--danger);
         color: var(--active-text);
       }
     }

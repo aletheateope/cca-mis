@@ -5,25 +5,26 @@
 
   /* BACKGROUND */
   --primary-background: #ffffff;
-  --secondary-background: #f5f5f5; /* when the primary background is hovered */
-  --secondary-hvrd-background: #e7e7e7; /* when the secondary background is hovered */
+  --secondary-background: #f5f5f5;
+
+  /* HOVERED COLOR */
+  --hovered: #f5f5f5; /* when the primary background is hovered */
 
   /* ACTIVE */
   --active-background: #2d642b;
   --active-text: #ffffff;
 
-  /* FONT COLORS */
-  --primary-text: #383838;
-  --link: #153da3;
-
-  /* COLORS */
-  --blue: #4464cf;
-  --red: #e0201a;
-
+  /* SEMANTIC COLORS */
   /* --success:; */
   --danger: #ba1515;
   /* --warning:; */
-  /* --info:; */
+  --info: #153da3;
+
+  /* COLORS */
+  /* --gray */
+
+  /* FONT COLORS */
+  --primary-text: #383838;
 
   /* FONT SIZES */
   --very-small: 0.75rem; /* 12px */
@@ -39,10 +40,8 @@
   --semi-bold: 600;
   --bold: 700;
 
-  /* BORDER COLOR */
+  /* BORDER */
   --border-color: #dfdee1;
-
-  /* BORDER RADIUS */
   --border-radius: 8px;
 }
 

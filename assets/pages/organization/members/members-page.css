@@ -34,7 +34,7 @@
 }
 
 .add-member-modal .profile-container > .removeProfile {
-  color: var(--red);
+  color: var(--danger);
   font-size: 20px;
   position: absolute;
   cursor: pointer;
@@ -43,7 +43,7 @@
 }
 
 .add-member-modal .profile-container .link {
-  color: var(--link);
+  color: var(--info);
   font-size: var(--small);
 }
 

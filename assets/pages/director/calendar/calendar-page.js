@@ -4,26 +4,42 @@ document.addEventListener("DOMContentLoaded", function () {
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: "dayGridMonth",
     height: "86vh",
+    events: "sql/events.php",
+    headerToolbar: {
+      left: "prev,next today",
+      center: "title",
+      right: "dayGridMonth,listYear", // Buttons for Month View & List View
+    },
+    views: {
+      listYear: { buttonText: "Schedules" }, // Custom label for list view
+    },
+    eventContent: function (arg) {
+      let eventTitle = arg.event.title;
+    },
   });
   calendar.render();
-});
-
-// TIPPY
-tippy(".icon-approve", {
-  content: "Approve",
-  theme: "light",
-  placement: "top",
-});
-
-tippy(".icon-reject", {
-  content: "Reject",
-  theme: "light",
-  placement: "top",
 });
 
 document.querySelectorAll(".approve-btn").forEach((button) => {
   button.addEventListener("click", function () {
     let eventRequestId = this.getAttribute("data-id");
+
+    fetch("sql/approve-event.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: eventRequestId }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert(data.message);
+        } else {
+          alert("Error approving event: " + (data.error || "Unknown error"));
+        }
+      })
+      .catch((error) => console.error("Error:", error));
   });
 });
 
