@@ -5,7 +5,7 @@
 //check_role('Director');
 ?>
 
-<?php require_once 'sql/display-pending-events.php'?>
+<?php require_once 'sql/display-event-requests.php'?>
 
 <!DOCTYPE html>
 <html lang="en">
