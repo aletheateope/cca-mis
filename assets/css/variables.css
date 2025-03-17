@@ -25,6 +25,8 @@
 
   /* FONT COLORS */
   --primary-text: #383838;
+  --inactive-text-dark: #787878;
+  --inactive-text-light: #e3e3e3;
 
   /* FONT SIZES */
   --very-small: 0.75rem; /* 12px */
@@ -50,6 +52,25 @@
 [data-bs-theme="light"] {
   --bs-body-color: var(--primary-text);
   --bs-border-color: var(--border-color);
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--primary-text);
 }
 
 .form-control {
@@ -107,23 +128,18 @@
   --bs-btn-border-radius: var(--border-radius);
 }
 
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin-top: 0;
-  margin-bottom: 0;
-  font-weight: 400;
-  line-height: 1.2;
-  color: var(--primary-text);
+.accordion {
+  --bs-accordion-active-color: var(--active-text);
+  --bs-accordion-active-bg: var(--active-background);
+  --bs-accordion-btn-active-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round'><path d='M2 5L8 11L14 5'/></svg>");
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+}
+
+.accordion:has(.accordion-button:not(.collapsed)) {
+  --bs-accordion-border-color: var(--active-background);
 }
 
 /* FULLCALENDAR */

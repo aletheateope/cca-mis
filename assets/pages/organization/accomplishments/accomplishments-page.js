@@ -1,3 +1,13 @@
+document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
+  collapse.addEventListener("show.bs.collapse", function () {
+    document.querySelectorAll(".accordion-collapse").forEach((item) => {
+      if (item !== this) {
+        new bootstrap.Collapse(item, { toggle: false }).hide();
+      }
+    });
+  });
+});
+
 // CLEAVE
 var cleave = new Cleave("#inputYear", {
   date: true,

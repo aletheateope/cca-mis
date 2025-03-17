@@ -5,7 +5,9 @@
 
 <?php include_once '../../../sql/temporary_session.php'?>
 
-<?php require_once 'sql/display-accomplishment.php'?>
+<?php
+// require_once 'sql/display-accomplishment.php'
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +20,10 @@
     <?php require_once '../../../components/header-links.php'?>
 
     <link rel="stylesheet" href="accomplishments-page.css">
+
+    <!-- GOOGLE MATERIAL SYMBOLS -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=book_5" />
 </head>
 
 <body>
@@ -38,39 +44,50 @@
                 </div>
                 <div class="row page-body">
                     <div class="col">
-                        <?php foreach ($accomplishments as $year => $months) { ?>
                         <div class="row content">
                             <div class="col">
-                                <div class="row">
-                                    <div class="col-12 content-header">
-                                        <h2><?php echo $year?>
-                                        </h2>
+                                <div class="row content-header">
+                                    <div class="col-12">
+                                        <h2>Year</h2>
                                         <button type="button" id="addActivityButton" data-bs-toggle="modal"
                                             data-bs-target="#addActivityModal">
                                             <i class="bi bi-plus-lg"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12 content-list">
-                                        <ul class="list-group">
-                                            <?php foreach ($months as $month) { ?>
-                                            <li class="list-group-item">
-                                                <h4><?php echo $month['name']?>
-                                                </h4>
-                                                <button type="button" class="no-style-btn generatePDF"
-                                                    data-month="<?php echo $month['id']?>"
-                                                    data-year="<?php echo $year?>">
-                                                    <i class="bi bi-file-earmark-arrow-down"></i>
-                                                </button>
-                                            </li>
-                                            <?php } ?>
-                                        </ul>
+                                <div class="row content-list">
+                                    <div class="col-12">
+                                        <div class="accordion accordion-accomplishments">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <div class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                                        <span>Accordion Item #1</span>
+                                                        <div class="group">
+                                                            <p>4 Events</p>
+                                                            <button><i class="bi bi-filetype-pdf"></i></button>
+                                                            <button>
+                                                                <span class="material-symbols-outlined">book_5</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </h2>
+                                                <div id="collapse1" class="accordion-collapse collapse">
+                                                    <div class="accordion-body">
+                                                        <ul class="list-group">
+                                                            <li class="list-group-item">An item</li>
+                                                            <li class="list-group-item">An item</li>
+                                                            <li class="list-group-item">An item</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <?php } ?>
                     </div>
                 </div>
             </div>
