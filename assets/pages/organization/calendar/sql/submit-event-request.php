@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $organization_id = $_SESSION['user_id'] ?? null;
 
-    $sql = "INSERT INTO event_request (organization_id, title, description, location, start_date, end_date, start_time, end_time) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO event_request (organization_id, title, description, location, start_date, end_date, start_time, end_time, date_requested) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("isssssss", $organization_id, $title, $description, $location, $start_date, $end_date, $start_time, $end_time);
 

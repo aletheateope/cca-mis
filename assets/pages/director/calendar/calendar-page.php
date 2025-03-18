@@ -54,13 +54,22 @@
 
                 <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                 <?php if (is_null($row['start_time']) && is_null($row['end_time'])) { ?>
+                <!-- All Day -->
                 <div class="row event-request-card">
                     <div class="col">
                         <div class="row title">
                             <div class="col">
-                                <img src="/cca/assets/img/blank-profile.png" alt="" class="image">
-                                <h4><?php echo $row['organization']?>
-                                </h4>
+                                <div class="row">
+                                    <div class="col-auto profile-container">
+                                        <img src="/cca/assets/img/blank-profile.png" alt="" class="image">
+                                    </div>
+                                    <div class="col">
+                                        <h4><?php echo $row['organization']?>
+                                        </h4>
+                                        <h6><?php echo date("F j, Y", strtotime($row['date_requested']))?>
+                                        </h6>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-auto">
                                 <h6>All Day</h6>
@@ -75,12 +84,12 @@
 
                                 <div class="row date">
                                     <div class="col">
-                                        <h4>Start Date</h4>
+                                        <h5>Start Date</h5>
                                         <p><?php echo date("F j, Y", strtotime($row['start_date']))?>
                                         </p>
                                     </div>
                                     <div class="col">
-                                        <h4>End Date</h4>
+                                        <h5>End Date</h5>
                                         <p><?php echo date("F j, Y", strtotime($row['end_date']))?>
                                         </p>
                                     </div>
@@ -100,13 +109,18 @@
                     </div>
                 </div>
                 <?php } else { ?>
+                <!-- Normal -->
                 <div class="row event-request-card">
                     <div class="col">
-                        <div class="row title">
-                            <div class="col">
+                        <div class="row title default">
+                            <div class="col-auto profile-container">
                                 <img src="/cca/assets/img/blank-profile.png" alt="" class="image">
+                            </div>
+                            <div class="col">
                                 <h4><?php echo $row['organization']?>
                                 </h4>
+                                <h6><?php echo date("F j, Y", strtotime($row['date_requested']));?>
+                                </h6>
                             </div>
                         </div>
                         <div class="row body">
@@ -120,7 +134,7 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col">
-                                                <h4>Start Date</h4>
+                                                <h5>Start Date</h5>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -139,7 +153,7 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col">
-                                                <h4>End Date</h4>
+                                                <h5>End Date</h5>
                                             </div>
                                         </div>
                                         <div class="row">

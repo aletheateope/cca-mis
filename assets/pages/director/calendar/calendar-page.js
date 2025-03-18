@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
       right: "dayGridMonth,listYear", // Buttons for Month View & List View
     },
     views: {
+      dayGridMonth: { buttonText: "Month" },
       listYear: { buttonText: "Schedules" }, // Custom label for list view
     },
     eventContent: function (arg) {

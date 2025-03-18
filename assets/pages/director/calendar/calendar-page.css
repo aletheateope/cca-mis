@@ -5,7 +5,7 @@
 
 /* PANEL: EVENT APPROVAL */
 .event-approval-panel {
-  width: 25rem;
+  width: 20rem;
   height: 100vh;
   overflow-y: auto;
   background-color: var(--primary-background);
@@ -34,12 +34,19 @@
     border-bottom: 1px solid var(--primary-text);
     padding-bottom: 0.625rem;
 
+    .profile-container {
+      justify-content: center;
+    }
+
+    .row {
+      gap: 0.625rem;
+    }
+
     .col,
     .col-auto {
       display: flex;
-      flex-direction: row;
-      gap: 0.625rem;
-      align-items: center;
+      flex-direction: column;
+      gap: 0.2rem;
 
       .image {
         width: 25px;
@@ -52,6 +59,10 @@
         font-weight: var(--medium);
       }
     }
+  }
+
+  .default {
+    gap: 0.625rem;
   }
 
   .body {
