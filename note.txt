@@ -1,3 +1,8 @@
+<?php
+require_once '../../sql/session_check.php';
+check_role('Organization');
+?>
+
 <script>
     console.log(
         "User ID:", <?php echo json_encode($_SESSION['user_id']); ?>

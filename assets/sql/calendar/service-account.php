@@ -1,9 +1,10 @@
 <?php
-require_once '../../../vendor/autoload.php';
+// require_once '../base-path.php';
+require_once BASE_PATH . '/vendor/autoload.php';
 
 use Google\Service\Calendar;
 
-function getGoogleClient()
+function googleClient()
 {
     $serviceAccountPath = getenv('GOOGLE_SERVICE_ACCOUNT');
     

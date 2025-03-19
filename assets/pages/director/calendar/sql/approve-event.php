@@ -1,10 +1,10 @@
 <?php
 require_once '../../../../sql/base-path.php';
-require_once BASE_PATH . '/assets/sql/conn.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
 if(isset($data["id"])) {
+    require_once BASE_PATH . '/assets/sql/conn.php';
     $eventRequestID = $data["id"];
 
     $conn->begin_transaction();
@@ -21,15 +21,14 @@ if(isset($data["id"])) {
             $stmt->bind_param("iisssssss", $eventRequestID, $row['organization_id'], $row['title'], $row['description'], $row['location'], $row['start_date'], $row['end_date'], $row['start_time'], $row['end_time']);
             $stmt->execute();
             
+            $stmt = $conn->prepare("UPDATE event_request_status SET status = 'Approved' WHERE event_request_id = ?");
+            $stmt->bind_param("i", $eventRequestID);
+            $stmt->execute();
             
             $stmt = $conn->prepare("DELETE FROM event_request WHERE event_request_id = ?");
             $stmt->bind_param("i", $eventRequestID);
             $stmt->execute();
             
-            $stmt = $conn->prepare("UPDATE event_request_status SET status = 'Approved' WHERE event_request_id = ?");
-            $stmt->bind_param("i", $eventRequestID);
-            $stmt->execute();
-
             $conn->commit();
             echo json_encode(["success" => true, "message" => "Event request approved successfully."]);
         } else {

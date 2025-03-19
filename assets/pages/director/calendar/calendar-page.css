@@ -1,11 +1,15 @@
+/* FULLCALLENDAR */
 .calendar a {
   color: var(--primary-text);
   text-decoration: none;
 }
 
+/* .scheduled-by {
+} */
+
 /* PANEL: EVENT APPROVAL */
 .event-approval-panel {
-  width: 20rem;
+  width: 22rem;
   height: 100vh;
   overflow-y: auto;
   background-color: var(--primary-background);
