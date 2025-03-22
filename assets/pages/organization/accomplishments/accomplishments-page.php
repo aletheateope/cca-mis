@@ -67,12 +67,17 @@
                                                         <span><?php echo $month['name'];?></span>
                                                         <div class="action-group">
                                                             <div class="events">
-                                                                <p>4 Events</p>
+                                                                <p><?php echo count($month['events'])?>
+                                                                    Events
+                                                                </p>
                                                                 <button class="addEvent no-style-btn"><i
                                                                         class="bi bi-plus"></i></button>
                                                             </div>
-                                                            <button class="generatePDF no-style-btn"><i
-                                                                    class="bi bi-filetype-pdf"></i></button>
+                                                            <button class="generatePDF no-style-btn"
+                                                                data-month="<?php echo $month['id']?>"
+                                                                data-year="<?php echo $year?>">
+                                                                <i class="bi bi-filetype-pdf"></i>
+                                                            </button>
                                                             <button class="readEvents no-style-btn  ">
                                                                 <span class="material-symbols-outlined">book_5</span>
                                                             </button>
@@ -85,13 +90,13 @@
                                                         <ul class="list-group">
                                                             <?php foreach ($month['events'] as $event) {?>
                                                             <li class="list-group-item">
-                                                                <h4> <?php echo $event?>
+                                                                <h4><?php echo $event?>
                                                                 </h4>
                                                                 <div class="action-group">
-                                                                    <button class="edit-event no-style-btn">
+                                                                    <button class="editEvent no-style-btn">
                                                                         <i class="bi bi-pencil-square"></i>
                                                                     </button>
-                                                                    <button class="delete-event no-style-btn">
+                                                                    <button class="deleteEvent no-style-btn">
                                                                         <i class="bi bi-trash"></i>
                                                                     </button>
                                                                 </div>
