@@ -31,9 +31,27 @@ while ($row_year = $result_years->fetch_assoc()) {
 
     $months = [];
     while ($row_month = $result_months->fetch_assoc()) {
+        $month_id = $row_month['month_id'];
+
+        $sql_events = "SELECT title
+                        FROM activity_accomplishment
+                        INNER JOIN accomplishment_report
+                            ON accomplishment_report.activity_id = activity_accomplishment.activity_id
+                        WHERE organization_id = ? AND year = ? AND month = ?";
+        $stmt_events = $conn->prepare($sql_events);
+        $stmt_events->bind_param("iii", $user_id, $year, $month_id);
+        $stmt_events->execute();
+        $result_events = $stmt_events->get_result();
+
+        $events = [];
+        while ($row_event = $result_events->fetch_assoc()) {
+            $events[] = $row_event['title'];
+        }
+
         $months[] = [
-            'id' => $row_month['month_id'],
-            'name' => $row_month['month_name']
+            'id' => $month_id,
+            'name' => $row_month['month_name'],
+            'events' => $events
         ];
     }
 

@@ -5,9 +5,7 @@
 
 <?php include_once '../../../sql/temporary_session.php'?>
 
-<?php
-// require_once 'sql/display-accomplishment.php'
-?>
+<?php require_once 'sql/display-accomplishment.php'?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,12 +42,12 @@
                 </div>
                 <div class="row page-body">
                     <div class="col">
-                        <?php while ($row = mysqli_fetch_assoc($result)) {?>
+                        <?php foreach ($accomplishments as $year => $months) { ?>
                         <div class="row content">
                             <div class="col">
                                 <div class="row content-header">
                                     <div class="col-12">
-                                        <h2>Year</h2>
+                                        <h2><?php echo $year?></h2>
                                         <button type="button" id="addActivityButton" data-bs-toggle="modal"
                                             data-bs-target="#addActivityModal">
                                             <i class="bi bi-plus-lg"></i>
@@ -58,13 +56,16 @@
                                 </div>
                                 <div class="row content-list">
                                     <div class="col-12">
+                                        <?php foreach ($months as $monthIndex => $month) { ?>
+                                        <?php $uniqueID="collapse".$year."-".$monthIndex?>
                                         <div class="accordion accordion-accomplishments">
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header">
                                                     <div class="accordion-button collapsed" type="button"
-                                                        data-bs-toggle="collapse" data-bs-target="#collapse1">
-                                                        <span>Accordion Item #1</span>
-                                                        <div class="group">
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#<?php echo $uniqueID?>">
+                                                        <span><?php echo $month['name'];?></span>
+                                                        <div class="action-group">
                                                             <div class="events">
                                                                 <p>4 Events</p>
                                                                 <button class="addEvent no-style-btn"><i
@@ -78,17 +79,30 @@
                                                         </div>
                                                     </div>
                                                 </h2>
-                                                <div id="collapse1" class="accordion-collapse collapse">
+                                                <div id="<?php echo $uniqueID;?>"
+                                                    class="accordion-collapse collapse">
                                                     <div class="accordion-body">
                                                         <ul class="list-group">
-                                                            <li class="list-group-item">An item</li>
-                                                            <li class="list-group-item">An item</li>
-                                                            <li class="list-group-item">An item</li>
+                                                            <?php foreach ($month['events'] as $event) {?>
+                                                            <li class="list-group-item">
+                                                                <h4> <?php echo $event?>
+                                                                </h4>
+                                                                <div class="action-group">
+                                                                    <button class="edit-event no-style-btn">
+                                                                        <i class="bi bi-pencil-square"></i>
+                                                                    </button>
+                                                                    <button class="delete-event no-style-btn">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </li>
+                                                            <?php }?>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
