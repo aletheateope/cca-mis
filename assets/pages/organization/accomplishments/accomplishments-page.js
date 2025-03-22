@@ -60,6 +60,15 @@ $(document).ready(function () {
   });
 });
 
+// OPTION BAR
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".addEvent").forEach((button) => {
+    button.addEventListener("click", function () {
+      console.log("Add Event Clicked");
+    });
+  });
+});
+
 // GENERATE PDF
 document.addEventListener("DOMContentLoaded", function () {
   const { jsPDF } = window.jspdf;
@@ -351,4 +360,20 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+});
+
+tippy(".addEvent", {
+  theme: "light",
+  content: "Add Event",
+  placement: "top",
+});
+tippy(".generatePDF", {
+  theme: "light",
+  content: "Generate Report",
+  placement: "top",
+});
+tippy(".readEvents", {
+  theme: "light",
+  content: "Read Events",
+  placement: "top",
 });

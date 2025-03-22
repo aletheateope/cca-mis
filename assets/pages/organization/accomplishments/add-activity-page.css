@@ -1,5 +1,8 @@
 .page-body {
   margin-bottom: 1rem;
+  > .col {
+    gap: 2rem;
+  }
 }
 
 /* GALLERY TEXT */
@@ -152,4 +155,33 @@
   font-size: 1.2rem;
   color: var(--danger);
   cursor: pointer;
+}
+
+/* MEDIA QUERIES */
+/* Mobile */
+@media (max-width: 576px) {
+}
+
+/* Tablet */
+@media (min-width: 576px) {
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+}
+
+/* Large Desktop */
+@media (min-width: 992px) {
+}
+
+/* Extra Large Desktop */
+@media (min-width: 1200px) {
+  .main-content {
+    margin-left: 10rem;
+    margin-right: 10rem;
+  }
+}
+
+/* Extra Extra Large Desktop */
+@media (min-width: 1400px) {
 }

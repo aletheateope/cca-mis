@@ -83,6 +83,8 @@
                                 </h4>
                                 <p><?php echo $row['description']?>
                                 </p>
+                                <p><?php echo $row['location']?>
+                                </p>
 
                                 <div class="row date">
                                     <div class="col">
@@ -130,6 +132,8 @@
                                 <h4><?php echo $row['title']?>
                                 </h4>
                                 <p><?php echo $row['description']?>
+                                </p>
+                                <p><?php echo $row['location']?>
                                 </p>
 
                                 <div class="row date">

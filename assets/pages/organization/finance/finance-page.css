@@ -1,0 +1,72 @@
+.finance-overview {
+  gap: 1.5rem;
+
+  h3 {
+    font-weight: var(--semi-bold);
+  }
+
+  /* FIRST COLUMN */
+  > .col:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  /* SECOND COLUMN */
+  > .col:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    /* FIRST ROW */
+    .row:first-child .col {
+      table {
+        margin-bottom: 0;
+      }
+
+      > :last-child {
+        align-self: end;
+        font-style: italic;
+        button {
+          font-style: italic;
+          color: var(--info);
+          text-decoration: underline;
+        }
+      }
+    }
+
+    /* SECOND ROW */
+    .row:last-child {
+      .col {
+        gap: 1rem;
+
+        .chart-container .col {
+          height: 10rem;
+        }
+
+        p {
+          align-self: flex-end;
+        }
+      }
+    }
+  }
+
+  /* TABLES */
+  .table-inflow {
+    tr:first-child td:first-child,
+    tr:last-child td:first-child {
+      text-align: right;
+    }
+
+    tr td:last-child {
+      text-align: right;
+      vertical-align: middle;
+    }
+  }
+
+  .table-balance-summary {
+    tr td:last-child {
+      text-align: right;
+    }
+  }
+}

@@ -15,7 +15,7 @@
   --active-text: #ffffff;
 
   /* SEMANTIC COLORS */
-  /* --success:; */
+  --success: #0c9515;
   --danger: #ba1515;
   /* --warning:; */
   --info: #153da3;
@@ -71,6 +71,11 @@ h6 {
   font-weight: 400;
   line-height: 1.2;
   color: var(--primary-text);
+}
+
+.table {
+  --bs-table-color: var(--primary-text);
+  --bs-table-border-color: var(--border-color);
 }
 
 .form-control {
@@ -145,4 +150,8 @@ h6 {
 /* FULLCALENDAR */
 .fc .fc-toolbar-title {
   font-size: var(--extra-large);
+}
+
+.fc-event {
+  cursor: pointer;
 }

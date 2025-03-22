@@ -44,6 +44,7 @@
                 </div>
                 <div class="row page-body">
                     <div class="col">
+                        <?php while ($row = mysqli_fetch_assoc($result)) {?>
                         <div class="row content">
                             <div class="col">
                                 <div class="row content-header">
@@ -64,9 +65,14 @@
                                                         data-bs-toggle="collapse" data-bs-target="#collapse1">
                                                         <span>Accordion Item #1</span>
                                                         <div class="group">
-                                                            <p>4 Events</p>
-                                                            <button><i class="bi bi-filetype-pdf"></i></button>
-                                                            <button>
+                                                            <div class="events">
+                                                                <p>4 Events</p>
+                                                                <button class="addEvent no-style-btn"><i
+                                                                        class="bi bi-plus"></i></button>
+                                                            </div>
+                                                            <button class="generatePDF no-style-btn"><i
+                                                                    class="bi bi-filetype-pdf"></i></button>
+                                                            <button class="readEvents no-style-btn  ">
                                                                 <span class="material-symbols-outlined">book_5</span>
                                                             </button>
                                                         </div>
@@ -83,11 +89,11 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <?php }?>
                     </div>
                 </div>
             </div>
@@ -102,28 +108,24 @@
                         <h1 class="modal-title fs-5">Accomplishment Report</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col">
-                                <label for="month" class="form-label">Month</label>
-                                <select name="month" class="form-select" id="month">
-                                    <option value="1" selected>January</option>
-                                    <option value="2">February</option>
-                                    <option value="3">March</option>
-                                    <option value="4">April</option>
-                                    <option value="5">May</option>
-                                    <option value="6">June</option>
-                                    <option value="7">July</option>
-                                    <option value="8">August</option>
-                                    <option value="9">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
-                                </select>
-                                <label for="inputYear" class="form-label">Year</label>
-                                <input type="text" name="year" class="form-control" id="inputYear">
-                            </div>
-                        </div>
+                    <div class="modal-body center-modal-body">
+                        <label for="month" class="form-label">Month</label>
+                        <select name="month" class="form-select" id="month">
+                            <option value="1" selected>January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                        <label for="inputYear" class="form-label">Year</label>
+                        <input type="text" name="year" class="form-control" id="inputYear">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -135,35 +137,31 @@
     </form>
 
     <form id="addActivityForm" enctype="multipart/form-data">
-        <div class="modal fade add-activity-modal" id="addActivityModal" tabindex="-1">
+        <div class="modal fade" id="addActivityModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5">Add Activity</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col">
-                                <label for="month" class="form-label">Month</label>
-                                <select name="month" class="form-select" id="month">
-                                    <option value="1" selected>January</option>
-                                    <option value="2">February</option>
-                                    <option value="3">March</option>
-                                    <option value="4">April</option>
-                                    <option value="5">May</option>
-                                    <option value="6">June</option>
-                                    <option value="7">July</option>
-                                    <option value="8">August</option>
-                                    <option value="9">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
-                                </select>
-                                <label for="year" class="form-label">Year</label>
-                                <input type="text" name="year" class="form-control" id="year" readonly>
-                            </div>
-                        </div>
+                    <div class="modal-body center-modal-body">
+                        <label for="month" class="form-label">Month</label>
+                        <select name="month" class="form-select" id="month">
+                            <option value="1" selected>January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                        <label for="year" class="form-label">Year</label>
+                        <input type="text" name="year" class="form-control" id="year" readonly>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

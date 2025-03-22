@@ -20,6 +20,7 @@ h2 {
   }
 }
 
+/* ACCORDION */
 .accordion-button::after {
   margin-left: 0;
 }
@@ -36,6 +37,19 @@ h2 {
       gap: 1rem;
       padding-left: 1rem;
       padding-right: 1rem;
+
+      .events {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.2rem;
+
+        i {
+          color: var(--inactive-text-dark);
+          font-size: 1.4rem;
+          -webkit-text-stroke: 0.4px;
+        }
+      }
 
       p {
         color: var(--inactive-text-dark);
@@ -90,21 +104,19 @@ h2 {
 }
 .accordion-button:not(.collapsed) {
   .group {
+    .events {
+      p,
+      i {
+        color: var(--inactive-text-light) !important;
+      }
+    }
     span,
     i {
-      color: var(--active-text);
+      color: var(--active-text) !important;
     }
   }
 }
 
-.add-activity-modal .modal-body .col {
-  display: flex;
-  flex-direction: column;
-  justify-items: center;
-  align-items: center;
-  gap: 1rem;
-}
-
-.add-activity-modal .modal-body .col label {
-  font-size: var(--large);
+.generatePDF i {
+  -webkit-text-stroke: 0.6px;
 }

@@ -31,7 +31,7 @@
                 <div class="row page-header">
                     <div class="col">
                         <h1>Members</h1>
-                        <button type="button" class="btn btn-primary add-member-btn" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addMemberModal">
                             <i class="bi bi-plus"></i> Add Member
                         </button>
