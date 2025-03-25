@@ -60,7 +60,7 @@
                 <div>
                     <li> <a href="#">View Records</a></li>
                     <li
-                        class="<?= ($currentPage == 'finance-page.php') ? 'active' : '' ?>">
+                        class="<?= ($currentPage == 'finance-page.php' || $currentPage == 'add-record-page.php') ? 'active' : '' ?>">
                         <a href="/cca/assets/pages/organization/finance/finance-page.php">My Records</a>
                     </li>
                 </div>

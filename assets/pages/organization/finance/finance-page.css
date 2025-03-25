@@ -1,9 +1,37 @@
+/* MODAL */
+.add-record-modal {
+  .warning {
+    border: 1px solid var(--warning);
+    border-radius: var(--border-radius);
+    padding: 0.8rem;
+
+    text-align: center;
+    align-items: center;
+
+    background-color: rgba(245, 205, 17, 0.59);
+
+    .col-auto {
+      i {
+        font-size: 2rem;
+      }
+    }
+  }
+  .academic-year-row {
+    gap: 0.5rem;
+    .col-auto {
+      display: flex;
+      align-items: center;
+
+      i {
+        -webkit-text-stroke: 1px;
+      }
+    }
+  }
+}
+
+/* FINANCE OVERVIEW */
 .finance-overview {
   gap: 1.5rem;
-
-  h3 {
-    font-weight: var(--semi-bold);
-  }
 
   /* FIRST COLUMN */
   > .col:first-child {
@@ -40,6 +68,7 @@
       .col {
         gap: 1rem;
 
+        /* CHART CONTAINER */
         .chart-container .col {
           height: 10rem;
         }
@@ -67,6 +96,42 @@
   .table-balance-summary {
     tr td:last-child {
       text-align: right;
+    }
+  }
+}
+
+/* FINANCIAL RECORDS CONTAINER */
+.financial-records {
+  .header {
+    .col {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      justify-content: space-between;
+    }
+  }
+
+  .month {
+    &:hover {
+      background-color: var(--hovered);
+    }
+    .col {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid var(--border-color);
+
+      padding-top: 0.625rem;
+      padding-bottom: 0.625rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+
+      i {
+        color: var(--active-background);
+        font-size: 1.5rem;
+      }
     }
   }
 }

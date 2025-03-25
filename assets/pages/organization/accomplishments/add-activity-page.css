@@ -1,21 +1,14 @@
-.page-body {
-  margin-bottom: 1rem;
-  > .col {
-    gap: 2rem;
-  }
-}
-
 /* GALLERY TEXT */
-.page-body .content:first-of-type .row:first-of-type {
+.gallery-section .row:first-of-type {
   margin-bottom: 1rem;
   .col {
     display: flex;
-    justify-content: center;
+    align-items: center;
   }
 }
 
 /* GALLERY BROWS FILES */
-.page-body .content:first-of-type .row:nth-of-type(3) {
+.gallery-section .row:nth-of-type(3) {
   padding-top: 2rem;
   padding-bottom: 2rem;
   background-color: var(--secondary-background);
@@ -69,30 +62,30 @@
 }
 
 /* PARTICIPANTS GRID */
-.page-body .participants {
+.participants {
   border: 1px solid var(--border-color);
-}
 
-.participants > .col {
-  gap: 0 !important;
-}
+  > .col {
+    gap: 0 !important;
+  }
 
-/* First Row */
-.first-row {
-  border-bottom: 1px solid var(--border-color);
-}
+  /* First Row */
+  .header {
+    border-bottom: 1px solid var(--border-color);
 
-/* Select all */
-.page-body .content:nth-of-type(3) .col-auto {
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  align-content: center;
-}
+    /* Search Bar */
+    .col {
+      align-content: center;
+      border-left: 1px solid var(--border-color);
+    }
+  }
 
-/* Search Bar */
-.page-body .content:nth-of-type(3) .row:first-of-type .row:first-of-type .col {
-  align-content: center;
-  border-left: 1px solid var(--border-color);
+  /* Select all */
+  .header .col-auto {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    align-content: center;
+  }
 }
 
 /* Member List */
@@ -134,12 +127,7 @@
   border-bottom: none;
 }
 
-/* SUBMIT BUTTON */
-.submit-row .col {
-  display: flex;
-  justify-content: flex-end;
-}
-
+/* RECOGNITION SECTION */
 .recognition-container {
   display: none;
 }
@@ -157,31 +145,10 @@
   cursor: pointer;
 }
 
-/* MEDIA QUERIES */
-/* Mobile */
-@media (max-width: 576px) {
-}
-
-/* Tablet */
-@media (min-width: 576px) {
-}
-
-/* Desktop */
-@media (min-width: 768px) {
-}
-
-/* Large Desktop */
-@media (min-width: 992px) {
-}
-
-/* Extra Large Desktop */
-@media (min-width: 1200px) {
-  .main-content {
-    margin-left: 10rem;
-    margin-right: 10rem;
+/* REMARKS */
+.remarks-section {
+  > .col {
+    display: flex !important;
+    flex-direction: row !important;
   }
-}
-
-/* Extra Extra Large Desktop */
-@media (min-width: 1400px) {
 }

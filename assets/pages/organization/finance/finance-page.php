@@ -1,7 +1,11 @@
+<?php require_once '../../../sql/base-path.php'?>
+
 <?php
 //require_once '../../../sql/session_check.php';
 //check_role('Organization');
 ?>
+
+<?php include BASE_PATH . '/assets/sql/temporary_session.php'?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finance</title>
 
-    <?php require_once '../../../components/header-links.php'?>
+    <?php require_once BASE_PATH . '/assets/components/header-links.php'?>
 
     <link rel="stylesheet" href="finance-page.css">
 </head>
@@ -20,7 +24,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include '../../../components/sidebar/organization/sidebar.php' ?>
+                <?php include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
@@ -106,8 +110,10 @@
                                     <div class="col">
                                         <h3>Financial Flow</h3>
                                         <div class="row chart-container">
-                                            <div class="col"><canvas class="horizontal-waterfall-chart"
-                                                    id="horizontalWaterfall"></canvas></div>
+                                            <div class="col">
+                                                <canvas class="horizontal-waterfall-chart"
+                                                    id="horizontalWaterfall"></canvas>
+                                            </div>
                                         </div>
                                         <p>20% of Funds Left</p>
                                     </div>
@@ -115,8 +121,33 @@
                             </div>
                         </div>
 
-                        <div class="row content">
+                        <div class="row content financial-records">
                             <div class="col">
+                                <div class="row header">
+                                    <div class="col">
+                                        <h3>2025-2026</h3>
+                                        <button class="btn btn-primary">Generate Report</button>
+                                    </div>
+                                </div>
+
+                                <div class="row month">
+                                    <div class="col">
+                                        <h4>January</h4>
+                                        <button class="no-style-btn"><i class="bi bi-image"></i></button>
+                                    </div>
+                                </div>
+                                <div class="row month">
+                                    <div class="col">
+                                        <h4>February</h4>
+                                        <button class="no-style-btn"><i class="bi bi-image"></i></button>
+                                    </div>
+                                </div>
+                                <div class="row month">
+                                    <div class="col">
+                                        <h4>March</h4>
+                                        <button class="no-style-btn"><i class="bi bi-image"></i></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -126,7 +157,7 @@
     </div>
 
     <form id="addRecordForm" enctype="multipart/form-data">
-        <div class="modal fade" id="addRecordModal" tabindex="-1">
+        <div class="modal fade add-record-modal" id="addRecordModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -134,6 +165,15 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body center-modal-body">
+                        <div class="row warning">
+                            <div class="col-auto">
+                                <i class="bi bi-exclamation-triangle"></i>
+                            </div>
+                            <div class="col">
+                                <h6>Creating a new record makes the previous one uneditable. <br>
+                                    Review and confirm before Proceeding</h6>
+                            </div>
+                        </div>
                         <label for="month" class="form-label">Month</label>
                         <select name="month" class="form-select" id="month">
                             <option value="1" selected>January</option>
@@ -149,8 +189,19 @@
                             <option value="11">November</option>
                             <option value="12">December</option>
                         </select>
-                        <label for="inputYear" class="form-label">Year</label>
-                        <input type="text" name="year" class="form-control" id="inputYear">
+                        <label for="inputStartYear" class="form-label">Academic Year</label>
+                        <div class="row academic-year-row">
+                            <div class="col">
+                                <input type="text" name="startYear" class="form-control" id="inputStartYear">
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-dash-lg"></i>
+                            </div>
+                            <div class="col">
+                                <input type="text" name="endYear" class="form-control" id="inputEndYear">
+                            </div>
+                        </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -161,12 +212,18 @@
         </div>
     </form>
 
-    <?php require_once '../../../components/footer-links.php' ?>
+    <?php require_once BASE_PATH . '/assets/components/footer-links.php' ?>
 
     <!-- CHART.JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
 
     <script src="finance-page.js"></script>
+
+    <script>
+        console.log(
+            "User ID:", <?php echo json_encode($_SESSION['user_id']); ?> ,
+        );
+    </script>
 </body>
 
 </html>

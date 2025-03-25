@@ -1,9 +1,11 @@
+<?php require_once '../../../sql/base-path.php'?>
+
 <?php
 //require_once '../../../sql/session_check.php';
 //check_role('Organization');
 ?>
 
-<?php include_once '../../../sql/temporary_session.php'?>
+<?php include_once BASE_PATH . '/assets/sql/temporary_session.php'?>
 
 <?php require_once 'sql/display-accomplishment.php'?>
 
@@ -15,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accomplishments</title>
 
-    <?php require_once '../../../components/header-links.php'?>
+    <?php require_once BASE_PATH . '/assets/components/header-links.php'?>
 
     <link rel="stylesheet" href="accomplishments-page.css">
 
@@ -28,7 +30,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include '../../../components/sidebar/organization/sidebar.php' ?>
+                <?php include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
@@ -70,8 +72,9 @@
                                                                 <p><?php echo count($month['events'])?>
                                                                     Events
                                                                 </p>
-                                                                <button class="addEvent no-style-btn"><i
-                                                                        class="bi bi-plus"></i></button>
+                                                                <button class="addEvent no-style-btn">
+                                                                    <i class="bi bi-plus"></i>
+                                                                </button>
                                                             </div>
                                                             <button class="generatePDF no-style-btn"
                                                                 data-month="<?php echo $month['id']?>"
@@ -120,7 +123,7 @@
     </div>
 
     <form id="addAccomplishmentForm" enctype="multipart/form-data">
-        <div class="modal fade add-activity-modal" id="addAccomplishmentModal" tabindex="-1">
+        <div class="modal fade" id="addAccomplishmentModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -191,7 +194,7 @@
         </div>
     </form>
 
-    <?php require_once '../../../components/footer-links.php' ?>
+    <?php require_once BASE_PATH . '/assets/components/footer-links.php' ?>
 
 
     <!-- JSPDF -->

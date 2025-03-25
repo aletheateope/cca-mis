@@ -1,3 +1,42 @@
+// CLEAVE
+var cleaveStartYear = new Cleave("#inputStartYear", {
+  date: true,
+  datePattern: ["Y"],
+});
+
+var cleaveEndYear = new Cleave("#inputEndYear", {
+  date: true,
+  datePattern: ["Y"],
+});
+
+document
+  .getElementById("addRecordForm")
+  .addEventListener("submit", async function (event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get form data
+    const formData = new FormData(this);
+
+    try {
+      const response = await fetch("sql/add-record.php", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+      console.log(result);
+
+      if (result.success) {
+        window.location.href = "add-record-page.php";
+      } else {
+        alert("Error: " + result.error);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  });
+
+// COLORS
 const blue = getComputedStyle(document.documentElement)
   .getPropertyValue("--info")
   .trim();
@@ -17,7 +56,12 @@ new Chart(ctx, {
     labels: ["Credit", "Expense", "Final Balance"],
     datasets: [
       {
-        label: "nyaw",
+        label: "Hidden Base",
+        data: [0, 20, 0],
+        backgroundColor: "rgba(0, 0, 0, 0)",
+      },
+      {
+        label: "Values",
         data: [100, 80, 20],
         backgroundColor: [green, red, blue],
       },
@@ -28,9 +72,10 @@ new Chart(ctx, {
     scales: {
       x: {
         max: 100,
+        stacked: true,
         reverse: true,
       },
-      y: {},
+      y: { stacked: true },
     },
     responsive: true,
     maintainAspectRatio: false,

@@ -1,3 +1,5 @@
+<?php require_once '../../../sql/base-path.php'?>
+
 <?php
 //require_once '../../sql/session_check.php';
 //check_role('Organization');
@@ -19,31 +21,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Activity</title>
 
-    <?php require_once '../../../components/header-links.php' ?>
+    <?php require_once BASE_PATH . '/assets/components/header-links.php' ?>
 
     <!-- SPLIDE.JS -->
     <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="/cca/assets/components/add-page.css">
+
     <link rel="stylesheet" href="add-activity-page.css">
+
+    <link rel="stylesheet" href="/cca/assets/components/media-query.css">
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include '../../../components/sidebar/organization/sidebar.php' ?>
+                <?php include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
                     <div class="col">
-                        <h1>Add Activity</h1>
-                        <a href="accomplishments-page.php" class="back-button">Go Back</a>
+                        <div class="row">
+                            <div class="col">
+                                <h1>Add Activity</h1>
+                                <a href="accomplishments-page.php" class="back-button">Go Back</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h3>For January, 2025</h3>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <form id="submitActivityForm" enctype="multipart/form-data">
                     <div class="row page-body">
                         <div class="col">
-                            <div class="row content">
+                            <div class="row content d-none">
+                                <div class="col">
+                                    <input type="hidden" name="report_id"
+                                        value="<?= $report_id ?>">
+                                </div>
+                            </div>
+                            <div class="row content gallery-section">
                                 <div class="col">
                                     <div class="row">
                                         <div class="col">
@@ -117,11 +139,14 @@
                                     <input type="number" name="actual_participants" class="form-control"
                                         id="inputMembersAttended"
                                         placeholder="Select participants below to start counting..." readonly required>
-
-                                    <h4>Participants</h4>
+                                </div>
+                            </div>
+                            <div class="row content">
+                                <div class="col">
+                                    <h3>Participants</h3>
                                     <div class="row participants">
                                         <div class="col">
-                                            <div class="row first-row">
+                                            <div class="row header">
                                                 <div class="col-auto">
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox" value=""
@@ -206,9 +231,13 @@
                                     <label for="inputBudgetUtilized" class="form-label">Budget Utilized</label>
                                     <input type="text" name="budget_utilized" class="form-control"
                                         id="inputBudgetUtilized" placeholder="0" required>
-                                    <h4>Remarks</h4>
-                                    <div class="row">
-                                        <div class="col d-flex">
+                                </div>
+                            </div>
+                            <div class="row content">
+                                <div class="col">
+                                    <h3>Remarks</h3>
+                                    <div class="row remarks-section">
+                                        <div class="col">
                                             <div class="form-check form-check-inline">
                                                 <input type="radio" name="remark" class="form-check-input"
                                                     id="radioAccomplished1" value="1" checked>
@@ -223,8 +252,6 @@
                                                     Accomplished but did not meet the target number of members.
                                                 </label>
                                             </div>
-                                            <input type="hidden" name="report_id"
-                                                value="<?= $report_id ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -241,7 +268,7 @@
         </div>
     </div>
 
-    <?php require_once '../../../components/footer-links.php'; ?>
+    <?php require_once BASE_PATH . '/assets/components/footer-links.php'; ?>
 
     <!-- SPLIDE.JS -->
     <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
@@ -249,7 +276,6 @@
     <script src="add-activity-page.js"></script>
 
     <script>
-        // Output user_id to the console
         console.log("User ID:", <?php echo json_encode($user_id); ?> );
     </script>
 
