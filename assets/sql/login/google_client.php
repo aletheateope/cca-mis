@@ -1,12 +1,7 @@
 <?php
-require_once 'assets/sql/base-path.php';
-
-require_once BASE_PATH .'/vendor/autoload.php';
-
-session_start();
-
-$ngrok_url = 'https://5fe0-2001-4450-4737-cc00-f1c7-e92d-af47-5fca.ngrok-free.app'; // Change this every time ngrok restarts
 $localhost_url = 'http://localhost/cca';
+$localhost3000_url = 'http://localhost:3000/cca';
+$ngrok_url = 'https://9005-2001-4450-4737-cc00-58f7-6cd8-18b5-1049.ngrok-free.app'; // Change this every time ngrok restarts
 
 // Set up the Google Client
 $client = new Google_Client();
@@ -16,11 +11,10 @@ $client->setClientSecret(getenv('GOOGLE_CLIENT_SECRET'));
 
 if ($_SERVER['HTTP_HOST'] === 'localhost') {
     $redirect_uri = "$localhost_url/assets/sql/login/google_callback.php";
+} elseif ($_SERVER['HTTP_HOST'] === 'localhost:3000') {
+    $redirect_uri = "$localhost3000_url/assets/sql/login/google_callback.php";
 } else {
     $redirect_uri = "$ngrok_url/cca/assets/sql/login/google_callback.php";
 }
 
 $client->setRedirectUri($redirect_uri);
-$client->addScope("email");
-
-$login_url = $client->createAuthUrl();

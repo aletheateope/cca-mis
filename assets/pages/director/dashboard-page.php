@@ -39,11 +39,14 @@
 
     <script>
         // Retrieve the session role from PHP
+        var sessionID =
+            "<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'undefined'; ?>";
+
         var sessionRole =
             "<?php echo isset($_SESSION['user_role']) ? $_SESSION['user_role'] : 'undefined'; ?>";
 
-        // Log the role to the console
-        console.log("Session Role: " + sessionRole);
+        console.log("User ID: " + sessionID);
+        console.log("User Role: " + sessionRole);
     </script>
 </body>
 

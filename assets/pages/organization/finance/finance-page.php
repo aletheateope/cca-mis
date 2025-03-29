@@ -7,6 +7,10 @@
 
 <?php include BASE_PATH . '/assets/sql/temporary_session.php'?>
 
+<?php require_once 'sql/display-record.php'?>
+
+<?php include 'sql/warning.php'?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -121,35 +125,28 @@
                             </div>
                         </div>
 
+                        <?php foreach ($records as $year => $months) { ?>
                         <div class="row content financial-records">
                             <div class="col">
                                 <div class="row header">
                                     <div class="col">
-                                        <h3>2025-2026</h3>
+                                        <h3><?php echo $year?></h3>
                                         <button class="btn btn-primary">Generate Report</button>
                                     </div>
                                 </div>
 
-                                <div class="row month">
-                                    <div class="col">
-                                        <h4>January</h4>
+                                <ul class="list-group">
+                                    <?php foreach ($months as $month) { ?>
+                                    <li class="list-group-item">
+                                        <h4><?php echo $month['name']?>
+                                        </h4>
                                         <button class="no-style-btn"><i class="bi bi-image"></i></button>
-                                    </div>
-                                </div>
-                                <div class="row month">
-                                    <div class="col">
-                                        <h4>February</h4>
-                                        <button class="no-style-btn"><i class="bi bi-image"></i></button>
-                                    </div>
-                                </div>
-                                <div class="row month">
-                                    <div class="col">
-                                        <h4>March</h4>
-                                        <button class="no-style-btn"><i class="bi bi-image"></i></button>
-                                    </div>
-                                </div>
+                                    </li>
+                                    <?php }?>
+                                </ul>
                             </div>
                         </div>
+                        <?php }?>
                     </div>
                 </div>
             </div>
@@ -165,7 +162,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body center-modal-body">
-                        <div class="row warning">
+                        <div class="row warning"
+                            style="display: <?php echo ($recordCount > 0) ? 'flex' : 'none'; ?>;">
                             <div class="col-auto">
                                 <i class="bi bi-exclamation-triangle"></i>
                             </div>
@@ -174,8 +172,20 @@
                                     Review and confirm before Proceeding</h6>
                             </div>
                         </div>
+                        <label for="inputStartYear" class="form-label">Academic Year</label>
+                        <div class="row academic-year-row">
+                            <div class="col">
+                                <input type="text" name="startYear" class="form-control" id="inputStartYear">
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-dash-lg"></i>
+                            </div>
+                            <div class="col">
+                                <input type="text" name="endYear" class="form-control" id="inputEndYear">
+                            </div>
+                        </div>
                         <label for="month" class="form-label">Month</label>
-                        <select name="month" class="form-select" id="month">
+                        <select class="form-select" id="month">
                             <option value="1" selected>January</option>
                             <option value="2">February</option>
                             <option value="3">March</option>
@@ -189,19 +199,6 @@
                             <option value="11">November</option>
                             <option value="12">December</option>
                         </select>
-                        <label for="inputStartYear" class="form-label">Academic Year</label>
-                        <div class="row academic-year-row">
-                            <div class="col">
-                                <input type="text" name="startYear" class="form-control" id="inputStartYear">
-                            </div>
-                            <div class="col-auto">
-                                <i class="bi bi-dash-lg"></i>
-                            </div>
-                            <div class="col">
-                                <input type="text" name="endYear" class="form-control" id="inputEndYear">
-                            </div>
-                        </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -220,9 +217,15 @@
     <script src="finance-page.js"></script>
 
     <script>
-        console.log(
-            "User ID:", <?php echo json_encode($_SESSION['user_id']); ?> ,
-        );
+        // Retrieve the session role from PHP
+        var sessionID =
+            "<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'undefined'; ?>";
+
+        var sessionRole =
+            "<?php echo isset($_SESSION['user_role']) ? $_SESSION['user_role'] : 'undefined'; ?>";
+
+        console.log("User ID: " + sessionID);
+        console.log("User Role: " + sessionRole);
     </script>
 </body>
 

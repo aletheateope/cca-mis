@@ -1,5 +1,5 @@
 <?php
-require_once '../../../sql/conn.php';
+require_once BASE_PATH . '/assets/sql/conn.php';
 
 $user_id = $_SESSION['user_id'];
 

@@ -7,7 +7,10 @@
 
 <?php session_start();?>
 
+<?php require_once 'sql/statement-id-check.php'?>
+
 <?php require_once 'sql/get-month-year.php'?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-                <form id="submitRecordForm">
+                <form id="submitRecordForm" enctype="multipart/form-data">
                     <div class="row page-body">
                         <div class="col">
                             <div class="row content">
@@ -235,7 +238,7 @@
     <script>
         console.log(
             "User ID:", <?php echo json_encode($_SESSION['user_id']); ?> ,
-            "Statement ID:", <?php echo json_encode($_SESSION['statement_id']); ?>
+            "Statement Report ID:", <?php echo json_encode($_SESSION['statement_report_id']); ?> ,
         );
     </script>
 </body>

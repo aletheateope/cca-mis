@@ -6,31 +6,48 @@ function beforeUnloadHandler(event) {
 
 window.addEventListener("beforeunload", beforeUnloadHandler);
 
-window.addEventListener("unload", function () {
-  navigator.sendBeacon("sql/cleanup.php");
+window.addEventListener("pagehide", function () {
+  navigator.sendBeacon("sql/kill-session.php");
 });
 
+// DISABLE WARNING ON SUBMIT
+document.querySelector("form").addEventListener("submit", function () {
+  window.removeEventListener("beforeunload", beforeUnloadHandler);
+});
+
+if (window.performance.getEntriesByType("navigation")[0]?.type === "reload") {
+  window.location.href = "finance-page.php";
+}
+
 // CHECK IF STARTING FUND EXISTS
-document.addEventListener("DOMContentLoaded", function () {
-  let inputField = document.getElementById("startingFund");
+function startingFund() {
+  let inputStartingFund = document.getElementById("startingFund");
+  let totalCredit = document.getElementById("totalCredit");
+  let finalFunding = document.getElementById("finalFundingTable");
 
   // Fetch the count from the PHP file
   fetch("sql/starting-fund.php")
     .then((response) => response.json())
     .then((data) => {
       let count = data.count;
+      let startingFund = data.startingFund;
 
       // If only one occurrence exists, remove readonly
       if (count === 1) {
-        inputField.removeAttribute("readonly");
+        inputStartingFund.removeAttribute("readonly");
+      }
+
+      if (count > 1 && startingFund) {
+        inputStartingFund.value = startingFund;
+        totalCredit.value = startingFund;
+        finalFunding.textContent = startingFund;
       }
     })
     .catch((error) => console.error("Error fetching data:", error));
-});
+}
 
-document.addEventListener("DOMContentLoaded", function () {
-  let cleaveInstances = {};
-
+let cleaveInstances = {};
+function cleave() {
   // CLEAVE
   document.querySelectorAll(".numeral").forEach((element) => {
     cleaveInstances[element.id] = new Cleave(element, {
@@ -43,58 +60,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function getFloatValue(id) {
     let element = document.getElementById(id);
-    if (!element) return 0;
-
-    // If Cleave.js is applied, use getRawValue()
-    if (element.cleave) {
-      return parseFloat(element.cleave.getRawValue()) || 0;
-    }
-
-    // Otherwise, use normal value parsing
-    return parseFloat(cleaveInstances[id]?.getRawValue()) || 0;
+    return element
+      ? parseFloat(cleaveInstances[id]?.getRawValue() || element.value) || 0
+      : 0;
   }
 
   function calculateTotalCredit() {
-    let startingFund = getFloatValue("startingFund");
-    let weeklyContribution = getFloatValue("weeklyContribution");
-    let internalProjects = getFloatValue("internalProjects");
-    let externalProjects = getFloatValue("externalProjects");
-    let internalInitiativeFunding = getFloatValue("internalInitiativeFunding");
-    let donationsSponsorships = getFloatValue("donationsSponsorships");
-    let adviserCredit = getFloatValue("adviserCredit");
-    let carriCredit = getFloatValue("carriCredit");
+    let creditFields = [
+      "startingFund",
+      "weeklyContribution",
+      "internalProjects",
+      "externalProjects",
+      "internalInitiativeFunding",
+      "donationsSponsorships",
+      "adviserCredit",
+      "carriCredit",
+    ];
 
-    let costExpenses = getFloatValue("costExpenses");
-
-    let totalCredit =
-      startingFund +
-      weeklyContribution +
-      internalProjects +
-      externalProjects +
-      internalInitiativeFunding +
-      donationsSponsorships +
-      adviserCredit +
-      carriCredit;
-
-    let totalExpense = costExpenses;
-
-    let finalFunding = totalCredit - totalExpense;
-
-    document.getElementById("totalCredit").value = totalCredit.toLocaleString(
-      undefined,
-      { minimumFractionDigits: 2 }
+    let totalCredit = creditFields.reduce(
+      (sum, id) => sum + getFloatValue(id),
+      0
     );
-    document.getElementById("totalCreditTable").textContent =
-      totalCredit.toLocaleString(undefined, { minimumFractionDigits: 2 });
+    let totalExpenses = getFloatValue("costExpenses");
+    let finalFunding = totalCredit - totalExpenses;
 
+    function formatNumber(value) {
+      return value.toLocaleString({ minimumFractionDigits: 2 });
+    }
+
+    document.getElementById("totalCredit").value = formatNumber(totalCredit);
     document.getElementById("totalExpenses").value =
-      totalExpense.toLocaleString(undefined, { minimumFractionDigits: 2 });
-    document.getElementById("totalExpensesTable").textContent =
-      totalExpense.toLocaleString(undefined, { minimumFractionDigits: 2 });
+      formatNumber(totalExpenses);
 
+    document.getElementById("totalCreditTable").textContent =
+      formatNumber(totalCredit);
+    document.getElementById("totalExpensesTable").textContent =
+      formatNumber(totalExpenses);
     document.getElementById("finalFundingTable").textContent =
-      finalFunding.toLocaleString(undefined, { minimumFractionDigits: 2 });
+      formatNumber(finalFunding);
   }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  startingFund();
+  cleave();
 });
 
 // FILEPOND
@@ -103,11 +112,6 @@ FilePond.registerPlugin(FilePondPluginFileValidateType);
 const inputElement = document.getElementById("uploadReceipts");
 const pond = FilePond.create(inputElement, {
   acceptedFileTypes: ["image/png", "image/jpeg", "image/heic", "image/heif"],
-});
-
-// DISABLE WARNING ON SUBMIT
-document.querySelector("form").addEventListener("submit", function () {
-  window.removeEventListener("beforeunload", beforeUnloadHandler);
 });
 
 // SUBMIT RECORD

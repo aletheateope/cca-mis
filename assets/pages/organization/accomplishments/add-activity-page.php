@@ -7,9 +7,7 @@
 
 <?php session_start();?>
 
-<?php
-// include_once 'sql/get-report-id.php'
-?>
+<?php include_once 'sql/get-report-id.php'?>
 
 <?php require_once 'sql/active-members.php'?>
 

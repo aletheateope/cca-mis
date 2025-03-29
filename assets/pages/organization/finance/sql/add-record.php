@@ -1,7 +1,8 @@
 <?php
+header("Content-Type: application/json");
+
 require_once '../../../../sql/base-path.php';
 
-header("Content-Type: application/json");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     require_once BASE_PATH . '/assets/sql/conn.php';
@@ -9,11 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     session_start();
 
     $user_id = $_SESSION['user_id'] ?? null;
-    $month = $_POST['month'] ?? null;
+    $month = $_SESSION['nextMonth'] ?? null;
     $startYear = $_POST['startYear'] ?? null;
     $endYear = $_POST['endYear'] ?? null;
 
-    
     if (!$user_id || !$month || !$startYear || !$endYear) {
         echo json_encode(["success" => false, "error" => "Missing required fields."]);
         exit;
@@ -21,20 +21,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $academic_year = $startYear . '-' . $endYear;
 
-    $sql = "INSERT INTO financial_statement (organization_id, month, academic_year) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO financial_statement_report (organization_id, academic_year) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
-
-    $stmt->bind_param("iis", $user_id, $month, $academic_year);
+    $stmt->bind_param("is", $user_id, $academic_year);
 
     if ($stmt->execute()) {
+        $_SESSION['statement_report_id'] = $stmt->insert_id;
+        $stmt->close();
 
-        $_SESSION['statement_id'] = $stmt->insert_id;
-       
-        echo json_encode(["success" => true]);
+        $sql2 = "INSERT INTO financial_statement (month) VALUES (?)";
+        $stmt2 = $conn->prepare($sql2);
+        $stmt2->bind_param("i", $month);
+        if ($stmt2->execute()) {
+            $statement_id = $stmt2->insert_id;
+            unset($_SESSION['nextMonth']);
+
+            $sql3 = "UPDATE financial_statement_report SET statement_id = ? WHERE report_id = ?";
+            $stmt3 = $conn->prepare($sql3);
+            $stmt3->bind_param("ii", $statement_id, $_SESSION['statement_report_id']);
+            if ($stmt3->execute()) {
+                echo json_encode(["success" => true]);
+            } else {
+                echo json_encode(["success" => false, "error" => "Update failed: " . $stmt3->error]);
+            }
+            $stmt3->close();
+        } else {
+            echo json_encode(["success" => false, "error" => "Insert into financial_statement failed: " . $stmt2->error]);
+        }
+        $stmt2->close();
     } else {
-        echo json_encode(["success" => false, "error" => "Insert failed: " . $stmt->error]);
+        echo json_encode(["success" => false, "error" => "Insert into financial_statement_report failed: " . $stmt->error]);
+        $stmt->close();
     }
-
-    $stmt->close();
     $conn->close();
 }

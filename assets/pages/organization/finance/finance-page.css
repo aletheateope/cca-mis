@@ -111,22 +111,23 @@
       justify-content: space-between;
     }
   }
-
-  .month {
-    &:hover {
-      background-color: var(--hovered);
-    }
-    .col {
+  ul {
+    border-radius: 0;
+    gap: 1rem;
+    li {
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
       align-items: center;
-      border: 1px solid var(--border-color);
+      justify-content: space-between;
+
+      border: 1px solid var(--border-color) !important;
 
       padding-top: 0.625rem;
       padding-bottom: 0.625rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
+
+      &:hover {
+        background-color: var(--hovered);
+      }
 
       i {
         color: var(--active-background);
