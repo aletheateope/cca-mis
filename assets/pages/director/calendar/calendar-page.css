@@ -3,9 +3,88 @@
   color: var(--primary-text);
   text-decoration: none;
 }
-
+.fc-others-button {
+  .others {
+    height: 22px;
+    font-size: 18px !important;
+  }
+}
 /* .scheduled-by {
 } */
+
+/* TIPPY */
+.tippy-event-details {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  padding-top: 0.625rem;
+  padding-bottom: 1rem;
+  > .col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+
+    .header {
+      .col > :first-child {
+        margin-right: 5rem;
+      }
+
+      .col {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        .action-group {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+
+          i {
+            font-size: 1.25em;
+          }
+
+          .delete-btn {
+            color: var(--danger);
+          }
+
+          .edit-btn {
+            color: var(--info);
+          }
+
+          .options-btn {
+            color: var(--primary-text);
+          }
+        }
+      }
+    }
+    .title {
+      .col {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+
+        h4 {
+          font-weight: var(--bold);
+        }
+      }
+    }
+    .date {
+      gap: 1rem;
+
+      /* .col {
+        width: 300px;
+      } */
+    }
+  }
+}
+
+.tippy-options {
+  .button {
+    &:hover {
+      color: var(--hovered);
+    }
+  }
+}
 
 /* PANEL: EVENT APPROVAL */
 .event-approval-panel {

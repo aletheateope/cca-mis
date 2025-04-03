@@ -69,8 +69,14 @@ function tooltip() {
   });
 
   tippy("#calendarBtn", {
-    content:
-      '<div class="tippy-no-bullets"><li><a href="#">View Schedules</a></li><li><a href="#">Notification</a></div>',
+    content: `
+      <div class="tippy-no-bullets">
+        <ul>
+          <li><a href="#">View Schedules</a></li>
+          <li><a href="#">Notification</a></li>
+        </ul>
+      </div>
+    `,
     theme: "light-no-border",
     allowHTML: true,
     arrow: false,
@@ -97,8 +103,14 @@ function tooltip() {
   });
 
   tippy("#financeBtn", {
-    content:
-      '<div class="tippy-no-bullets"><li><a href="#">View Records</a></li><li><a href="#">My Records</a></div>',
+    content: `
+      <div class="tippy-no-bullets">
+        <ul>
+          <li><a href="#">View Records</a></li>
+          <li><a href="#">My Records</a></li>
+        </ul>
+      </div>
+    `,
     theme: "light-no-border",
     allowHTML: true,
     arrow: false,
@@ -125,8 +137,14 @@ function tooltip() {
   });
 
   tippy("#accomplishmentsBtn", {
-    content:
-      '<div class="tippy-no-bullets"><li><a href="#">View Accomplishments</a></li><li><a href="#">My Accomplishments</a></div>',
+    content: `
+      <div class="tippy-no-bullets">
+        <ul>
+          <li><a href="#">View Accomplishments</a></li>
+          <li><a href="#">My Accomplishments</a></li>
+        </ul>
+      </div>
+    `,
     theme: "light-no-border",
     allowHTML: true,
     arrow: false,

@@ -123,7 +123,7 @@ document
     const formData = new FormData(this);
 
     try {
-      const response = await fetch("sql/submit-record.php", {
+      const response = await fetch("sql/record-submit.php", {
         method: "POST",
         body: formData,
       });

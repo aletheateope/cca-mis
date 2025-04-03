@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once '../../../../sql/conn.php';
+require_once 'conn.php';
 
 $user_id = $_SESSION['user_id'];
 

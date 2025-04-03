@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $user_id = $_SESSION['user_id'] ?? null;
 
-    $sql = "INSERT INTO event_calendar (user_id, title, description, location, start_date, end_date, start_time, end_time) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO event_calendar (user_id, title, description, location, start_date, end_date, start_time, end_time, cancelled) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("isssssss", $user_id, $title, $description, $location, $start_date, $end_date, $start_time, $end_time);
 
@@ -49,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                  ],
              ];
 
-            // Handle cases where start_time or end_time is null
             if ($start_time && $end_time) {
                 $eventData['start']['dateTime'] = "{$start_date}T{$start_time}:00";
                 $eventData['end']['dateTime'] = "{$end_date}T{$end_time}:00";

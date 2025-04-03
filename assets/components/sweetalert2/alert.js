@@ -1,3 +1,5 @@
+import { onShow, onHide } from "./alertAnimation.js";
+
 document.getElementById("logoutBtn").addEventListener("click", function () {
   event.preventDefault();
   Swal.fire({
@@ -8,18 +10,10 @@ document.getElementById("logoutBtn").addEventListener("click", function () {
     confirmButtonText: "Yes",
     cancelButtonText: "No",
     showClass: {
-      popup: `
-      animate__animated
-      animate__fadeIn
-      animate__faster
-    `,
+      popup: onShow,
     },
     hideClass: {
-      popup: `
-      animate__animated
-      animate__fadeOut
-      animate__faster
-    `,
+      popup: onHide,
     },
     customClass: {
       popup: "swal-container",

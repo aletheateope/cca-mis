@@ -11,11 +11,12 @@
 <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
 <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
 
+
 <!-- SWEET ALERT 2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- OWN SCRIPT (SWEET ALERT 2) -->
-<script src="/cca/assets/components/sweetalert2/alert.js"></script>
+<script type="module" src="/cca/assets/components/sweetalert2/alert.js"></script>
 
 <!-- CLEAVE.JS -->
 <script src="/cca/node_modules/cleave.js/dist/cleave.min.js"></script>

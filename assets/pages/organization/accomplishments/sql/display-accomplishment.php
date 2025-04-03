@@ -6,7 +6,7 @@ $user_id = $_SESSION['user_id'];
 // Fetch distinct years first
 $sql_years = "SELECT DISTINCT year 
                 FROM accomplishment_report
-                WHERE organization_id = ?
+                WHERE organization_id = ? AND activity_id IS NOT NULL
                 ORDER BY year DESC";
 $stmt_years = $conn->prepare($sql_years);
 $stmt_years->bind_param("i", $user_id);

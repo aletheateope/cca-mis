@@ -18,9 +18,8 @@ $sql = 'SELECT title, start_date, end_date, target_participants, actual_particip
         INNER JOIN activity_remark
             ON activity_remark.remark_id = activity_accomplishment.remark
 
-        WHERE accomplishment_report.organization_id = ?
-        AND accomplishment_report.month = ?
-        AND accomplishment_report.year = ?';
+        WHERE accomplishment_report.organization_id = 6 AND accomplishment_report.month = 1 AND accomplishment_report.year = 2022
+        ORDER BY activity_accomplishment.activity_id ASC';
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('iii', $user_id, $month, $year);

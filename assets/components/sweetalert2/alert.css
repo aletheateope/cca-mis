@@ -1,3 +1,10 @@
 .swal-container {
   background-color: var(--primary-background);
 }
+
+div:where(.swal2-container) h2:where(.swal2-title) {
+  font-size: var(--extra-large) !important;
+}
+div:where(.swal2-container) div:where(.swal2-html-container) {
+  font-size: var(--regular) !important;
+}

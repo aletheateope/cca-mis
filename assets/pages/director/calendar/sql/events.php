@@ -5,12 +5,14 @@ header('Content-Type: application/json');
 
 require_once BASE_PATH . '/assets/sql/conn.php';
 
-$sql = 'SELECT event_id, title, start_date, end_date, start_time, end_time,  COALESCE(name,role) AS scheduled_by, event_calendar.user_id, account.role
-        FROM event_calendar
-        LEFT JOIN account_organization 
-            ON account_organization.organization_id = event_calendar.user_id 
+$sql = 'SELECT public_key, title, description, location, start_date, end_date, start_time, end_time,  COALESCE(name,role) AS scheduled_by, ec.user_id, account.role
+        FROM event_calendar ec
+        LEFT JOIN account_organization ao
+            ON ao.organization_id = ec.user_id 
         LEFT JOIN account 
-            ON account.user_id = event_calendar.user_id';
+            ON account.user_id = ec.user_id
+        INNER JOIN key_event ke
+            ON ke.event_id = ec.event_id';
 $result = $conn->query($sql);
 
 $events = [];
@@ -38,10 +40,17 @@ while ($row = $result->fetch_assoc()) {
 
 
     $event = [
-        'id' => $row['event_id'],
+        'id' => $row['public_key'],
         'title' => $row['title'],
-        'scheduled_by' => $row['scheduled_by'],
         'textColor' => '#ffffff',
+        
+        'extendedProps' => [
+            'description' => $row['description'],
+            'location' => $row['location'],
+
+            'scheduled_by' => $row['scheduled_by'],
+        ],
+
     ];
 
     if ($backgroundColor) {

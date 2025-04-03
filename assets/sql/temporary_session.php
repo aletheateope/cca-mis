@@ -6,5 +6,5 @@ session_destroy();
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    $_SESSION['user_id'] = 6;
+    $_SESSION['user_id'] = 2;
 }

@@ -69,8 +69,9 @@
                                                         <span><?php echo $month['name'];?></span>
                                                         <div class="action-group">
                                                             <div class="events">
-                                                                <p><?php echo count($month['events'])?>
-                                                                    Events
+                                                                <p>
+                                                                    <?php $eventCount = count($month['events']);?>
+                                                                    <?php echo $eventCount . ($eventCount == 1 ? ' Event' : ' Events');?>
                                                                 </p>
                                                                 <button class="addEvent no-style-btn">
                                                                     <i class="bi bi-plus"></i>

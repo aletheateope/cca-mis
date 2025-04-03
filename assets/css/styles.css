@@ -123,6 +123,24 @@ label {
   }
 }
 
+.no-border {
+  border: none !important;
+}
+
+.row-gap {
+  gap: 1rem;
+}
+
+.col-gap {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.no-style-btn {
+  background: none;
+  border: none;
+}
+
 /* MODAL CENTER */
 .center-modal-body {
   display: flex;
@@ -143,11 +161,6 @@ label {
   }
 }
 
-.back-button {
-  text-decoration: none;
-  color: var(--primary-text);
-}
-
 /* ADD PAGE */
 .submit-row {
   margin-bottom: 1rem;
@@ -157,20 +170,7 @@ label {
   }
 }
 
-.no-border {
-  border: none !important;
-}
-
-.row-gap {
-  gap: 1rem;
-}
-
-.col-gap {
-  display: grid;
-  gap: 0.625rem;
-}
-
-.no-style-btn {
-  background: none;
-  border: none;
+.back-button {
+  text-decoration: none;
+  color: var(--primary-text);
 }

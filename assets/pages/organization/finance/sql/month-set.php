@@ -1,8 +1,8 @@
 <?php
 session_start();
-if (isset($_POST['nextMonth'])) {
-    $_SESSION['nextMonth'] = $_POST['nextMonth'];
-    echo json_encode(['success' => true, 'nextMonth' => $_SESSION['nextMonth']]);
+if (isset($_POST['month'])) {
+    $_SESSION['month'] = $_POST['month'];
+    echo json_encode(['success' => true, 'month' => $_SESSION['month']]);
 } else {
     echo json_encode(['success' => false, 'error' => 'No month provided']);
 }

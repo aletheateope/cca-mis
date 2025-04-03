@@ -53,7 +53,6 @@ check_role('Organization');
 -----------------------------
 
 <script>
-    // Retrieve the session role from PHP
     var sessionID =
         "<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'undefined'; ?>";
 

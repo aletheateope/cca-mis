@@ -48,7 +48,7 @@ function tooltip() {
     content: "Org. Members",
     theme: "light-no-border",
     arrow: false,
-    offset: [0, 12],
+    offset: [0, 16],
     placement: "right",
     interactive: true,
     onShow() {
@@ -58,12 +58,23 @@ function tooltip() {
   });
 
   tippy("#orgMembersBtn", {
-    content:
-      '<div class="tippy-no-bullets"><li><a href="#">Blck Mvmnt</a></li><li><a href="#">Chorale</a><li><a href="#">Dulangsining</a></li><li><a href="#">Euphoria</a></li><li><a href="#">FDC</a></li><li><a href="#">Kultura Teknika</a></li><li><a href="#">Search</a></li></div>',
+    content: `
+      <div class="tippy-no-bullets">
+        <ul>
+          <li><a href="#">Blck Mvmnt</a></li>
+          <li><a href="#">Chorale</a></li>
+          <li><a href="#">Dulangsining</a></li>
+          <li><a href="#">Euphoria</a></li>
+          <li><a href="#">FDC</a></li>
+          <li><a href="#">Kultura Teknika</a></li>
+          <li><a href="#">Search</a></li>
+        </ul>
+      </div>
+    `,
     theme: "light-no-border",
     allowHTML: true,
     arrow: false,
-    offset: [0, 12],
+    offset: [0, 16],
     placement: "right",
     trigger: "click",
     appendTo: () => document.body,
@@ -77,7 +88,7 @@ function tooltip() {
     content: "Calendar",
     theme: "light-no-border",
     arrow: false,
-    offset: [0, 23],
+    offset: [0, 27],
     placement: "right",
     appendTo: () => document.body,
     interactive: true,
@@ -90,7 +101,7 @@ function tooltip() {
     content: "Finance",
     theme: "light-no-border",
     arrow: false,
-    offset: [0, 23],
+    offset: [0, 27],
     placement: "right",
     appendTo: () => document.body,
     interactive: true,
@@ -103,7 +114,7 @@ function tooltip() {
     content: "Accomplishments",
     theme: "light-no-border",
     arrow: false,
-    offset: [0, 23],
+    offset: [0, 27],
     placement: "right",
     appendTo: () => document.body,
     interactive: true,
@@ -116,7 +127,7 @@ function tooltip() {
     content: "Accounts",
     theme: "light-no-border",
     arrow: false,
-    offset: [0, 23],
+    offset: [0, 27],
     placement: "right",
     appendTo: () => document.body,
     interactive: true,
@@ -129,7 +140,7 @@ function tooltip() {
     content: "Log Out",
     theme: "light-no-border",
     arrow: false,
-    offset: [0, 12],
+    offset: [0, 16],
     placement: "right",
     appendTo: () => document.body,
     interactive: true,

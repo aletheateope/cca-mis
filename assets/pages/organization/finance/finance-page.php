@@ -9,8 +9,6 @@
 
 <?php require_once 'sql/display-record.php'?>
 
-<?php include 'sql/warning.php'?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,6 +40,7 @@
                 </div>
                 <div class="row page-body">
                     <div class="col">
+                        <!-- FINANCIAL SUMMARY -->
                         <div class="row finance-overview">
                             <div class="col content">
                                 <h3>March 2025</h3>
@@ -125,22 +124,30 @@
                             </div>
                         </div>
 
+                        <!-- FINANCIAL RECORDS -->
                         <?php foreach ($records as $year => $months) { ?>
                         <div class="row content financial-records">
                             <div class="col">
                                 <div class="row header">
                                     <div class="col">
                                         <h3><?php echo $year?></h3>
-                                        <button class="btn btn-primary">Generate Report</button>
+                                        <button class="btn btn-primary generatePDF"
+                                            data-year="<?php echo $year?>">Generate
+                                            Report</button>
                                     </div>
                                 </div>
 
                                 <ul class="list-group">
                                     <?php foreach ($months as $month) { ?>
                                     <li class="list-group-item">
-                                        <h4><?php echo $month['name']?>
+                                        <h4><?php echo $month['name'] . ", " . $month['year'] ?>
                                         </h4>
-                                        <button class="no-style-btn"><i class="bi bi-image"></i></button>
+                                        <button class="no-style-btn generateIMG" data-bs-toggle="modal"
+                                            data-bs-target="#generateIMGModal"
+                                            data-month="<?php echo $month['id']?>"
+                                            data-year="<?php echo $month['year']?>">
+                                            <i class="bi bi-image"></i>
+                                        </button>
                                     </li>
                                     <?php }?>
                                 </ul>
@@ -161,27 +168,19 @@
                         <h1 class="modal-title fs-5">Financial Record</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body center-modal-body">
-                        <div class="row warning"
-                            style="display: <?php echo ($recordCount > 0) ? 'flex' : 'none'; ?>;">
-                            <div class="col-auto">
-                                <i class="bi bi-exclamation-triangle"></i>
-                            </div>
-                            <div class="col">
-                                <h6>Creating a new record makes the previous one uneditable. <br>
-                                    Review and confirm before Proceeding</h6>
-                            </div>
-                        </div>
+                    <div class="modal-body center-modal-body" id="addRecordModalBody">
                         <label for="inputStartYear" class="form-label">Academic Year</label>
-                        <div class="row academic-year-row">
-                            <div class="col">
-                                <input type="text" name="startYear" class="form-control" id="inputStartYear">
-                            </div>
-                            <div class="col-auto">
-                                <i class="bi bi-dash-lg"></i>
-                            </div>
-                            <div class="col">
-                                <input type="text" name="endYear" class="form-control" id="inputEndYear">
+                        <div class="container-fluid">
+                            <div class="row academic-year-row">
+                                <div class="col">
+                                    <input type="text" name="startYear" class="form-control" id="inputStartYear">
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-dash-lg"></i>
+                                </div>
+                                <div class="col">
+                                    <input type="text" name="endYear" class="form-control" id="inputEndYear">
+                                </div>
                             </div>
                         </div>
                         <label for="month" class="form-label">Month</label>
@@ -209,15 +208,125 @@
         </div>
     </form>
 
+    <div class="modal fade generate-img-modal" id="generateIMGModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Financial Statement</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="containter-fluid">
+                        <div class="row finance-img" id="capture">
+                            <div class="col">
+                                <div class="row header">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h4>Report Updated As Of: <span id="date">MM/DD/YYYY</span></h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <h4>FINANCIAL STATEMENT <span class="academicYear">YYYY-YYYY</span></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-end">AY <span class="academicYear">YYYY-YYYY</span> Starting
+                                                Fund</td>
+                                            <td class="text-center"><span id="startingFund">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>CREDIT FROM WEEKLY CONTRIBUTION</td>
+                                            <td class="text-center"><span id="weeklyContribution">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>REVENUE FROM INTERNAL PROJECTS</td>
+                                            <td class="text-center"><span id="internalProjects">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>REVENUE FROM EXTERNAL PROJECTS</td>
+                                            <td class="text-center"><span id="externalProjects">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>CREDIT FROM INTERNAL INTIATIVE FUNDING</td>
+                                            <td class="text-center"><span id="internalInitiativeFunding">0.00</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>CREDIT FROM DONATIONS / SPONSORSHIPS</td>
+                                            <td class="text-center"><span id="donationsSponsorships">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>CREDIT FROM ADVISER</td>
+                                            <td class="text-center"><span id="adviserCredit">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>CREDIT FROM CARRI</td>
+                                            <td class="text-center"><span id="carriCredit">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">TOTAL CREDIT</td>
+                                            <td class="text-center"><span class="totalCredit">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>COST AND EXPENSES</td>
+                                            <td class="text-center"><span class="totalExpenses">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">TOTAL EXPENSES</td>
+                                            <td class="text-center"><span class="totalExpenses">0.00</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-end">TOTAL CREDIT</td>
+                                            <td class="text-center"><span class="totalCredit">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">TOTAL EXPENSES</td>
+                                            <td class="text-center"><span class="totalExpenses">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Final FUNDING Less All Expenses</td>
+                                            <td class="text-center"><span id="finalFunding">0.00</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="download">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <?php require_once BASE_PATH . '/assets/components/footer-links.php' ?>
 
     <!-- CHART.JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
 
-    <script src="finance-page.js"></script>
+    <!-- HTML2CANVAS -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <!-- JSPDF -->
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+
+    <script type="module" src="finance-page.js"></script>
 
     <script>
-        // Retrieve the session role from PHP
         var sessionID =
             "<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'undefined'; ?>";
 

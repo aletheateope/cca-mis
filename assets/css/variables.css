@@ -157,3 +157,7 @@ h6 {
 .fc-event {
   cursor: pointer;
 }
+
+.fc .fc-popover {
+  z-index: 1050;
+}

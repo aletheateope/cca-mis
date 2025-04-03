@@ -1,15 +1,28 @@
-let activeTippy = null;
+import {
+  onShow,
+  onHide,
+} from "../../../components/sweetalert2/alertAnimation.js";
+
+let eventTippy = null;
 
 // FULL CALENDAR
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: "dayGridMonth",
-    height: "86vh",
+    height: "85vh",
     headerToolbar: {
       left: "prev,next today",
       center: "title",
-      right: "dayGridMonth,listYear",
+      right: "dayGridMonth,listYear others",
+    },
+    customButtons: {
+      others: {
+        icon: "bi bi-three-dots-vertical others",
+        click: function () {
+          alert("Custom button clicked!"); // Custom action
+        },
+      },
     },
     dayMaxEventRows: true,
     views: {
@@ -32,35 +45,274 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     events: "sql/events.php",
     eventClick: function (info) {
-      info.jsEvent.preventDefault();
+      // info.jsEvent.preventDefault();
+      // info.jsEvent.stopPropagation();
 
-      if (activeTippy && activeTippy.reference === info.el) {
-        activeTippy.hide();
-        activeTippy = null;
+      if (eventTippy && eventTippy.reference === info.el) {
+        eventTippy.hide();
+        eventTippy = null;
         return;
       }
 
       tippy.hideAll();
 
-      activeTippy = tippy(info.el, {
+      const isAllDay = info.event.allDay;
+
+      const startDate = info.event.start;
+      const endDate = info.event.end ? info.event.end : startDate; // If endDate is null, use startDate
+
+      const formatDate = (date, isAllDay) => {
+        if (!date) return "N/A";
+
+        const options = { year: "numeric", month: "long", day: "2-digit" };
+        const formattedDate = date.toLocaleDateString("en-US", options);
+
+        if (isAllDay) {
+          return formattedDate;
+        }
+
+        const timeOptions = {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        };
+        const formattedTime = date.toLocaleTimeString("en-US", timeOptions);
+
+        return `${formattedDate} - ${formattedTime}`;
+      };
+      const formattedStart = formatDate(startDate, isAllDay);
+      const formattedEnd = formatDate(endDate, isAllDay);
+
+      eventTippy = tippy(info.el, {
         theme: "light",
         content: `
-            <strong>${info.event.title}</strong><br>
-            🕒 ${info.event.start.toLocaleString()} <br>
-            📌 ${info.event.extendedProps.description || "No details"}
+          <div class="container-fluid">
+            <div class="row tippy-event-details">
+              <div class="col">
+                <div class="row header">
+                  <div class="col">
+                    <h3>Event Details</h3>
+                    <div class="action-group">
+                      <button class="no-style-btn edit-btn">
+                        <i class="bi bi-pencil-square"></i>
+                      </button>
+                      <button class="no-style-btn delete-btn">
+                        <i class="bi bi-trash-fill"></i>
+                      </button>
+                      <button class="no-style-btn options-btn">
+                        <i class="bi bi-three-dots-vertical"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="row title">
+                  <div class="col">
+                    <h4>${info.event.title}</h4>
+                    <h6>${info.event.extendedProps.scheduled_by}</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <p>${info.event.extendedProps.description}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <p>${info.event.extendedProps.location}</p>
+                  </div>
+                </div>
+                <div class="row date">
+                  <div class="col">
+                    <h4>Start Date</h4>
+                    <p>${formattedStart}</p>
+                  </div>
+                  <div class="col">
+                    <h4>End Date</h4>
+                    <p>${formattedEnd}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         `,
+        arrow: false,
+        maxWidth: 400,
         allowHTML: true,
         interactive: true,
         trigger: "manual",
         placement: "right",
+        appendTo: () => document.body,
+        zIndex: 1050,
+        onMount(instance) {
+          instance.popper.addEventListener("mousedown", function (evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+          });
+
+          instance.popper
+            .querySelector(".delete-btn")
+            .addEventListener("click", async function () {
+              Swal.fire({
+                title: `Are you sure you want to delete the event titled "${info.event.title}"?`,
+                text: "This event will be permanently deleted. Do you want to continue?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                showClass: {
+                  popup: onShow,
+                },
+                hideClass: {
+                  popup: onHide,
+                },
+                customClass: {
+                  popup: "swal-container",
+                },
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  Swal.fire({
+                    title: "Processing...",
+                    text: "Please wait while we delete the event.",
+                    allowOutsideClick: false,
+                    showClass: {
+                      popup: onShow,
+                    },
+                    hideClass: {
+                      popup: onHide,
+                    },
+                    didOpen: () => {
+                      Swal.showLoading();
+                    },
+                  });
+                  try {
+                    const response = await fetch("sql/delete-event.php", {
+                      method: "DELETE",
+                      headers: {
+                        "content-type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        eventId: info.event.id,
+                      }),
+                    });
+
+                    if (!response.ok) {
+                      throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    Swal.close();
+
+                    if (data.success) {
+                      info.event.remove();
+                      Swal.fire({
+                        title: "Success!",
+                        text: "Event deleted successfully.",
+                        icon: "success",
+                        showClass: {
+                          popup: onShow,
+                        },
+                        hideClass: {
+                          popup: onHide,
+                        },
+                      });
+                    } else {
+                      Swal.fire({
+                        title: "Error!",
+                        text: "Failed to delete event, please try again.",
+                        icon: "error",
+                        showClass: {
+                          popup: onShow,
+                        },
+                        hideClass: {
+                          popup: onHide,
+                        },
+                      });
+                    }
+                  } catch (error) {
+                    Swal.close();
+                    Swal.fire({
+                      title: "Error!",
+                      text: "Failed to delete event, please try again.",
+                      icon: "error",
+                      showClass: {
+                        popup: onShow,
+                      },
+                      hideClass: {
+                        popup: onHide,
+                      },
+                    });
+                    console.error("Delete event error:", error);
+                  }
+                }
+              });
+            });
+        },
         onHidden(instance) {
-          if (activeTippy === instance) {
-            activeTippy = null;
-          }
+          eventTippy = null;
+        },
+        popperOptions: {
+          modifiers: [
+            {
+              name: "flip",
+              options: {
+                fallbackPlacements: ["left", "bottom", "top"],
+              },
+            },
+          ],
         },
       });
 
-      activeTippy.show();
+      eventTippy.show();
+
+      tippy(".options-btn", {
+        theme: "light",
+        content: `
+          <div class="tippy-no-bullets tippy-options">
+            <ul>
+              <li><button class="no-style-btn cancel-event-btn">Cancel Event</button></li>
+            </ul>
+          </div>
+        `,
+        offset: [0, 5],
+        allowHTML: true,
+        arrow: false,
+        trigger: "click",
+        interactive: true,
+        placement: "bottom",
+        appendTo: () => document.body,
+        onShow(instance) {
+          eventTippy.setProps({ hideOnClick: false });
+        },
+        onMount(instance) {
+          instance.popper.addEventListener("mousedown", function (evt) {
+            console.log("clicked inside Tippy");
+            evt.stopPropagation();
+            evt.preventDefault();
+          });
+        },
+        onHide(instance) {
+          eventTippy.setProps({ hideOnClick: true });
+        },
+      });
+
+      tippy(".delete-btn", {
+        theme: "light",
+        content: "Delete Event",
+        placement: "top",
+      });
+
+      tippy(".edit-btn", {
+        theme: "light",
+        content: "Edit Event",
+        placement: "top",
+      });
+
+      tippy(".options-btn", {
+        theme: "light",
+        content: "More",
+        placement: "top",
+      });
     },
   });
   calendar.render();
@@ -140,9 +392,35 @@ document.querySelectorAll(".approve-btn").forEach((button) => {
   });
 });
 
+// REJECT EVENT
 document.querySelectorAll(".reject-btn").forEach((button) => {
-  button.addEventListener("click", function () {
-    let eventRequestId = this.getAttribute("data-id");
+  button.addEventListener("click", async function () {
+    const eventRequestId = this.getAttribute("data-id");
+
+    try {
+      const response = await fetch("sql/reject-event.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: eventRequestId }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert(result.message);
+      } else {
+        alert("Failed to reject event:" + result.message);
+      }
+    } catch (error) {
+      console.error("Error details:", error);
+      alert("Error: " + error.message);
+    }
   });
 });
 

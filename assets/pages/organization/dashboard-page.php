@@ -33,7 +33,8 @@
                 <div class="row page-body">
                     <div class="col">
                         <div class="row content">
-                            <div class="col"></div>
+                            <div class="col">
+                            </div>
                         </div>
                     </div>
                 </div>

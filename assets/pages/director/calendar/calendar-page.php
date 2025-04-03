@@ -37,14 +37,17 @@
                         </button>
                     </div>
                 </div>
-                <div class="page-body">
-                    <div class="row content">
-                        <div class="col">
-                            <div class="calendar" id='calendar'></div>
+
+                <div class="row page-body">
+                    <div class="col">
+                        <div class="row content">
+                            <div class="col">
+                                <div class="calendar" id='calendar'></div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- <div class="row event-approval">
+                        <!-- <div class="row event-approval">
                     </div> -->
+                    </div>
                 </div>
             </div>
             <div class="col-auto event-approval-panel">
@@ -103,11 +106,11 @@
                         <div class="row button-row">
                             <div class="col">
                                 <button type="button" class="approve-btn no-style-btn"
-                                    data-id="<?php echo $row['event_request_id']?>">Approve</button>
+                                    data-id="<?php echo $row['public_key']?>">Approve</button>
                             </div>
                             <div class="col">
                                 <button type="button" class="reject-btn no-style-btn"
-                                    data-id="<?php echo $row['event_request_id']?>">Reject</button>
+                                    data-id="<?php echo $row['public_key']?>">Reject</button>
                             </div>
                         </div>
                     </div>
@@ -178,11 +181,11 @@
                         <div class="row button-row">
                             <div class="col">
                                 <button type="button" class="approve-btn no-style-btn"
-                                    data-id="<?php echo $row['event_request_id']?>">Approve</button>
+                                    data-id="<?php echo $row['public_key']?>">Approve</button>
                             </div>
                             <div class="col">
                                 <button type="button" class="reject-btn no-style-btn"
-                                    data-id="<?php echo $row['event_request_id']?>">Reject</button>
+                                    data-id="<?php echo $row['public_key']?>">Reject</button>
                             </div>
                         </div>
                     </div>
@@ -191,7 +194,6 @@
                 <?php } ?>
             </div>
         </div>
-    </div>
     </div>
 
     <form id="addEventForm" enctype="multipart/form-data">
@@ -262,7 +264,7 @@
     <!-- FULLCALENDAR -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 
-    <script src="calendar-page.js"></script>
+    <script type="module" src="calendar-page.js"></script>
 
     <script>
         console.log(

@@ -17,14 +17,14 @@ $records=[];
 while ($row_year = $result_years->fetch_assoc()) {
     $year = $row_year['academic_year'];
 
-    $sql_months = "SELECT month, month_name
+    $sql_months = "SELECT month, month_name, year
                     FROM date_month
-                    INNER JOIN financial_statement
-                        ON date_month.month_id = financial_statement.month
-                    INNER JOIN financial_statement_report
-                        ON financial_statement_report.statement_id = financial_statement.statement_id
-                    WHERE financial_statement_report.organization_id = ? AND academic_year = ?
-                    ORDER BY month ASC";
+                    INNER JOIN financial_statement fs
+                        ON date_month.month_id = fs.month
+                    INNER JOIN financial_statement_report frs
+                        ON frs.statement_id = fs.statement_id
+                    WHERE frs.organization_id = ? AND academic_year = ?
+                    ORDER BY fs.statement_id ASC";
     $stmt_months = $conn->prepare($sql_months);
     $stmt_months->bind_param("is", $user_id, $year);
     $stmt_months->execute();
@@ -34,7 +34,9 @@ while ($row_year = $result_years->fetch_assoc()) {
 
     while ($row_month = $result_months->fetch_assoc()) {
         $months[] = [
+            'id' => $row_month['month'],
            'name' => $row_month['month_name'],
+           'year' => $row_month['year']
        ];
 
     }

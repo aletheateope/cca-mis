@@ -7,7 +7,7 @@
 
 <?php session_start();?>
 
-<?php require_once 'sql/statement-id-check.php'?>
+<?php require_once 'sql/check-statement-id.php'?>
 
 <?php require_once 'sql/get-month-year.php'?>
 
@@ -68,7 +68,7 @@
                                         <div class="col">
                                             <div class="row entry">
                                                 <div class="col text-end">
-                                                    Starting Fund
+                                                    <label for="startingFund">Starting Fund</label>
                                                 </div>
                                                 <div class="col">
                                                     <input type="text" name="startingFund" class="numeral form-control"
@@ -77,7 +77,8 @@
                                             </div>
                                             <div class="row entry">
                                                 <div class="col">
-                                                    Credit From Weekly Contribution
+                                                    <label for="weeklyContribution">Credit From Weekly
+                                                        Contribution</label>
                                                 </div>
                                                 <div class="col">
                                                     <input type="text" name="weeklyContribution"
@@ -87,7 +88,7 @@
                                             </div>
                                             <div class="row entry">
                                                 <div class="col">
-                                                    Revenue From Internal Projects
+                                                    <label for="internalProjects">Revenue From Internal Projects</label>
                                                 </div>
                                                 <div class="col">
                                                     <input type="text" name="internalProjects"
@@ -97,7 +98,7 @@
                                             </div>
                                             <div class="row entry">
                                                 <div class="col">
-                                                    Revenue From External Projects
+                                                    <label for="externalProjects">Revenue From External Projects</label>
                                                 </div>
                                                 <div class="col">
                                                     <input type="text" name="externalProjects"
@@ -107,7 +108,8 @@
                                             </div>
                                             <div class="row entry">
                                                 <div class="col">
-                                                    Credit For Internal Initiative Funding
+                                                    <label for="internalInitiativeFunding">Credit For Internal
+                                                        Initiative Funding</label>
                                                 </div>
                                                 <div class="col">
                                                     <input type="text" name="internalInitiativeFunding"
@@ -117,7 +119,8 @@
                                             </div>
                                             <div class="row entry">
                                                 <div class="col">
-                                                    Credit From Donations/Sponsorships
+                                                    <label for="donationsSponsorships">Credit From
+                                                        Donations/Sponsorships</label>
                                                 </div>
                                                 <div class="col">
                                                     <input type="text" name="donationsSponsorships"
@@ -127,7 +130,7 @@
                                             </div>
                                             <div class="row entry">
                                                 <div class="col">
-                                                    Credit From Adviser
+                                                    <label for="adviserCredit">Credit From Adviser</label>
                                                 </div>
                                                 <div class="col">
                                                     <input type="text" name="adviserCredit" class="numeral form-control"
@@ -136,7 +139,7 @@
                                             </div>
                                             <div class="row entry">
                                                 <div class="col">
-                                                    Credit From Carri
+                                                    <label for="carriCredit">Credit From Carri</label>
                                                 </div>
                                                 <div class="col">
                                                     <input type="text" name="carriCredit" class="numeral form-control"
@@ -145,7 +148,7 @@
                                             </div>
                                             <div class="row entry">
                                                 <div class="col text-end">
-                                                    Total Credit
+                                                    <label for="totalCredit">Total Credit</label>
                                                 </div>
                                                 <div class="col">
                                                     <input type="text" name="totalCredit" class="numeral form-control"
@@ -154,7 +157,7 @@
                                             </div>
                                             <div class="row entry">
                                                 <div class="col">
-                                                    Cost and Expenses
+                                                    <label for="costExpenses">Cost and Expenses</label>
                                                 </div>
                                                 <div class="col">
                                                     <input type="text" class="numeral form-control" id="costExpenses"
@@ -163,7 +166,7 @@
                                             </div>
                                             <div class="row entry">
                                                 <div class="col text-end">
-                                                    Total Expenses
+                                                    <label for="totalExpenses">Total Expenses</label>
                                                 </div>
                                                 <div class="col">
                                                     <input type="text" name="totalExpenses" class="numeral form-control"
