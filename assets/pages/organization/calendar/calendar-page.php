@@ -18,6 +18,7 @@
     <?php require_once BASE_PATH . '/assets/components/header-links.php' ?>
 
     <link rel="stylesheet" href="calendar-page.css">
+
 </head>
 
 <body>
@@ -115,7 +116,7 @@
     <!-- FULLCALENDAR -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 
-    <script src="calendar-page.js"></script>
+    <script type="module" src="calendar-page.js"></script>
 
     <script>
         console.log(

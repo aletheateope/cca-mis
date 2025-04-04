@@ -267,9 +267,14 @@
     <script type="module" src="calendar-page.js"></script>
 
     <script>
-        console.log(
-            "User ID:", <?php echo json_encode($_SESSION['user_id']); ?>
-        )
+        var sessionID =
+            "<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'undefined'; ?>";
+
+        var sessionRole =
+            "<?php echo isset($_SESSION['user_role']) ? $_SESSION['user_role'] : 'undefined'; ?>";
+
+        console.log("User ID: " + sessionID);
+        console.log("User Role: " + sessionRole);
     </script>
 </body>
 

@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 
 require_once BASE_PATH . '/assets/sql/conn.php';
 
-$sql = 'SELECT public_key, title, description, location, start_date, end_date, start_time, end_time, COALESCE(name,role) AS scheduled_by, ec.user_id, account.role
+$sql = 'SELECT public_key, title, description, location, start_date, end_date, start_time, end_time,  COALESCE(name,role) AS scheduled_by, ec.user_id, account.role
         FROM event_calendar ec
         LEFT JOIN account_organization ao
             ON ao.organization_id = ec.user_id 

@@ -5,8 +5,6 @@ require_once '../../../../sql/base-path.php';
 
 require_once BASE_PATH . '/assets/sql/calendar/service-account.php';
 
-require_once BASE_PATH . '/assets/sql/public_key.php';
-
 use Google\Service\Calendar;
 use Google\Service\Calendar\Event;
 use Google\Service\Calendar\EventDateTime;
@@ -88,19 +86,8 @@ if(isset($data["id"])) {
             $deleteStmt = $conn->prepare("DELETE FROM event_request WHERE event_request_id = ?");
             $deleteStmt->bind_param("i", $row['event_request_id']);
             if ($deleteStmt->execute()) {
-                $count = 1;
-
-                do {
-                    $public_key = generatePublicKey();
-                    $sql = "SELECT COUNT(*) FROM key_event WHERE public_key = ?";
-                    $stmt2 = $conn->prepare($sql);
-                    $stmt2->bind_param("s", $public_key);
-                    $stmt2->execute();
-                    $stmt2->bind_result($count);
-                    $stmt2->fetch();
-                    $stmt2->close();
-                } while ($count > 0);
-
+                
+                require_once BASE_PATH . '/assets/sql/event-key.php';
 
                 $insert = $conn->prepare("INSERT INTO key_event (event_id, public_key) VALUES (?,?)");
                 $insert->bind_param("is", $eventID, $public_key);
@@ -108,9 +95,57 @@ if(isset($data["id"])) {
 
             }
 
-            
             $conn->commit();
-            echo json_encode(["success" => true, "message" => "Event request approved successfully."]);
+
+            $colors = [
+                1 => '#000000', // BLCK MVMNT
+                2 => '#4451A4', // Chorale
+                3 => '#E97536', // Dulangsining
+                4 => '#DDCA4C', // Euphoria
+                5 => '#E4AC45', // FDC
+                6 => '#785943', // Kultura Teknika
+            ];
+
+            $backgroundColor = $colors[$row['organization_id']] ?? null;
+            $borderColor = $backgroundColor;
+
+
+            $sql = $conn ->prepare("SELECT name FROM account_organization WHERE organization_id = ?");
+            $sql->bind_param("i", $row['organization_id']);
+            $sql->execute();
+            $sql->bind_result($scheduled_by);
+            $sql->fetch();
+            $sql->close();
+
+            $hasTime = !empty($row['start_time']) && !empty($row['end_time']);
+
+            $start = $hasTime
+                ? $row['start_date'] . 'T' . $row['start_time']
+                : $row['start_date'];
+
+            $end = $hasTime
+                ? $row['end_date'] . 'T' . $row['end_time']
+                : $row['end_date'];
+
+            echo json_encode([
+                "success" => true,
+                "event" => [
+                    "id" => $public_key,
+                    "title" => $row['title'],
+                    "start" => $start,
+                    "end" => $end,
+                    "allDay" => !$hasTime,
+                    'extendedProps' => [
+                        'description' => $row['description'],
+                        'location' => $row['location'],
+
+                        'scheduled_by' => $scheduled_by,
+                    ],
+                    'textColor' => '#ffffff',
+                    'backgroundColor' => $backgroundColor,
+                    'borderColor' => $borderColor,
+                ],
+            ]);
         } else {
             throw new Exception("Event request not found.");
         }

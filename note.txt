@@ -76,6 +76,59 @@ SCRIPTS
 
 -----------------------------
 
+import {
+  onShow,
+  onHide,
+} from "../../../components/sweetalert2/alertAnimation.js";
+
+Swal.fire({
+  title: "Processing...",
+  text: "Please wait while we delete the event.",
+  allowOutsideClick: false,
+  showClass: {
+    popup: onShow,
+  },
+  hideClass: {
+    popup: onHide,
+  },
+  didOpen: () => {
+    Swal.showLoading();
+  },
+});
+
+const data = await response.json();
+
+Swal.close();
+
+} catch (error) {
+  Swal.close();
+  Swal.fire({
+    title: "Error!",
+    text: "Failed to delete event, please try again.",
+    icon: "error",
+    showClass: {
+      popup: onShow,
+    },
+    hideClass: {
+      popup: onHide,
+    },
+  });
+  console.error("Delete event error:", error);
+}
+
+-----------------------------
+
+this.closest(".event-request-card").remove();
+
+-----------------------------
+
+import { createNotyf } from "../../../components/notyf.js";
+
+const notyf = createNotyf();
+notyf.success("Event deleted successfully.");
+
+-----------------------------
+
 /* MEDIA QUERIES */
 /* Mobile */
 @media (max-width: 576px) {

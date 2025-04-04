@@ -1,4 +1,6 @@
 <?php
+header("content-type: application/json");
+
 require_once '../../../../sql/base-path.php';
 
 require_once BASE_PATH . '/assets/sql/calendar/service-account.php';
@@ -68,14 +70,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $update_stmt->execute();
             $update_stmt->close();
 
+            require_once BASE_PATH . '/assets/sql/event-key.php';
 
-            echo json_encode(["status" => "success", "message" => "Event request submitted & added to Google Calendar"]);
+            $sql = $conn->prepare("INSERT INTO key_event (event_id, public_key) VALUES (?, ?)");
+            $sql->bind_param("is", $event_id, $public_key);
+            $sql->execute();
+            $sql->close();
+
+            $hasTime = !empty($start_time) && !empty($end_time);
+
+            $start = $hasTime
+                ? $start_date . 'T' . $start_time
+                : $start_date;
+
+            $end = $hasTime
+                ? $end_date . 'T' . $end_time
+                : $end_date;
+
+
+            $response = [
+                "success" => true,
+                "event" => [
+                    "id" => $public_key,
+                    "title" => $title,
+                    "start" => $start,
+                    "end" => $end,
+                    "allDay" => !$hasTime,
+                    'extendedProps' => [
+                        'description' => $description,
+                        'location' => $location,
+
+                        'scheduled_by' => 'Director',
+                    ],
+                    'textColor' => '#ffffff',
+                    'backgroundColor' => '#2d642b',
+                    'borderColor' => '#2d642b',
+                ],
+        ];
         } catch (Exception $e) {
-            echo json_encode(["status" => "error", "message" => "Google Calendar API error: " . $e->getMessage()]);
+            $response = [
+                 "success" => false,
+                 "message" => "Google Calendar API error: " . $e->getMessage()
+             ];
+
         }
 
     } else {
-        $response = ["status" => "error", "message" => "Failed to add event: " . $stmt->error];
+        $response = ["success" => false, "message" => "Failed to add event: " . $stmt->error];
     }
 
     $stmt->close();

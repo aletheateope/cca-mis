@@ -8,6 +8,9 @@
 <!-- ANIMATE.CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
+<!-- NOTYF.JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
 <!-- OWN STYLES (STYLES) -->
 <link rel="stylesheet" href="/cca/assets/css/styles.css" />
 

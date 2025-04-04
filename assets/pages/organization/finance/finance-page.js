@@ -326,6 +326,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
 // DISPLAY DATA INTO GENERATEIMG MODAL
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".generateIMG").forEach((button) => {

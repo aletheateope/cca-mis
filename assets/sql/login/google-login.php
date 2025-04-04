@@ -5,7 +5,7 @@ require_once BASE_PATH .'/vendor/autoload.php';
 
 session_start();
 
-require_once 'google_client.php';
+require_once 'google-client.php';
 
 $client->addScope("email");
 $client->setPrompt('select_account');

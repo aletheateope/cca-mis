@@ -3,12 +3,15 @@ import {
   onHide,
 } from "../../../components/sweetalert2/alertAnimation.js";
 
+import { createNotyf } from "../../../components/notyf.js";
+
 let eventTippy = null;
+let calendar;
 
 // FULL CALENDAR
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
-  const calendar = new FullCalendar.Calendar(calendarEl, {
+  calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: "dayGridMonth",
     height: "85vh",
     headerToolbar: {
@@ -29,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
       dayGridMonth: { buttonText: "Month" },
       listYear: { buttonText: "Schedules" },
     },
+    events: "sql/events.php",
     eventDidMount: function (info) {
       if (info.view.type === "listYear") {
         let scheduledBy = info.event.extendedProps.scheduled_by || "Unknown";
@@ -43,7 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     },
-    events: "sql/events.php",
     eventClick: function (info) {
       // info.jsEvent.preventDefault();
       // info.jsEvent.stopPropagation();
@@ -205,17 +208,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (data.success) {
                       info.event.remove();
-                      Swal.fire({
-                        title: "Success!",
-                        text: "Event deleted successfully.",
-                        icon: "success",
-                        showClass: {
-                          popup: onShow,
-                        },
-                        hideClass: {
-                          popup: onHide,
-                        },
-                      });
+                      const notyf = createNotyf();
+                      notyf.success("Event deleted successfully.");
                     } else {
                       Swal.fire({
                         title: "Error!",
@@ -228,6 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
                           popup: onHide,
                         },
                       });
+                      console.log("Delete event error:", data.message);
                     }
                   } catch (error) {
                     Swal.close();
@@ -352,7 +347,42 @@ document
   .addEventListener("submit", async function (e) {
     e.preventDefault();
 
+    const startDate = document.getElementById("inputStartDate");
+    const endDate = document.getElementById("inputEndDate");
+
+    const startTime = document.getElementById("inputStartTime");
+    const endTime = document.getElementById("inputEndTime");
+
+    const allDay = document.getElementById("allDay");
+
+    if (startDate.value > endDate.value) {
+      alert("The end date must be after the start date.");
+      return;
+    }
+
+    if (!allDay.checked && startDate.value === endDate.value) {
+      if (startTime.value > endTime.value) {
+        alert("The end time must be after the start time.");
+        return;
+      }
+    }
+
     const formData = new FormData(this);
+
+    Swal.fire({
+      title: "Processing...",
+      text: "Please wait while we approve the event.",
+      allowOutsideClick: false,
+      showClass: {
+        popup: onShow,
+      },
+      hideClass: {
+        popup: onHide,
+      },
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
     try {
       const response = await fetch("sql/add-event.php", {
@@ -360,67 +390,255 @@ document
         body: formData,
       });
 
-      const result = await response.text(); // Assuming response is plain text (adjust if JSON)
-      alert(result);
+      const data = await response.json(); // Assuming response is plain text (adjust if JSON)
+
+      Swal.close();
+
+      if (data.success) {
+        const notyf = createNotyf();
+        notyf.success("The requested event has been approved successfully.");
+
+        calendar.addEvent(data.event);
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to approve the requested event. Please try again.",
+          icon: "error",
+          showClass: {
+            popup: onShow,
+          },
+          hideClass: {
+            popup: onHide,
+          },
+        });
+
+        console.log("Error: " + data.message);
+      }
     } catch (error) {
+      Swal.close();
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to approve the requested event. Please try again.",
+        icon: "error",
+        showClass: {
+          popup: onShow,
+        },
+        hideClass: {
+          popup: onHide,
+        },
+      });
+
       console.error("Error details:", error);
-      alert("Error: " + error.message);
     }
   });
 
 // APPROVE EVENT
 document.querySelectorAll(".approve-btn").forEach((button) => {
-  button.addEventListener("click", function () {
-    let eventRequestId = this.getAttribute("data-id");
-
-    fetch("sql/approve-event.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: eventRequestId }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          alert(data.message);
-        } else {
-          alert("Error approving event: " + (data.error || "Unknown error"));
-        }
-      })
-      .catch((error) => console.error("Error:", error));
-  });
-});
-
-// REJECT EVENT
-document.querySelectorAll(".reject-btn").forEach((button) => {
   button.addEventListener("click", async function () {
-    const eventRequestId = this.getAttribute("data-id");
+    const publicKey = this.getAttribute("data-id");
+
+    Swal.fire({
+      title: "Processing...",
+      text: "Please wait while we approve the event.",
+      allowOutsideClick: false,
+      showClass: {
+        popup: onShow,
+      },
+      hideClass: {
+        popup: onHide,
+      },
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
     try {
-      const response = await fetch("sql/reject-event.php", {
+      const response = await fetch("sql/approve-event.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: eventRequestId }),
+        body: JSON.stringify({ id: publicKey }),
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const result = await response.json();
+      const data = await response.json();
 
-      if (result.success) {
-        alert(result.message);
+      Swal.close();
+
+      if (data.success) {
+        const notyf = createNotyf();
+        notyf.success("The requested event has been approved successfully.");
+
+        this.closest(".event-request-card").remove();
+
+        calendar.addEvent(data.event);
       } else {
-        alert("Failed to reject event:" + result.message);
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to approve the requested event. Please try again.",
+          icon: "error",
+          showClass: {
+            popup: onShow,
+          },
+          hideClass: {
+            popup: onHide,
+          },
+        });
+        console.log(
+          "Error approving event: " + (data.error || "Unknown error")
+        );
       }
     } catch (error) {
-      console.error("Error details:", error);
-      alert("Error: " + error.message);
+      Swal.close();
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to approve the requested event. Please try again.",
+        icon: "error",
+        showClass: {
+          popup: onShow,
+        },
+        hideClass: {
+          popup: onHide,
+        },
+      });
+      console.error("Error:", error);
     }
+  });
+});
+
+// FETCH REQUESTED EVENT TITLE
+async function fetchRequestEventTitle(publicKey) {
+  try {
+    const response = await fetch("sql/request-event-title.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: publicKey }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    if (data.error) {
+      console.error("Error:", data.error);
+      return null;
+    }
+
+    return data.title;
+  } catch (error) {
+    console.error("Error fetching event title:", error);
+    return null;
+  }
+}
+
+// REJECT REQUESTED EVENT
+document.querySelectorAll(".reject-btn").forEach((button) => {
+  button.addEventListener("click", async function () {
+    const publicKey = this.getAttribute("data-id");
+
+    const eventTitle = await fetchRequestEventTitle(publicKey);
+
+    if (!eventTitle) {
+      Swal.fire({
+        title: "Error",
+        text: "Failed to fetch event title",
+        icon: "error",
+        showClass: {
+          popup: onShow,
+        },
+        hideClass: {
+          popup: onHide,
+        },
+        customClass: {
+          popup: "swal-container",
+        },
+      });
+      return;
+    }
+
+    Swal.fire({
+      title: `Are you sure you want to reject the requested event titled "${eventTitle}"?`,
+      text: "Rejecting this event will remove it from the request list. Continue?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      showClass: {
+        popup: onShow,
+      },
+      hideClass: {
+        popup: onHide,
+      },
+      customClass: {
+        popup: "swal-container",
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Processing...",
+          text: "Please wait while we reject the requested event.",
+          allowOutsideClick: false,
+          showClass: {
+            popup: onShow,
+          },
+          hideClass: {
+            popup: onHide,
+          },
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        try {
+          const response = await fetch("sql/reject-event.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: publicKey }),
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const result = await response.json();
+
+          Swal.close();
+
+          if (result.success) {
+            const notyf = createNotyf();
+            notyf.success("Requested event rejected successfully.");
+            this.closest(".event-request-card").remove();
+          } else {
+            swal.fire({
+              title: "Error",
+              text: "Failed to reject the requested event. Please try again later.",
+              icon: "error",
+              showClass: {
+                popup: onShow,
+              },
+              hideClass: {
+                popup: onHide,
+              },
+              customClass: {
+                popup: "swal-container",
+              },
+            });
+          }
+        } catch (error) {
+          console.error("Error details:", error);
+          alert("Error: " + error.message);
+        }
+      }
+    });
   });
 });
 

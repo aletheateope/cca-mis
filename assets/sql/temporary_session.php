@@ -6,5 +6,19 @@ session_destroy();
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    $_SESSION['user_id'] = 2;
+    $_SESSION['user_id'] = 5;
 }
+
+require_once BASE_PATH . '/assets/sql/conn.php';
+
+$user = $_SESSION['user_id'];
+
+$stmtUser = $conn->prepare("SELECT role FROM account WHERE user_id = ?");
+$stmtUser->bind_param("i", $user);
+$stmtUser->execute();
+$stmtUser->bind_result($role);
+$stmtUser->fetch();
+
+$_SESSION['user_role'] = $role;
+
+$stmtUser->close();

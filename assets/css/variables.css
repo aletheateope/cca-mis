@@ -161,3 +161,14 @@ h6 {
 .fc .fc-popover {
   z-index: 1050;
 }
+
+.calendar a {
+  color: var(--primary-text);
+  text-decoration: none;
+}
+.fc-others-button {
+  .others {
+    height: 22px;
+    font-size: 18px !important;
+  }
+}

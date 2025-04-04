@@ -44,7 +44,7 @@ $result = $stmt->get_result()->fetch_assoc();
 $googleEventID = $result["google_event_id"];
 $userID = $result["user_id"];
 
-$calendar = $calendarID[$userID] ?? $defaultCalendarID;
+$calendar = $calendarID[$userID] ?? $directorCalendarID;
 
 try {
     $service->events->delete($calendar, $googleEventID);
