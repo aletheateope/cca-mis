@@ -1,3 +1,14 @@
+import { createNotyf } from "../../../components/notyf.js";
+
+const submissionStatus = localStorage.getItem("submissionStatus");
+
+if (submissionStatus === "success") {
+  const notyf = createNotyf();
+  notyf.success("Accomplishment added successfully.");
+
+  localStorage.removeItem("submissionStatus");
+}
+
 document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
   collapse.addEventListener("show.bs.collapse", function () {
     document.querySelectorAll(".accordion-collapse").forEach((item) => {
@@ -34,7 +45,7 @@ $(document).ready(function () {
     const formData = new FormData(this);
 
     $.ajax({
-      url: "sql/create_accomplishment.php",
+      url: "sql/create-accomplishment.php",
       type: "POST",
       data: formData,
       contentType: false,
@@ -43,8 +54,9 @@ $(document).ready(function () {
       dataType: "json",
       success: function (data) {
         if (data.success) {
-          window.location.href =
-            "add-activity-page.php?report_id=" + data.report_id;
+          let encodedRef = btoa(data.ref);
+
+          window.location.href = "add-activity-page.php?ref=" + encodedRef;
         } else {
           alert(
             "Failed to create accomplishment report: " +
@@ -292,11 +304,33 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         }
 
+        function formatDate(dateString) {
+          const date = new Date(dateString); // Convert to Date object
+          const months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ];
+          const month = months[date.getMonth()]; // Get full month name
+          const day = date.getDate().toString().padStart(2, "0"); // Get day (pad with 0 if needed)
+          const year = date.getFullYear(); // Get year
+          return `${month} ${day}, ${year}`; // Return in Month DD, YYYY format
+        }
+
         // TABLE DATA
         let tableData = data.map((item) => [
           item.title,
-          item.start_date,
-          item.end_date,
+          formatDate(item.start_date),
+          formatDate(item.end_date),
           item.target_participants +
             (item.target_participants > 1 ? " members of " : " member of ") +
             organizationName,

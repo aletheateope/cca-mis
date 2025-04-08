@@ -1,8 +1,12 @@
 <?php
+header("Content-Type: application/json");
+
+require_once '../../../../sql/base-path.php';
+
 session_start();
 
-$documentDirectory = '../../../../../uploads/student-document/';
-$profileImgDirectory = '../../../../../uploads/profile-img/';
+$documentDirectory = BASE_PATH . '/uploads/student-document/';
+$profileImgDirectory = BASE_PATH . '/uploads/profile-img/';
 
 if (!is_dir($documentDirectory)) {
     mkdir($documentDirectory, 0777, true);
@@ -11,10 +15,8 @@ if (!is_dir($profileImgDirectory)) {
     mkdir($profileImgDirectory, 0777, true);
 }
 
-$response = [];
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    require_once '../../../../sql/conn.php';
+    require_once BASE_PATH . '/assets/sql/conn.php';
 
     $first_name = $_POST['first_name'] ?? null;
     $middle_name = $_POST['middle_name'] ?? null;
@@ -43,40 +45,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //     exit;
     // }
     
-    require_once '../../../../sql/plmun-program.php';
+    require_once BASE_PATH . '/assets/sql/plmun-program.php';
 
 
     $conn->begin_transaction();
     try {
-        $sql = 'INSERT INTO student (student_number, first_name, middle_name, last_name, birthdate, age, gender, mobile_number, email, address) VALUES (?,?,?,?,?,?,?,?,?,?)';
-        $stmt = $conn->prepare($sql);
-        if (!$stmt) {
-            throw new Exception('Database error: ' . $conn->error);
-        }
-        $stmt->bind_param("isssssssss", $student_number, $first_name, $middle_name, $last_name, $birthdate, $age, $gender, $mobile_number, $email, $address);
-        if (!$stmt->execute()) {
-            throw new Exception('Failed to insert student data: ' . $stmt->error);
-        }
+        $stmt1 = $conn->prepare("INSERT INTO student (student_number, first_name, middle_name, last_name, birthdate, age, gender, mobile_number, email, address) VALUES (?,?,?,?,?,?,?,?,?,?)");
+        $stmt1->bind_param("isssssssss", $student_number, $first_name, $middle_name, $last_name, $birthdate, $age, $gender, $mobile_number, $email, $address);
+        $stmt1->execute();
 
-        $sql2 = 'INSERT INTO student_academic_info (student_number, program_id, year_level) VALUES (?,?,?)';
-        $stmt2 = $conn->prepare($sql2);
-        if (!$stmt2) {
-            throw new Exception('Database error: ' . $conn->error);
-        }
+        $stmt2 = $conn->prepare("INSERT INTO student_academic_info (student_number, program_id, year_level) VALUES (?,?,?)");
         $stmt2->bind_param("iss", $student_number, $program_id, $year_level);
-        if (!$stmt2->execute()) {
-            throw new Exception('Failed to insert academic information: ' . $stmt2->error);
-        }
+        $stmt2->execute();
 
-        $sql3 = 'INSERT INTO student_organization (student_number, organization_id, date_joined, date_left, status, state) VALUES (?,?,?,?,?,?)';
-        $stmt3 = $conn->prepare($sql3);
-        if (!$stmt3) {
-            throw new Exception('Database error: ' . $conn->error);
-        }
+        $stmt3 = $conn->prepare("INSERT INTO student_organization (student_number, organization_id, date_joined, date_left, status, state) VALUES (?,?,?,?,?,?)");
         $stmt3->bind_param("isssss", $student_number, $organization_id, $date_joined, $date_left, $status, $state);
-        if (!$stmt3->execute()) {
-            throw new Exception('Failed to insert student organization data: ' . $stmt3->error);
-        }
+        $stmt3->execute();
 
         //STUDENT PROFILE IMAGE
         if (isset($_FILES['profile_img']) && $_FILES['profile_img']['error'] !== UPLOAD_ERR_NO_FILE) {
@@ -138,27 +122,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
                     // Insert file data into database
                     $stmt5 = $conn->prepare("INSERT INTO student_document (student_number, file_name, path, date_uploaded) VALUES (?, ?, ?, NOW())");
-                    if (!$stmt5) {
-                        throw new Exception('Database error: ' . $conn->error);
-                    }
                     $stmt5->bind_param("iss", $student_number, $convertedFileName, $sqlFilePath);
-                    if (!$stmt5->execute()) {
-                        throw new Exception('Failed to insert document into database: ' . $stmt5->error);
-                    }
+                    $stmt5->execute();
                 } else {
                     throw new Exception('Upload error occurred for file: ' . $_FILES['document']['name'][$key]);
                 }
             }
         }
 
-
-
         $conn->commit();
-        $response[] = 'Success: Student registered successfully with uploaded documents.';
+
+        require_once BASE_PATH . '/assets/sql/public-key.php';
+
+        $count = 1;
+
+        do {
+            $public_key = generatePublicKey();
+    
+            $key = "SELECT COUNT(*) FROM key_student WHERE public_key = ?";
+            $stmtKey = $conn->prepare($key);
+            $stmtKey->bind_param("s", $public_key);
+            $stmtKey->execute();
+            $stmtKey->bind_result($count);
+            $stmtKey->fetch();
+            $stmtKey->close();
+        } while ($count > 0);
+
+
+        $stmt6 = $conn->prepare("INSERT INTO key_student (student_number, public_key) VALUES (?, ?)");
+        $stmt6->bind_param("is", $student_number, $public_key);
+        $stmt6->execute();
+
+        echo json_encode([
+           'success' => true,
+      ]);
     } catch (Exception $e) {
         $conn->rollback();
-        $response[] = 'Error: ' . $e->getMessage();
+        echo json_encode([
+             'success' => false,
+             'message' => 'Error: ' . $e->getMessage()
+         ]);
     }
 }
-
-echo json_encode($response);

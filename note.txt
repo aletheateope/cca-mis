@@ -46,9 +46,20 @@
 -----------------------------
 
 <?php
-require_once BASE_PATH . '/assets/sql/session_check.php';
-check_role('Organization');
-?>
+require_once BASE_PATH . '/assets/sql/public-key.php';
+
+$count = 1;
+
+do {
+    $public_key = generatePublicKey();
+    
+    $stmtKey = $conn->prepare("SELECT COUNT(*) FROM key_activity WHERE public_key = ?");
+    $stmtKey->bind_param("s", $public_key);
+    $stmtKey->execute();
+    $stmtKey->bind_result($count);
+    $stmtKey->fetch();
+    $stmtKey->close();
+} while ($count > 0);
 
 -----------------------------
 
@@ -62,17 +73,6 @@ check_role('Organization');
     console.log("User ID: " + sessionID);
     console.log("User Role: " + sessionRole);
 </script>
-
------------------------------
-
-CSS
-<?php require_once BASE_PATH . '/assets/components/header-links.php' ?>
-
-SIDEBAR
-<?php include BASE_PATH . '/assets/components/sidebar/director/sidebar.php' ?>
-
-SCRIPTS
-<?php require_once BASE_PATH . '/assets/components/footer-links.php' ?>
 
 -----------------------------
 

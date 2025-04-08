@@ -36,23 +36,30 @@ $result = $stmt->get_result()->fetch_assoc();
 
 $eventID = $result["event_id"];
 
-$stmt = $conn->prepare("SELECT google_event_id, user_id FROM event_calendar WHERE event_id = ?");
+$stmt = $conn->prepare("SELECT event_request_id, google_event_id, user_id FROM event_calendar WHERE event_id = ?");
 $stmt->bind_param("i", $eventID);
 $stmt->execute();
 $result = $stmt->get_result()->fetch_assoc();
 
-$googleEventID = $result["google_event_id"];
-$userID = $result["user_id"];
+$event_request_id = $result["event_request_id"];
+$google_event_id = $result["google_event_id"];
+$user_id = $result["user_id"];
 
-$calendar = $calendarID[$userID] ?? $directorCalendarID;
+$calendar = $calendarID[$user_id] ?? $directorCalendarID;
 
 try {
-    $service->events->delete($calendar, $googleEventID);
+    $service->events->delete($calendar, $google_event_id);
 
     $stmt = $conn->prepare("DELETE FROM event_calendar WHERE event_id = ?");
     $stmt->bind_param("i", $eventID);
     $stmt->execute();
 
+    if ($event_request_id !== null) {
+        $stmt = $conn->prepare("DELETE FROM event_request_status WHERE event_request_id = ?");
+        $stmt->bind_param("i", $event_request_id);
+        $stmt->execute();
+    }
+    
     echo json_encode(["success" => true, "message" => "Event deleted successfully."]);
 } catch(Exception $e) {
     echo json_encode(["success" => false, "message" => $e->getMessage()]);

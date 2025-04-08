@@ -34,21 +34,12 @@
                 <span>Members</span>
             </a>
         </li>
-        <li>
-            <button onclick="toggleSubMenu(this)" class="dropdown-btn" id="calendarBtn">
+        <li
+            class="<?= ($currentPage == 'calendar-page.php') ? 'active' : '' ?>">
+            <a href="/cca/assets/pages/organization/calendar/calendar-page.php">
                 <i class="icon bi bi-calendar-event-fill"></i>
                 <span>Calendar</span>
-                <i class="icon iconrotate bi bi-chevron-right"></i>
-            </button>
-            <ul class="sub-menu">
-                <div>
-                    <li
-                        class="<?= ($currentPage == 'calendar-page.php') ? 'active' : '' ?>">
-                        <a href="/cca/assets/pages/organization/calendar/calendar-page.php">View Schedules</a>
-                    </li>
-                    <li><a href="#">Notification</a></li>
-                </div>
-            </ul>
+            </a>
         </li>
         <li>
             <button onclick="toggleSubMenu(this)" class="dropdown-btn" id="financeBtn">

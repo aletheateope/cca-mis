@@ -19,7 +19,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     }
 
-    
     $academic_year = $startYear . '-' . $endYear;
     
     $sqlCheck = "SELECT 1 
@@ -48,6 +47,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION['statement_report_id'] = $stmt->insert_id;
         $stmt->close();
 
+        require_once BASE_PATH . '/assets/sql/public-key.php';
+
+        $count = 1;
+
+        do {
+            $public_key = generatePublicKey();
+    
+            $stmtKey = $conn->prepare("SELECT COUNT(*) FROM key_statement_report WHERE public_key = ?");
+            $stmtKey->bind_param("s", $public_key);
+            $stmtKey->execute();
+            $stmtKey->bind_result($count);
+            $stmtKey->fetch();
+            $stmtKey->close();
+        } while ($count > 0);
+
+
+        $stmt = $conn->prepare("INSERT INTO key_statement_report (report_id, public_key) VALUES (?, ?)");
+        $stmt->bind_param("is", $_SESSION['statement_report_id'], $public_key);
+        $stmt->execute();
+
+        $stmt->close();
+
         $sql2 = "INSERT INTO financial_statement (month, year) VALUES (?, ?)";
         $stmt2 = $conn->prepare($sql2);
         $stmt2->bind_param("ii", $month, $year);
@@ -59,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt3 = $conn->prepare($sql3);
             $stmt3->bind_param("ii", $statement_id, $_SESSION['statement_report_id']);
             if ($stmt3->execute()) {
-                echo json_encode(["success" => true]);
+                echo json_encode(["success" => true , "ref" => $public_key]);
             } else {
                 echo json_encode(["success" => false, "error" => "Update failed: " . $stmt3->error]);
             }

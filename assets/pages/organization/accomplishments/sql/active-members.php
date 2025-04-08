@@ -4,10 +4,12 @@ require_once BASE_PATH . '/assets/sql/conn.php';
 
 $user_id = $_SESSION['user_id'];
 
-$sql = "SELECT student.student_number, first_name, last_name
+$sql = "SELECT public_key, first_name, last_name
         FROM student
         INNER JOIN student_organization
             ON student_organization.student_number = student.student_number
+        INNER JOIN key_student
+            ON key_student.student_number = student.student_number
         WHERE student_organization.state = 'Active' AND student_organization.organization_id = ?
         ORDER BY first_name ASC, last_name ASC";
 

@@ -1,12 +1,10 @@
 <?php
 session_start();
 
-session_destroy();
-
-session_start();
+unset($_SESSION['user_id']);
 
 if (!isset($_SESSION['user_id'])) {
-    $_SESSION['user_id'] = 5;
+    $_SESSION['user_id'] = 6;
 }
 
 require_once BASE_PATH . '/assets/sql/conn.php';

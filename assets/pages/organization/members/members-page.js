@@ -1,3 +1,10 @@
+import { createNotyf } from "../../../components/notyf.js";
+
+import {
+  onShow,
+  onHide,
+} from "../../../components/sweetalert2/alertAnimation.js";
+
 // CLEAVE
 var cleave = new Cleave("#inputContactNumber", {
   phone: true,
@@ -5,31 +12,36 @@ var cleave = new Cleave("#inputContactNumber", {
 });
 
 // CALCULATE AGE
-function calculateAge() {
-  const dob = document.getElementById("inputBirthday").value;
-  if (dob) {
-    const dobDate = new Date(dob);
-    const today = new Date();
-
-    if (dobDate > today) {
-      alert("Invalid date of birth.");
-      return;
-    }
-    let age = today.getFullYear() - dobDate.getFullYear();
-    const monthDiff = today.getMonth() - dobDate.getMonth();
-    const dayDiff = today.getDate() - dobDate.getDate();
-
-    // Adjust age if the current date is before the birth date
-    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-      age--;
-    }
-
-    document.getElementById("inputAge").value = age;
-  }
-}
-
-// ADD PROFILE IMAGE
 document.addEventListener("DOMContentLoaded", function () {
+  function calculateAge() {
+    const dob = document.getElementById("inputBirthday").value;
+    if (dob) {
+      const dobDate = new Date(dob);
+      const today = new Date();
+
+      if (dobDate > today) {
+        alert("Invalid date of birth.");
+        return;
+      }
+      let age = today.getFullYear() - dobDate.getFullYear();
+      const monthDiff = today.getMonth() - dobDate.getMonth();
+      const dayDiff = today.getDate() - dobDate.getDate();
+
+      // Adjust age if the current date is before the birth date
+      if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+        age--;
+      }
+
+      document.getElementById("inputAge").value = age;
+    }
+  }
+  document
+    .getElementById("inputBirthday")
+    .addEventListener("change", calculateAge);
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  // ADD PROFILE IMAGE
   const addProfileBtn = document.getElementById("addProfileButton");
   const inputProfile = document.getElementById("inputProfile");
 
@@ -37,12 +49,9 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
     inputProfile.click();
   });
-});
 
-// LOAD IMAGE
-document
-  .getElementById("inputProfile")
-  .addEventListener("change", function (event) {
+  // LOAD IMAGE
+  inputProfile.addEventListener("change", function (event) {
     const file = event.target.files[0];
 
     // Check if a valid file is selected
@@ -55,19 +64,29 @@ document
         document.getElementById("removeProfile").style.display = "block";
       };
 
-      reader.readAsDataURL(file); // Read the file as a data URL
+      // Read the file as a data URL
+      reader.readAsDataURL(file);
+
+      addProfileBtn.textContent = "Change Profile";
     } else {
       alert("Please select a valid image file.");
     }
   });
 
-// REMOVE IMAGE
-function removeProfile() {
-  document.getElementById("inputProfile").value = ""; // Clear the file input
-  document.getElementById("blank-profile").src =
-    "/cca/assets/img/blank-profile.png"; // Reset to default image
-  document.getElementById("removeProfile").style.display = "none"; // Hide "X" icon
-}
+  // REMOVE PROFILE
+  const removeProfile = document.getElementById("removeProfile");
+
+  removeProfile.addEventListener("click", function (event) {
+    event.preventDefault();
+
+    inputProfile.value = ""; // Clear the file input
+    document.getElementById("blank-profile").src =
+      "/cca/assets/img/blank-profile.png"; // Reset to default image
+    removeProfile.style.display = "none"; // Hide "X" icon
+
+    addProfileBtn.textContent = "Add Profile";
+  });
+});
 
 // NEXT BUTTON
 const nextButton = document.getElementById("nextButton");
@@ -91,13 +110,6 @@ nextButton.addEventListener("click", () => {
                     ${document.getElementById("inputMiddleName").value}
                     ${document.getElementById("inputLastName").value}`.trim();
   document.getElementById("memberName").textContent = fullName;
-});
-
-// TOOLTIP
-tippy("#removeProfile", {
-  placement: "right",
-  content: "Remove Profile",
-  theme: "light",
 });
 
 // ENABLE DATE LEFT INTPUT IF STATUS "EXITED" OR "TERMINATED"
@@ -140,7 +152,7 @@ function validateDates() {
   }
 }
 
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function () {
   // FILEPOND
   FilePond.registerPlugin(FilePondPluginFileValidateType);
   FilePond.registerPlugin(FilePondPluginFileRename);
@@ -152,40 +164,119 @@ $(document).ready(function () {
     fileRenameFunction: (file) => {
       const extension = file.name.slice(file.name.lastIndexOf(".")); // Get file extension
       const baseName = file.name.slice(0, file.name.lastIndexOf(".")); // Get filename without extension
-
       const newBaseName = window.prompt("Enter new filename", baseName); // Prompt for new name
-
       return newBaseName ? newBaseName + extension : file.name;
     },
   });
 
-  // ADD MEMBER TO DATABASE
-  $("#addMemberForm").on("submit", function (e) {
-    e.preventDefault();
+  document
+    .getElementById("addMemberForm")
+    .addEventListener("submit", async function (event) {
+      event.preventDefault();
 
-    const formData = new FormData(this);
+      Swal.fire({
+        title: "Processing...",
+        text: "Please wait while we delete the event.",
+        allowOutsideClick: false,
+        showClass: {
+          popup: onShow,
+        },
+        hideClass: {
+          popup: onHide,
+        },
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
 
-    pond.getFiles().forEach((fileItem) => {
-      const file = fileItem.file;
-      const renamedFile = new File([file], fileItem.filename, {
-        type: file.type,
-      }); // Use renamed filename
-      formData.append(`document[]`, renamedFile);
+      const formData = new FormData(this);
+
+      pond.getFiles().forEach((fileItem) => {
+        const file = fileItem.file;
+        const renamedFile = new File([file], fileItem.filename, {
+          type: file.type,
+        }); // Use renamed filename
+        formData.append(`document[]`, renamedFile);
+      });
+
+      try {
+        const response = await fetch("sql/add-member.php", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        Swal.close();
+
+        if (result.success) {
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById("addMemberModal2")
+          );
+          modal.hide();
+
+          document.getElementById("addMemberForm").reset();
+          pond.removeFiles();
+
+          const notyf = createNotyf();
+          notyf.success("Member added successfully.");
+        } else {
+          alert("Error: " + result.message);
+        }
+      } catch (error) {
+        Swal.close();
+        console.error("Error:", error);
+        alert("An error occurred while submitting the form.");
+      }
     });
-
-    $.ajax({
-      url: "sql/add-member.php",
-      type: "POST",
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function (response) {
-        alert(response);
-      },
-      error: function (xhr, status, error) {
-        console.log("Error details:", xhr.responseText);
-        alert("Error: " + error);
-      },
-    });
-  });
 });
+
+// $(document).ready(function () {
+//   // FILEPOND
+//   FilePond.registerPlugin(FilePondPluginFileValidateType);
+//   FilePond.registerPlugin(FilePondPluginFileRename);
+
+//   const inputElement = document.getElementById("uploadStudentDocument");
+//   const pond = FilePond.create(inputElement, {
+//     acceptedFileTypes: ["image/png", "image/jpeg", "application/pdf"],
+
+//     fileRenameFunction: (file) => {
+//       const extension = file.name.slice(file.name.lastIndexOf(".")); // Get file extension
+//       const baseName = file.name.slice(0, file.name.lastIndexOf(".")); // Get filename without extension
+
+//       const newBaseName = window.prompt("Enter new filename", baseName); // Prompt for new name
+
+//       return newBaseName ? newBaseName + extension : file.name;
+//     },
+//   });
+
+//   // ADD MEMBER TO DATABASE
+//   $("#addMemberForm").on("submit", function (e) {
+//     e.preventDefault();
+
+//     const formData = new FormData(this);
+
+//     pond.getFiles().forEach((fileItem) => {
+//       const file = fileItem.file;
+//       const renamedFile = new File([file], fileItem.filename, {
+//         type: file.type,
+//       }); // Use renamed filename
+//       formData.append(`document[]`, renamedFile);
+//     });
+
+//     $.ajax({
+//       url: "sql/add-member.php",
+//       type: "POST",
+//       data: formData,
+//       contentType: false,
+//       processData: false,
+//       success: function (response) {
+//         alert(response);
+//       },
+//       error: function (xhr, status, error) {
+//         console.log("Error details:", xhr.responseText);
+//         alert("Error: " + error);
+//       },
+//     });
+//   });
+// });

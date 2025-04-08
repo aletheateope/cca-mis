@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase /cca/
+
+RewriteRule ^dashboard$ assets/pages/organization/dashboard-page.php [L]

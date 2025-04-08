@@ -340,7 +340,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         const data = await response.json();
-        console.log("Fetched Data:", data);
 
         if (!data.error) {
           document.getElementById("date").textContent = new Date(
@@ -566,10 +565,11 @@ document
       });
 
       const result = await response.json();
-      console.log(result);
 
       if (result.success) {
-        window.location.href = "add-record-page.php";
+        let encodedRef = btoa(result.ref);
+
+        window.location.href = "add-record-page.php?ref=" + encodedRef;
       } else {
         alert("Error: " + result.error);
       }

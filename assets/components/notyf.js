@@ -6,5 +6,6 @@ export const createNotyf = () => {
     },
     duration: 2500,
     ripple: false,
+    dismissible: true,
   });
 };

@@ -1,3 +1,77 @@
+let confirmedSubmit = false;
+
+// RELOAD PAGE WARNING
+function beforeUnloadHandler(event) {
+  event.preventDefault();
+  event.returnValue = "Changes you made may not be saved.";
+}
+
+window.addEventListener("beforeunload", beforeUnloadHandler);
+
+window.addEventListener("pagehide", function () {
+  if (!confirmedSubmit) {
+    navigator.sendBeacon("sql/kill-session.php");
+  }
+});
+
+// DISABLE WARNING ON SUBMIT
+document.querySelector("form").addEventListener("submit", function () {
+  window.removeEventListener("beforeunload", beforeUnloadHandler);
+});
+
+if (window.performance.getEntriesByType("navigation")[0]?.type === "reload") {
+  window.location.href = "accomplishments-page.php";
+}
+
+document
+  .getElementById("selectEvent")
+  .addEventListener("change", async function () {
+    const public_key = this.value;
+
+    if (public_key !== "0") {
+      try {
+        const response = await fetch(
+          "sql/fetch-event-details.php?public_key=" + public_key
+        );
+        const data = await response.json();
+
+        if (data.success) {
+          const fields = [
+            { id: "inputTitle", eventKey: "title" },
+            { id: "inputDescription", eventKey: "description" },
+            { id: "inputLocation", eventKey: "location" },
+            { id: "inputStartDate", eventKey: "start" },
+            { id: "inputEndDate", eventKey: "end" },
+          ];
+
+          fields.forEach((field) => {
+            const inputElement = document.getElementById(field.id);
+            inputElement.value = data.event[field.eventKey];
+            inputElement.disabled = true;
+          });
+        } else {
+          alert("Error: " + data.message);
+        }
+      } catch (error) {
+        console.error("There was an error with the fetch operation:", error);
+      }
+    } else {
+      const fields = [
+        "inputTitle",
+        "inputDescription",
+        "inputLocation",
+        "inputStartDate",
+        "inputEndDate",
+      ];
+
+      fields.forEach((field) => {
+        const inputElement = document.getElementById(field);
+        inputElement.value = "";
+        inputElement.disabled = false;
+      });
+    }
+  });
+
 let selectedFiles = [];
 
 // SPLIDE
@@ -85,6 +159,8 @@ var cleave = new Cleave("#inputBudgetUtilized", {
 });
 
 // ORGANIZE CHECKED AND UNCHECKED ITEMS IN PARTICIPANTS TABLE
+let recognitionCounter = 1;
+
 $(document).ready(function () {
   let membersContainer = $("#membersContainer");
 
@@ -152,18 +228,23 @@ $(document).ready(function () {
 
   // When add recognition button is clicked
   $(document).on("click", ".add-recognition", function () {
+    var $checkbox = $(this)
+      .siblings(".form-check")
+      .find("input.member-checkbox");
+    var participantId = $checkbox.attr("id"); // e.g., "participant-1"
     var labelName = $(this).siblings(".form-check").find("label").text(); // Get participant name
+    var uniqueId = `recognition-${recognitionCounter++}`;
 
     // Create a new recognition form
     var newForm = `
             <div class="col recognition-form">
                 <div class="row">
                     <div class="col">
-                        <label class="form-label">${labelName}</label>
+                        <label for="${uniqueId}" class="form-label">${labelName}</label>
                         <div class="remove-recognition-btn"><i class="bi bi-x"></i></div>
                     </div>
                 </div>
-                <input type="text" name="recognition[]" class="form-control">
+                <input type="text" name="recognition[]" class="form-control" id="${uniqueId}" data-from="${participantId}">
             </div>
         `;
 
@@ -264,10 +345,10 @@ tippy("#addRecognition", {
   placement: "top",
 });
 
-// SUBMIT BUTTON
-$(document).ready(function () {
-  $("#submitActivityForm").on("submit", function (e) {
-    e.preventDefault();
+document
+  .getElementById("submitActivityForm")
+  .addEventListener("submit", async function (event) {
+    event.preventDefault();
 
     const formData = new FormData(this);
 
@@ -277,51 +358,121 @@ $(document).ready(function () {
       formData.append("activity_gallery[]", file);
     });
 
-    $(".member-checkbox:checked").each(function () {
-      let studentNumber = $(this).val();
-      let memberName = $(this).siblings("label").text().trim(); // Get the name of the selected member
+    document
+      .querySelectorAll(".member-checkbox:checked")
+      .forEach((checkbox) => {
+        const public_keys = checkbox.value;
+        const participantId = checkbox.id;
+        formData.append("public_keys[]", public_keys);
 
-      formData.append("student_numbers[]", studentNumber);
-      console.log(`Student Number: ${studentNumber}, Name: ${memberName}`);
+        // Find recognition inputs with matching label name
+        document.querySelectorAll(".recognition-form").forEach((form) => {
+          const input = form.querySelector('input[name="recognition[]"]');
 
-      // Find recognition inputs with matching label name
-      $(".recognition-form").each(function () {
-        let recognitionLabel = $(this).find("label").text().trim(); // Get recognition label
+          if (!input) {
+            console.log("recognition input not found");
+            return;
+          }
+          const recognitionText = input.value.trim();
+          const recognitionParticipantId = input.getAttribute("data-from");
 
-        if (recognitionLabel === memberName) {
-          let recognitionValue = $(this)
-            .find("input[name='recognition[]']")
-            .val()
-            .trim();
-
-          if (recognitionValue !== "") {
-            formData.append(
-              `recognition[${studentNumber}][]`,
-              recognitionValue
-            );
+          if (
+            recognitionParticipantId === participantId &&
+            recognitionText !== ""
+          ) {
+            // Append the recognition value and its corresponding public key to formData
+            formData.append(`recognition[${public_keys}][]`, recognitionText);
             console.log(
-              `Recognition for ${studentNumber}: ${recognitionValue}`
+              `Recognition for ${public_keys} (Participant ID: ${participantId}): ${recognitionText}`
             );
           }
-        }
+        });
       });
-    });
 
-    $.ajax({
-      url: "sql/submit-activity.php",
-      type: "POST",
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function (response) {
-        console.log("Server response:", response);
-        alert(response);
-      },
+    try {
+      const response = await fetch("sql/submit-activity.php", {
+        method: "POST",
+        body: formData,
+      });
 
-      error: function (xhr, status, error) {
-        console.log("Error details:", xhr.responseText);
-        alert("Error: " + error);
-      },
-    });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        confirmedSubmit = true;
+        localStorage.setItem("submissionStatus", "success");
+        window.location.href = "accomplishments-page.php";
+      } else {
+        console.log("Error response:", result.message);
+        alert("Error: " + result.message);
+      }
+    } catch (error) {
+      console.log("Error details:", error);
+      alert("Error: " + error.message);
+    }
   });
-});
+
+// SUBMIT BUTTON
+// $(document).ready(function () {
+//   $("#submitActivityForm").on("submit", function (e) {
+//     e.preventDefault();
+
+//     const formData = new FormData(this);
+
+//     formData.delete("activity_gallery[]");
+
+//     selectedFiles.forEach((file) => {
+//       formData.append("activity_gallery[]", file);
+//     });
+
+//     $(".member-checkbox:checked").each(function () {
+//       let studentNumber = $(this).val();
+//       let memberName = $(this).siblings("label").text().trim(); // Get the name of the selected member
+
+//       formData.append("student_numbers[]", studentNumber);
+//       console.log(`Student Number: ${studentNumber}, Name: ${memberName}`);
+
+//       // Find recognition inputs with matching label name
+//       $(".recognition-form").each(function () {
+//         let recognitionLabel = $(this).find("label").text().trim(); // Get recognition label
+
+//         if (recognitionLabel === memberName) {
+//           let recognitionValue = $(this)
+//             .find("input[name='recognition[]']")
+//             .val()
+//             .trim();
+
+//           if (recognitionValue !== "") {
+//             formData.append(
+//               `recognition[${studentNumber}][]`,
+//               recognitionValue
+//             );
+//             console.log(
+//               `Recognition for ${studentNumber}: ${recognitionValue}`
+//             );
+//           }
+//         }
+//       });
+//     });
+
+//     $.ajax({
+//       url: "sql/submit-activity.php",
+//       type: "POST",
+//       data: formData,
+//       contentType: false,
+//       processData: false,
+//       success: function (response) {
+//         console.log("Server response:", response);
+//         alert(response);
+//       },
+
+//       error: function (xhr, status, error) {
+//         console.log("Error details:", xhr.responseText);
+//         alert("Error: " + error);
+//       },
+//     });
+//   });
+// });

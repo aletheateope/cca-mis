@@ -7,9 +7,14 @@
 
 <?php session_start();?>
 
-<?php include_once 'sql/get-report-id.php'?>
+<?php require_once 'sql/check-report-id.php'?>
+
+<?php require_once 'sql/get-month-year.php'?>
+
+<?php require_once 'sql/events.php'?>
 
 <?php require_once 'sql/active-members.php'?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +53,9 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <h3>For January, 2025</h3>
+                                <h3>For <?= $month?>,
+                                    <?= $year?>
+                                </h3>
                             </div>
                         </div>
 
@@ -57,12 +64,6 @@
                 <form id="submitActivityForm" enctype="multipart/form-data">
                     <div class="row page-body">
                         <div class="col">
-                            <div class="row content d-none">
-                                <div class="col">
-                                    <input type="hidden" name="report_id"
-                                        value="<?= $report_id ?>">
-                                </div>
-                            </div>
                             <div class="row content gallery-section">
                                 <div class="col">
                                     <div class="row">
@@ -99,9 +100,14 @@
                                 <div class="col">
                                     <h3>Activity Details</h3>
                                     <p>(Optional) Select Event from the Calendar</p>
-                                    <select class="form-select" name="event">
-                                        <option selected value="1">---</option>
-                                        <option value=""></option>
+                                    <select class="form-select" name="event" id="selectEvent">
+                                        <option selected value="0">None</option>
+                                        <?php while ($row = mysqli_fetch_assoc($events)) {?>
+                                        <option
+                                            value="<?php echo $row['public_key']?>">
+                                            <?php echo $row['title']?>
+                                        </option>
+                                        <?php }?>
                                     </select>
                                     <label for="inputTitle" class="form-label">Activity Title</label>
                                     <input type="text" name="title" class="form-control" id="inputTitle" required>
@@ -166,22 +172,24 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="row" id="membersContainer">
+                                                        <?php $index = 1?>
                                                         <?php while ($row = mysqli_fetch_assoc($result)) {?>
                                                         <div class="col-4 member">
                                                             <div class="form-check">
                                                                 <input type="checkbox"
                                                                     class="form-check-input member-checkbox"
                                                                     name="participants[]"
-                                                                    value="<?php echo $row['student_number']; ?>"
-                                                                    id="student_number_<?php echo $row['student_number']?>">
+                                                                    value="<?php echo $row['public_key']; ?>"
+                                                                    id="participant-<?php echo $index?>">
                                                                 <label class="form-check-label"
-                                                                    for="student_number_<?php echo $row['student_number']?>">
+                                                                    for="participant-<?php echo $index?>">
                                                                     <?php echo $row ['first_name']. ' ' . $row['last_name'];?>
                                                                 </label>
                                                             </div>
                                                             <div class="add-recognition" id="addRecognition"><i
                                                                     class="bi bi-plus"></i></div>
                                                         </div>
+                                                        <?php $index++;?>
                                                         <?php }?>
                                                     </div>
                                                 </div>
@@ -271,10 +279,13 @@
     <!-- SPLIDE.JS -->
     <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 
-    <script src="add-activity-page.js"></script>
+    <script type="module" src="add-activity-page.js"></script>
 
     <script>
         console.log("User ID:", <?php echo json_encode($user_id); ?> );
+        console.log(
+            "Report ID:", <?= json_encode($report_id)?>
+        )
     </script>
 
 </body>

@@ -71,7 +71,7 @@
                                                             <div class="events">
                                                                 <p>
                                                                     <?php $eventCount = count($month['events']);?>
-                                                                    <?php echo $eventCount . ($eventCount == 1 ? ' Event' : ' Events');?>
+                                                                    <?php echo $eventCount . ($eventCount == 1 ? ' Activity' : ' Activities');?>
                                                                 </p>
                                                                 <button class="addEvent no-style-btn">
                                                                     <i class="bi bi-plus"></i>
@@ -202,7 +202,7 @@
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
 
-    <script src="accomplishments-page.js"></script>
+    <script type="module" src="accomplishments-page.js"></script>
 
     <script>
         console.log(

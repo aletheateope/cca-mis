@@ -11,6 +11,7 @@ let calendar;
 // FULL CALENDAR
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
+
   calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: "dayGridMonth",
     height: "85vh",

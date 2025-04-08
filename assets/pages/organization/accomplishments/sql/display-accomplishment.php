@@ -33,10 +33,12 @@ while ($row_year = $result_years->fetch_assoc()) {
     while ($row_month = $result_months->fetch_assoc()) {
         $month_id = $row_month['month_id'];
 
-        $sql_events = "SELECT title
-                        FROM activity_accomplishment
-                        INNER JOIN accomplishment_report
-                            ON accomplishment_report.activity_id = activity_accomplishment.activity_id
+        $sql_events = "SELECT COALESCE(ec.title, ac.title) AS title
+                        FROM activity_accomplishment ac
+                        INNER JOIN accomplishment_report ar
+                            ON ar.activity_id = ac.activity_id
+                        LEFT JOIN event_calendar ec
+                            ON ec.event_id = ac.event_id
                         WHERE organization_id = ? AND year = ? AND month = ?";
         $stmt_events = $conn->prepare($sql_events);
         $stmt_events->bind_param("iii", $user_id, $year, $month_id);

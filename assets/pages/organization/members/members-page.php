@@ -1,9 +1,11 @@
+<?php require_once '../../../sql/base-path.php'?>
+
 <?php
-//require_once '../../../sql/session_check.php';
+//require_once BASE_PATH . '/assets/sql/session_check.php';
 //check_role('Organization');
 ?>
 
-<?php include_once '../../../sql/temporary_session.php'?>
+<?php include_once BASE_PATH . '/assets/sql/temporary_session.php'?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Members</title>
 
-    <?php require_once '../../../components/header-links.php' ?>
+    <?php require_once BASE_PATH . '/assets/components/header-links.php' ?>
 
     <!-- FILEPOND -->
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
@@ -25,7 +27,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include '../../../components/sidebar/organization/sidebar.php' ?>
+                <?php include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
@@ -41,7 +43,12 @@
                     <div class="col">
                         <div class="row content">
                             <div class="col">
-                                <table class="table members-table">
+                                <div class="row">
+                                    <div class="col">
+
+                                    </div>
+                                </div>
+                                <table class="table">
                                     <thead>
                                         <tr>
                                             <th>Box</th>
@@ -81,8 +88,8 @@
                         <div class="profile-container">
                             <img class="profile-image" src="/cca/assets/img/blank-profile.png" alt="profile"
                                 id="blank-profile">
-                            <i class="bi bi-x removeProfile" id="removeProfile" onclick="removeProfile()"></i>
-                            <a class="link" href="" id="addProfileButton">Add Profile</a>
+                            <a class="link removeProfile" href id="removeProfile">Remove Profile</a>
+                            <a class="link" href id="addProfileButton">Add Profile</a>
                             <input type="file" name="profile_img" id="inputProfile" style="display: none;"
                                 accept="image/png, image/jpeg" />
                         </div>
@@ -92,7 +99,7 @@
                                     <h3>Personal Information</h3>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row name">
                                 <div class="col">
                                     <input name="first_name" type="text" class="form-control" id="inputFirstName"
                                         required>
@@ -113,7 +120,7 @@
                                 <div class="col">
                                     <label for="inputBirthday" class="form-label">Date of Birth</label>
                                     <input type="date" name="birthdate" class="form-control" id="inputBirthday"
-                                        onchange="calculateAge()" required />
+                                        required />
                                 </div>
                                 <div class="col">
                                     <label for="inputAge" class="form-label">Age</label>
@@ -261,7 +268,7 @@
         </div>
     </form>
 
-    <?php require_once '../../../components/footer-links.php'?>
+    <?php require_once BASE_PATH . '/assets/components/footer-links.php'?>
 
     <!-- FILEPOND -->
     <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js">
@@ -269,7 +276,7 @@
     <script src="https://unpkg.com/filepond-plugin-file-rename/dist/filepond-plugin-file-rename.js"></script>
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 
-    <script src="members-page.js"></script>
+    <script type="module" src="members-page.js"></script>
 
     <script>
         console.log(
