@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="page-body">
-                    <div class="row content">
+                    <div class="row container">
                         <div class="col">
                         </div>
                     </div>

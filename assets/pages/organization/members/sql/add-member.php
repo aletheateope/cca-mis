@@ -15,6 +15,8 @@ if (!is_dir($profileImgDirectory)) {
     mkdir($profileImgDirectory, 0777, true);
 }
 
+require_once BASE_PATH . '/assets/sql/public-key.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once BASE_PATH . '/assets/sql/conn.php';
 
@@ -121,9 +123,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
             
                     // Insert file data into database
-                    $stmt5 = $conn->prepare("INSERT INTO student_document (student_number, file_name, path, date_uploaded) VALUES (?, ?, ?, NOW())");
-                    $stmt5->bind_param("iss", $student_number, $convertedFileName, $sqlFilePath);
-                    $stmt5->execute();
+                    $stmt5 = $conn->prepare("INSERT INTO student_document (organization_id, student_number, file_name, path, date_uploaded) VALUES (?, ?, ?, ?, NOW())");
+                    $stmt5->bind_param("iiss", $organization_id, $student_number, $convertedFileName, $sqlFilePath);
+                    if($stmt5->execute()) {
+                        $document_id = $stmt5->insert_id;
+
+                        $activityKeyCount = 1;
+
+                        do {
+                            $public_key = generatePublicKey();
+    
+                            $stmtKey = $conn->prepare("SELECT COUNT(*) FROM key_student_document WHERE public_key = ?");
+                            $stmtKey->bind_param("s", $public_key);
+                            $stmtKey->execute();
+                            $stmtKey->bind_result($activityKeyCount);
+                            $stmtKey->fetch();
+                            $stmtKey->close();
+                        } while ($activityKeyCount > 0);
+
+                        $stmt7 = $conn->prepare("INSERT INTO key_student_document (document_id, public_key) VALUES (?, ?)");
+                        $stmt7->bind_param("is", $document_id, $public_key);
+                        $stmt7->execute();
+
+                    }
                 } else {
                     throw new Exception('Upload error occurred for file: ' . $_FILES['document']['name'][$key]);
                 }
@@ -132,9 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $conn->commit();
 
-        require_once BASE_PATH . '/assets/sql/public-key.php';
-
-        $count = 1;
+        $studentKeyCount = 1;
 
         do {
             $public_key = generatePublicKey();
@@ -143,10 +163,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtKey = $conn->prepare($key);
             $stmtKey->bind_param("s", $public_key);
             $stmtKey->execute();
-            $stmtKey->bind_result($count);
+            $stmtKey->bind_result($studentKeyCount);
             $stmtKey->fetch();
             $stmtKey->close();
-        } while ($count > 0);
+        } while ($studentKeyCount > 0);
 
 
         $stmt6 = $conn->prepare("INSERT INTO key_student (student_number, public_key) VALUES (?, ?)");

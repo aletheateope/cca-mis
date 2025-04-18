@@ -1,0 +1,147 @@
+body {
+  .edit-btn {
+    color: var(--info);
+  }
+
+  .delete-btn {
+    color: var(--danger);
+  }
+
+  i {
+    font-size: 18px;
+  }
+}
+
+.page-body {
+  > .col {
+    > .row:first-child {
+      gap: 1rem;
+
+      > .col {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+    }
+  }
+
+  .container {
+    h5 {
+      color: var(--inactive-text-dark);
+    }
+
+    > .col {
+      gap: 1.5rem !important;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+
+      > :first-child {
+        margin-right: auto;
+      }
+    }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+
+      gap: 0.25rem;
+    }
+  }
+}
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 300px;
+
+  gap: 1rem;
+
+  word-break: break-word;
+  text-align: center;
+
+  .profile .col,
+  .recognition .col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile {
+    .col {
+      gap: 1rem;
+    }
+
+    img {
+      height: 100px;
+      width: 100px;
+    }
+  }
+
+  .recognition {
+    color: var(--inactive-text-dark);
+
+    h4 {
+      color: var(--inactive-text-dark);
+      font-style: italic;
+    }
+
+    p {
+      font-size: 15px;
+    }
+
+    button {
+      font-size: var(--small);
+      color: var(--inactive-text-dark);
+      text-decoration: underline;
+    }
+
+    .recognition-slider {
+      .col {
+        gap: 0.5rem !important;
+      }
+    }
+  }
+}
+
+tbody {
+  tr {
+    td:last-child {
+      width: 100px;
+    }
+  }
+
+  .action-group {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 1rem;
+  }
+}
+
+.participation {
+  height: 25rem;
+
+  .participation-table {
+    flex-grow: 1;
+    height: 1vh;
+    overflow-y: auto;
+
+    thead {
+      position: sticky;
+      top: 0;
+    }
+  }
+}
+
+.page-footer {
+  margin-bottom: 1.5rem;
+}

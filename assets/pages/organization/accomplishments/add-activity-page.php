@@ -64,7 +64,7 @@
                 <form id="submitActivityForm" enctype="multipart/form-data">
                     <div class="row page-body">
                         <div class="col">
-                            <div class="row content gallery-section">
+                            <div class="row container gallery-section">
                                 <div class="col">
                                     <div class="row">
                                         <div class="col">
@@ -96,7 +96,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row content">
+                            <div class="row container">
                                 <div class="col">
                                     <h3>Activity Details</h3>
                                     <p>(Optional) Select Event from the Calendar</p>
@@ -132,7 +132,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row content">
+                            <div class="row container">
                                 <div class="col">
                                     <h3>Attendance</h3>
                                     <label for="inputTargetMembers" class="form-label">Target Number of Members</label>
@@ -145,7 +145,7 @@
                                         placeholder="Select participants below to start counting..." readonly required>
                                 </div>
                             </div>
-                            <div class="row content">
+                            <div class="row container">
                                 <div class="col">
                                     <h3>Participants</h3>
                                     <div class="row participants">
@@ -198,14 +198,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row content recognition-container">
+                            <div class="row container recognition-container">
                                 <div class="col">
                                     <h3>Recognition</h3>
                                     <div class="row row-gap recognition-row">
                                     </div>
                                 </div>
                             </div>
-                            <div class="row content">
+                            <div class="row container">
                                 <div class="col">
                                     <h3>Activity Insights</h3>
                                     <div class="row row-gap">
@@ -239,7 +239,7 @@
                                         id="inputBudgetUtilized" placeholder="0" required>
                                 </div>
                             </div>
-                            <div class="row content">
+                            <div class="row container">
                                 <div class="col">
                                     <h3>Remarks</h3>
                                     <div class="row remarks-section">

@@ -45,7 +45,7 @@
                 <div class="row page-body">
                     <div class="col">
                         <?php foreach ($accomplishments as $year => $months) { ?>
-                        <div class="row content">
+                        <div class="row container">
                             <div class="col">
                                 <div class="row content-header">
                                     <div class="col-12">

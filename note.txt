@@ -45,6 +45,19 @@
 
 -----------------------------
 
+<script>
+    var sessionID =
+        "<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'undefined'; ?>";
+
+    var sessionRole =
+        "<?php echo isset($_SESSION['user_role']) ? $_SESSION['user_role'] : 'undefined'; ?>";
+
+    console.log("User ID: " + sessionID);
+    console.log("User Role: " + sessionRole);
+</script>
+
+-----------------------------
+
 <?php
 require_once BASE_PATH . '/assets/sql/public-key.php';
 
@@ -63,16 +76,10 @@ do {
 
 -----------------------------
 
-<script>
-    var sessionID =
-        "<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'undefined'; ?>";
+COALESCE(ec.title, aa.title)
 
-    var sessionRole =
-        "<?php echo isset($_SESSION['user_role']) ? $_SESSION['user_role'] : 'undefined'; ?>";
-
-    console.log("User ID: " + sessionID);
-    console.log("User Role: " + sessionRole);
-</script>
+LEFT JOIN event_calendar ec
+    ON ec.event_id = aa.event_id
 
 -----------------------------
 
@@ -80,6 +87,33 @@ import {
   onShow,
   onHide,
 } from "../../../components/sweetalert2/alertAnimation.js";
+
+-----------------------------
+
+Swal.fire({
+  title: "Are you sure you want to log out?",
+  text: "You will be logged out of your account. Do you want to continue?",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonText: "Yes",
+  cancelButtonText: "No",
+  reverseButtons: true,
+  showClass: {
+    popup: onShow,
+  },
+  hideClass: {
+    popup: onHide,
+  },
+  customClass: {
+    popup: "swal-container",
+  },
+}).then((result) => {
+  if (result.isConfirmed) {
+    window.location.href = "/cca/assets/sql/logout.php";
+  }
+});
+
+-----------------------------
 
 Swal.fire({
   title: "Processing...",

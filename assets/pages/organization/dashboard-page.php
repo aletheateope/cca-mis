@@ -32,7 +32,7 @@
                 </div>
                 <div class="row page-body">
                     <div class="col">
-                        <div class="row content">
+                        <div class="row container">
                             <div class="col">
                             </div>
                         </div>

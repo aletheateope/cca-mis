@@ -60,7 +60,7 @@
                 <form id="submitRecordForm" enctype="multipart/form-data">
                     <div class="row page-body">
                         <div class="col">
-                            <div class="row content">
+                            <div class="row container">
                                 <div class="col">
                                     <h3>Credit and Expense Entry</h3>
 
@@ -178,7 +178,7 @@
                                 </div>
                             </div>
 
-                            <div class="row content">
+                            <div class="row container">
                                 <div class="col">
                                     <h3>Supporting Receipts</h3>
 
@@ -191,7 +191,7 @@
                                 </div>
                             </div>
 
-                            <div class="row content">
+                            <div class="row container">
                                 <div class="col">
                                     <h3>Summary</h3>
 

@@ -21,11 +21,11 @@ h2 {
 
 h3 {
   font-size: var(--large);
-  font-weight: var(--medium);
+  font-weight: var(--semi-bold);
 }
 
 h4 {
-  font-size: var(--regular);
+  font-size: var(--default);
 }
 
 h5 {
@@ -37,12 +37,16 @@ h6 {
 }
 
 p {
-  font-size: var(--regular);
+  font-size: var(--default);
   margin: 0;
 }
 
 label {
   margin: 0 !important;
+}
+
+th {
+  font-weight: var(--semi-bold);
 }
 
 /* BOOTSTRAP */
@@ -110,7 +114,7 @@ label {
     gap: 1.5rem;
   }
 
-  .content {
+  .container {
     background-color: var(--primary-background);
     border-radius: var(--border-radius);
     padding: 1.5rem;

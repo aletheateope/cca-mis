@@ -42,7 +42,7 @@
                     <div class="col">
                         <!-- FINANCIAL SUMMARY -->
                         <div class="row finance-overview">
-                            <div class="col content">
+                            <div class="col container">
                                 <h3>March 2025</h3>
                                 <table class="table table-inflow">
                                     <tbody>
@@ -86,7 +86,7 @@
                                 </table>
                             </div>
                             <div class="col">
-                                <div class="row content">
+                                <div class="row container">
                                     <div class="col">
                                         <h3>Latest Recorded Financial Status</h3>
                                         <h4>As of March 2025</h4>
@@ -109,7 +109,7 @@
                                         <h5>Record Compared to <button class="no-style-btn">February 2025</button></h5>
                                     </div>
                                 </div>
-                                <div class="row content">
+                                <div class="row container">
                                     <div class="col">
                                         <h3>Financial Flow</h3>
                                         <div class="row chart-container">
@@ -126,7 +126,7 @@
 
                         <!-- FINANCIAL RECORDS -->
                         <?php foreach ($records as $year => $months) { ?>
-                        <div class="row content financial-records">
+                        <div class="row container financial-records">
                             <div class="col">
                                 <div class="row header">
                                     <div class="col">

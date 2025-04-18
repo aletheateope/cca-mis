@@ -5,6 +5,292 @@ import {
   onHide,
 } from "../../../components/sweetalert2/alertAnimation.js";
 
+function formatDate(dateString) {
+  if (!dateString) return "---";
+
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+const tableBody = document.querySelector(".members tbody");
+
+function clearActiveRows() {
+  tableBody
+    .querySelectorAll("tr")
+    .forEach((row) => row.classList.remove("active"));
+}
+
+// SEARCH FUNTION
+document
+  .getElementById("selectMemberState")
+  .addEventListener("change", searchMembers);
+document
+  .getElementById("memberSearch")
+  .addEventListener("input", searchMembers);
+
+async function searchMembers() {
+  const state = document.getElementById("selectMemberState").value;
+  const query = document.getElementById("memberSearch").value;
+
+  try {
+    const response = await fetch("sql/search-members.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ state, query }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const members = await response.json();
+
+    if (members.success) {
+      populateTable(members.data);
+    } else {
+      console.log(members.message);
+    }
+  } catch (error) {
+    console.error("Error fetching members:", error);
+  }
+}
+
+function populateTable(members) {
+  tableBody.innerHTML = "";
+
+  members.forEach((member, index) => {
+    const row = document.createElement("tr");
+    row.setAttribute("data-id", member.public_key);
+
+    row.innerHTML = `
+      <td>
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="member-${index + 1}"
+          />
+          <label class="form-check-label" for="member-${index + 1}">
+            ${member.first_name} ${member.last_name}
+          </label>
+        </div>
+      </td>
+      <td>${member.status}</td>
+      <td>${member.state}</td>
+      <td>${formatDate(member.date_joined)}</td>
+      <td class="actions-column">
+        <div class="actions">
+          <button class="no-style-btn edit-btn" title="Edit">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button class="no-style-btn delete-btn" title="Delete">
+            <i class="bi bi-trash-fill"></i>
+          </button>
+        </div>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+// DISPLAY MEMBER INFO
+const infoPanel = document.querySelector(".member-info-panel");
+const closeBtn = document.getElementById("closePanelBtn");
+
+tableBody.addEventListener("click", async function (event) {
+  const row = event.target.closest("tr");
+
+  if (!row || !tableBody.contains(row)) return;
+
+  // Do nothing
+  if (
+    event.target.closest(".form-check-input") ||
+    event.target.closest(".form-check-label") ||
+    event.target.closest(".delete-btn") ||
+    event.target.closest(".edit-btn")
+  ) {
+    return;
+  }
+
+  const isActive = row.classList.contains("active");
+
+  clearActiveRows();
+
+  // Open
+  if (!isActive) {
+    row.classList.add("active");
+    infoPanel.classList.add("open");
+
+    const publicKey = row.getAttribute("data-id");
+
+    try {
+      const response = await fetch("sql/member.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ public_key: publicKey }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+
+      const data = await response.json();
+
+      const fullName = `${data.first_name || ""} ${data.middle_name || ""} ${
+        data.last_name || ""
+      }`
+        .replace(/\s+/g, " ")
+        .trim();
+
+      const updateField = (id, value) =>
+        (document.getElementById(id).textContent = value || "---");
+
+      updateField("memberName", fullName);
+      updateField("memberAge", data.age);
+      updateField("memberDob", formatDate(data.birthdate));
+      updateField("memberGender", data.gender);
+      updateField("memberContact", data.mobile_number);
+      updateField("memberEmail", data.email);
+      updateField("memberAddress", data.address);
+      updateField("memberStudentNumber", data.student_number);
+      updateField("memberCourse", data.course);
+      updateField("memberYearLevel", data.year_level);
+      updateField("memberStatus", data.status);
+      updateField("memberState", data.state);
+      updateField("memberDateJoined", formatDate(data.date_joined));
+      updateField("memberDateLeft", formatDate(data.date_left));
+
+      // SEE MORE LINK
+      const seeMoreLink = document.getElementById("memberFullDetailsLink");
+      const studentNum = data.student_number;
+
+      if (seeMoreLink) {
+        seeMoreLink.href = `member-page.php?stud-num=${studentNum}`;
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      console.error("Fetch or parse error:", error.message);
+    }
+  } else {
+    infoPanel.classList.remove("open");
+  }
+});
+
+closeBtn.addEventListener("click", function () {
+  infoPanel.classList.remove("open");
+
+  clearActiveRows();
+});
+
+// DELETE MEMBER
+tableBody.addEventListener("click", async function (event) {
+  const deleteBtn = event.target.closest(".delete-btn");
+
+  if (!deleteBtn) return;
+
+  const row = deleteBtn.closest("tr");
+  const publicKey = row.getAttribute("data-id");
+
+  try {
+    const response = await fetch("sql/member-name.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ public_key: publicKey }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok.");
+    }
+
+    const data = await response.json();
+
+    const firstName = data.first_name || "";
+    const lastName = data.last_name || "";
+
+    const fullName = `${firstName} ${lastName}`.trim();
+
+    Swal.fire({
+      title: `Delete "${fullName}"?`,
+      text: "This member will be removed permanently. Are you sure you want to proceed?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      reverseButtons: true,
+      showClass: {
+        popup: onShow,
+      },
+      hideClass: {
+        popup: onHide,
+      },
+      customClass: {
+        popup: "swal-container",
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Processing...",
+          text: "Please wait while we delete the event.",
+          allowOutsideClick: false,
+          showClass: {
+            popup: onShow,
+          },
+          hideClass: {
+            popup: onHide,
+          },
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        try {
+          const deleteResponse = await fetch("sql/delete-member.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ public_key: publicKey }),
+          });
+
+          if (!deleteResponse.ok) {
+            throw new Error("Network response was not ok.");
+          }
+
+          const deleteData = await deleteResponse.json();
+
+          Swal.close();
+
+          if (deleteData.success) {
+            const notyf = createNotyf();
+            notyf.success("The member has been deleted successfully.");
+
+            deleteBtn.closest("tr").remove();
+          } else {
+            alert(deleteData.message);
+          }
+        } catch (error) {
+          swal.close();
+          console.error("Error fetching data:", error);
+          console.error("Fetch or parse error:", error.message);
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+});
+
+// MODAL
 // CLEAVE
 var cleave = new Cleave("#inputContactNumber", {
   phone: true,
@@ -169,6 +455,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   });
 
+  // ADD MEMBER
   document
     .getElementById("addMemberForm")
     .addEventListener("submit", async function (event) {
@@ -176,7 +463,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       Swal.fire({
         title: "Processing...",
-        text: "Please wait while we delete the event.",
+        text: "Please wait while we add the member.",
         allowOutsideClick: false,
         showClass: {
           popup: onShow,

@@ -163,6 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 showCancelButton: true,
                 confirmButtonText: "Yes",
                 cancelButtonText: "No",
+                reverseButtons: true,
                 showClass: {
                   popup: onShow,
                 },
@@ -571,6 +572,7 @@ document.querySelectorAll(".reject-btn").forEach((button) => {
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
+      reverseButtons: true,
       showClass: {
         popup: onShow,
       },

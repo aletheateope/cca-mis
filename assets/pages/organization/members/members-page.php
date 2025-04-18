@@ -7,6 +7,8 @@
 
 <?php include_once BASE_PATH . '/assets/sql/temporary_session.php'?>
 
+<?php require_once 'sql/active-members.php'?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,7 +31,8 @@
             <div class="col-auto">
                 <?php include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
             </div>
-            <div class="col main-content">
+
+            <main class="col main-content">
                 <div class="row page-header">
                     <div class="col">
                         <h1>Members</h1>
@@ -41,33 +44,227 @@
                 </div>
                 <div class="row page-body">
                     <div class="col">
-                        <div class="row content">
+                        <section class="row container members">
+                            <div class="col">
+                                <div class="row header">
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                            <input type="text" class="form-control" placeholder="Search..."
+                                                id="memberSearch">
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <select class="form-select" id="selectMemberState">
+                                            <option value="1">All</option>
+                                            <option selected value="2">Active</option>
+                                            <option value="3">Inactive</option>
+                                            <option value="4">Exited</option>
+                                            <option value="5">Terminated</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row table-row">
+                                    <div class="col">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <div class="form-check">
+                                                            <input type="checkbox" class="form-check-input" value=""
+                                                                id="selectAll">
+                                                            <label class="form-check-label" for="selectAll">
+                                                                Name
+                                                            </label>
+                                                        </div>
+                                                    </th>
+                                                    <th>Status</th>
+                                                    <th>State</th>
+                                                    <th>Date Joined</th>
+                                                    <th class="text-center">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php $member_index = 1?>
+                                                <?php while  ($row = mysqli_fetch_assoc($active_members)) {?>
+                                                <tr
+                                                    data-id="<?= $row['public_key']?>">
+                                                    <td>
+                                                        <div class="form-check">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="member-<?= $member_index?>">
+                                                            <label class="form-check-label"
+                                                                for="member-<?= $member_index?>">
+                                                                <?php echo $row ['first_name']. ' ' . $row['last_name'];?>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $row['status']?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $row['state']?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo date('F d, Y', strtotime($row['date_joined']))?>
+                                                    </td>
+                                                    <td class="actions-column">
+                                                        <div class="actions">
+                                                            <button class="no-style-btn edit-btn" title="Edit">
+                                                                <i class="bi bi-pencil-square"></i>
+                                                            </button>
+                                                            <button class="no-style-btn delete-btn" title="Delete">
+                                                                <i class="bi bi-trash-fill"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <?php $member_index++;?>
+                                                <?php }?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <h4>Total Number: <span id="totalMembers">3942</span></h4>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </main>
+
+            <div class="col-auto member-info-panel">
+                <div class="header">
+                    <h2>Member Information</h2>
+                    <button class="no-style-btn" id="closePanelBtn" title="Close">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div class="row profile-container">
+                    <div class="col">
+                        <img src="/cca/assets/img/blank-profile.png" alt="">
+                        <a href class="change-profile">Change Profile</a>
+                    </div>
+                </div>
+                <div class="row details-container">
+                    <div class="col">
+                        <div class="row section">
                             <div class="col">
                                 <div class="row">
                                     <div class="col">
-
+                                        <h6>Name</h6>
+                                        <p id="memberName"></p>
                                     </div>
                                 </div>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Box</th>
-                                            <th>Name</th>
-                                            <th>Status</th>
-                                            <th>State</th>
-                                            <th>Date Joined</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>test</td>
-                                            <td>test</td>
-                                            <td>test</td>
-                                            <td>test</td>
-                                            <td>test</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6>Age</h6>
+                                        <p id="memberAge"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6>Date of Birth</h6>
+                                        <p id="memberDob"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6>Gender</h6>
+                                        <p id="memberGender"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6>Contact Number</h6>
+                                        <p id="memberContact"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6>Email</h6>
+                                        <p id="memberEmail"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6>Address</h6>
+                                        <p id="memberAddress"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row section">
+                            <div class="col">
+                                <div class="row header">
+                                    <div class="col">
+                                        <h3>Academic Information</h3>
+                                    </div>
+                                </div>
+                                <div class="row wrapper">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6>Student Number</h6>
+                                                <p id="memberStudentNumber"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6>Course</h6>
+                                                <p id="memberCourse"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6>Year Level</h6>
+                                                <p id="memberYearLevel"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row section">
+                            <div class="col">
+                                <div class="row header">
+                                    <div class="col">
+                                        <h3>Membership Information</h3>
+                                    </div>
+                                </div>
+                                <div class="row wrapper">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6>Status</h6>
+                                                <p id="memberStatus"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6>State</h6>
+                                                <p id="memberState"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6>Date Joined</h6>
+                                                <p id="memberDateJoined"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6>Date Left</h6>
+                                                <p id="memberDateLeft"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row more-link">
+                            <div class="col">
+                                <a href="#" id="memberFullDetailsLink">See More Details</a>
                             </div>
                         </div>
                     </div>
@@ -75,6 +272,7 @@
             </div>
         </div>
     </div>
+
 
     <form id="addMemberForm" enctype="multipart/form-data">
         <div class="add-member-modal modal fade" id="addMemberModal" tabindex="-1">

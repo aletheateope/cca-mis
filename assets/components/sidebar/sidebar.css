@@ -9,7 +9,7 @@
 
   padding: 12px;
 
-  font-size: var(--regular);
+  font-size: var(--default);
   overflow: hidden;
   transition: 300ms ease-in-out;
   text-wrap: nowrap;

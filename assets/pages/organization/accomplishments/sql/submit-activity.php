@@ -114,7 +114,7 @@ if ($event == 0) {
 
 require_once BASE_PATH . '/assets/sql/public-key.php';
 
-$count = 1;
+$activityKeyCount = 1;
 
 do {
     $insert_public_key = generatePublicKey();
@@ -122,10 +122,10 @@ do {
     $stmtKey = $conn->prepare("SELECT COUNT(*) FROM key_activity WHERE public_key = ?");
     $stmtKey->bind_param("s", $insert_public_key);
     $stmtKey->execute();
-    $stmtKey->bind_result($count);
+    $stmtKey->bind_result($activityKeyCount);
     $stmtKey->fetch();
     $stmtKey->close();
-} while ($count > 0);
+} while ($activityKeyCount > 0);
         
 
 $stmt2 = $conn->prepare("INSERT INTO key_activity (activity_id, public_key) VALUES (?, ?)");
@@ -149,8 +149,6 @@ if (!$stmt3->execute()) {
 
 $stmt3->close();
 
-$stmt4 = $conn->prepare("INSERT INTO student_participation (activity_id, student_number, recognition) VALUES (?, ?, ?)");
-
 foreach ($public_keys as $public_key) {
     $sql = $conn->prepare("SELECT student_number FROM key_student WHERE public_key = ?");
     $sql->bind_param("s", $public_key);
@@ -164,28 +162,80 @@ foreach ($public_keys as $public_key) {
     $sql->fetch();
     $sql->close();
 
+    $stmt4 = $conn->prepare("INSERT INTO student_participation (activity_id, student_number, recognition) VALUES (?, ?, ?)");
+
     // Check if the student has recognitions
     if (isset($recognitions[$public_key])) {
         foreach ($recognitions[$public_key] as $recognition_text) {
             if (!empty(trim($recognition_text))) {
                 $stmt4->bind_param("iis", $activity_id, $student_number, $recognition_text);
 
-                if (!$stmt4->execute()) {
-                    echo json_encode(["success" => false, "message" => "Failed to insert student participation: " . $stmt4->error]);
-                    exit;
+                if ($stmt4->execute()) {
+                    $participation_id = $stmt4->insert_id;
+
+                    $participationKeyCount = 1;
+
+                    do {
+                        $public_key = generatePublicKey();
+    
+                        $stmtKey = $conn->prepare("SELECT COUNT(*) FROM key_student_participation WHERE public_key = ?");
+                        $stmtKey->bind_param("s", $public_key);
+                        $stmtKey->execute();
+                        $stmtKey->bind_result($participationKeyCount);
+                        $stmtKey->fetch();
+                        $stmtKey->close();
+                    } while ($participationKeyCount > 0);
+
+
+                    $stmt6 = $conn->prepare("INSERT INTO key_student_participation (participation_id, public_key) VALUES (?, ?)");
+                    $stmt6->bind_param("is", $participation_id, $public_key);
+
+                    if (!$stmt6->execute()) {
+                        echo json_encode(["success" => false, "message" => "Failed to insert public key: " . $stmt6->error]);
+                        exit;
+                    }
+
+                    $stmt6->close();
                 }
             }
         }
     } else {
         // If no recognition, insert NULL
         $recognition_text = null;
+
         $stmt4->bind_param("iis", $activity_id, $student_number, $recognition_text);
 
-        if (!$stmt4->execute()) {
-            echo json_encode(["success" => false, "message" => "Failed to insert student participation: " . $stmt4->error]);
-            exit;
+
+        if ($stmt4->execute()) {
+            $participation_id = $stmt4->insert_id;
+
+            $participationKeyCount = 1;
+
+            do {
+                $public_key = generatePublicKey();
+    
+                $stmtKey = $conn->prepare("SELECT COUNT(*) FROM key_student_participation WHERE public_key = ?");
+                $stmtKey->bind_param("s", $public_key);
+                $stmtKey->execute();
+                $stmtKey->bind_result($participationKeyCount);
+                $stmtKey->fetch();
+                $stmtKey->close();
+            } while ($participationKeyCount > 0);
+
+
+            $stmt6 = $conn->prepare("INSERT INTO key_student_participation (participation_id, public_key) VALUES (?, ?)");
+            $stmt6->bind_param("is", $participation_id, $public_key);
+
+            if (!$stmt6->execute()) {
+                echo json_encode(["success" => false, "message" => "Failed to insert public key: " . $stmt6->error]);
+                exit;
+            }
+
+            $stmt6->close();
+
         }
     }
+    $stmt4->close();
 }
 
 if (!empty($_FILES['activity_gallery']['name'][0])) {
