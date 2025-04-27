@@ -12,7 +12,7 @@ $student_number = $_GET['stud-num'];
 
 $stmt = $conn->prepare("SELECT COUNT(*)
                         FROM student_organization
-                        WHERE student_number = ? AND organization_id = ?");
+                        WHERE student_number = ? AND organization = ?");
 $stmt->bind_param("ii", $student_number, $user_id);
 $stmt->execute();
 $stmt->bind_result($count);
@@ -86,7 +86,7 @@ $stmt->close();
 $stmt = $conn->prepare("SELECT ao.name AS organization, status, state, date_joined, date_left
                         FROM student_organization so
                         INNER JOIN account_organization ao
-                            ON ao.organization_id = so.organization_id
+                            ON ao.organization_id = so.organization
                         WHERE student_number = ?");
 $stmt->bind_param("i", $student_number);
 $stmt->execute();

@@ -5,6 +5,10 @@ require_once '../../../../sql/base-path.php';
 
 require_once BASE_PATH . '/assets/sql/conn.php';
 
+session_start();
+
+$organization_id = $_SESSION['user_id'];
+
 $data = json_decode(file_get_contents("php://input"), true);
 
 
@@ -29,8 +33,12 @@ if (!$student_number) {
 }
 
 
-$stmt = $conn->prepare("SELECT first_name, last_name FROM student WHERE student_number = ?");
-$stmt->bind_param("s", $student_number);
+$stmt = $conn->prepare("SELECT first_name, last_name 
+                        FROM student s
+                        INNER JOIN student_organization so
+                            ON so.student_number = s.student_number
+                        WHERE organization = ? AND s.student_number = ?");
+$stmt->bind_param("ii", $organization_id, $student_number);
 $stmt->execute();
 $stmt->bind_result($first_name, $last_name);
 $stmt->fetch();

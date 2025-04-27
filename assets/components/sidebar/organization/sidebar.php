@@ -28,7 +28,7 @@
             </a>
         </li>
         <li
-            class="<?= ($currentPage == 'members-page.php') ? 'active' : '' ?>">
+            class="<?= ($currentPage == 'members-page.php' || $currentPage == 'member-page.php') ? 'active' : '' ?>">
             <a href="/cca/assets/pages/organization/members/members-page.php">
                 <i class="icon bi bi-people-fill" id="membersBtn"></i>
                 <span>Members</span>
@@ -42,34 +42,46 @@
             </a>
         </li>
         <li>
-            <button onclick="toggleSubMenu(this)" class="dropdown-btn" id="financeBtn">
+            <button onclick="toggleSubMenu(this)"
+                class="dropdown-btn <?= ($currentPage == 'my-records-page.php' || $currentPage == 'add-record-page.php' || $currentPage == 'records-page.php') ? 'rotate' : '' ?>"
+                id="financeBtn">
                 <i class="icon bi bi-file-text-fill"></i>
                 <span>Finance</span>
                 <i class="icon iconrotate bi bi-chevron-right"></i>
             </button>
-            <ul class="sub-menu">
+            <ul
+                class="sub-menu <?= ($currentPage == 'my-records-page.php' || $currentPage == 'add-record-page.php' || $currentPage == 'records-page.php') ? 'show' : '' ?>">
                 <div>
-                    <li> <a href="#">View Records</a></li>
                     <li
-                        class="<?= ($currentPage == 'finance-page.php' || $currentPage == 'add-record-page.php') ? 'active' : '' ?>">
-                        <a href="/cca/assets/pages/organization/finance/finance-page.php">My Records</a>
+                        class="<?= ($currentPage == 'records-page.php') ? 'active' : '' ?>">
+                        <a href="/cca/assets/pages/public/finance/records-page.php">View Records</a>
+                    </li>
+                    <li
+                        class="<?= ($currentPage == 'my-records-page.php' || $currentPage == 'add-record-page.php') ? 'active' : '' ?>">
+                        <a href="/cca/assets/pages/organization/finance/my-records-page.php">My Records</a>
                     </li>
                 </div>
             </ul>
         </li>
         <li>
-            <button onclick="toggleSubMenu(this)" class="dropdown-btn" id="accomplishmentsBtn">
+            <button onclick="toggleSubMenu(this)"
+                class="dropdown-btn <?= ($currentPage == 'my-accomplishments-page.php'|| $currentPage == 'add-activity-page.php' || $currentPage == 'accomplishments-page.php') ? 'rotate' : '' ?>"
+                id="accomplishmentsBtn">
                 <i class="icon bi bi-calendar-check-fill"></i>
                 <span>Accomplisments</span>
                 <i class="icon iconrotate bi bi-chevron-right"></i>
             </button>
-            <ul class="sub-menu">
+            <ul
+                class="sub-menu <?= ($currentPage == 'my-accomplishments-page.php'|| $currentPage == 'add-activity-page.php'|| $currentPage == 'accomplishments-page.php') ? 'show' : '' ?>">
                 <div>
-                    <li><a href="#">View Accomplishments</a></li>
                     <li
-                        class="<?= ($currentPage == 'accomplishments-page.php'|| $currentPage == 'add-activity-page.php') ? 'active' : '' ?>">
-                        <a href="/cca/assets/pages/organization/accomplishments/accomplishments-page.php">My
-                            Accomplishments</a>
+                        class="<?= ($currentPage == 'accomplishments-page.php') ? 'active' : '' ?>">
+                        <a href="/cca/assets/pages/public/accomplishments/accomplishments-page.php">View Activities</a>
+                    </li>
+                    <li
+                        class="<?= ($currentPage == 'my-accomplishments-page.php'|| $currentPage == 'add-activity-page.php') ? 'active' : '' ?>">
+                        <a href="/cca/assets/pages/organization/accomplishments/my-accomplishments-page.php">My
+                            Activities</a>
                     </li>
                 </div>
             </ul>

@@ -1,5 +1,6 @@
 import { createNotyf } from "../../../components/notyf.js";
 
+// SUCCESS MESSAGE
 const submissionStatus = localStorage.getItem("submissionStatus");
 
 if (submissionStatus === "success") {
@@ -9,6 +10,7 @@ if (submissionStatus === "success") {
   localStorage.removeItem("submissionStatus");
 }
 
+// ACCORDION
 document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
   collapse.addEventListener("show.bs.collapse", function () {
     document.querySelectorAll(".accordion-collapse").forEach((item) => {
@@ -92,7 +94,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       try {
         // Fetch organization name
-        const orgResponse = await fetch("/cca/assets/sql/get-organization.php");
+        const orgResponse = await fetch(
+          "/cca/assets/sql/priv-get-organization.php"
+        );
         const orgData = await orgResponse.json();
 
         if (orgData.error) {

@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt2->bind_param("iss", $student_number, $program_id, $year_level);
         $stmt2->execute();
 
-        $stmt3 = $conn->prepare("INSERT INTO student_organization (student_number, organization_id, date_joined, date_left, status, state) VALUES (?,?,?,?,?,?)");
+        $stmt3 = $conn->prepare("INSERT INTO student_organization (student_number, organization, date_joined, date_left, status, state) VALUES (?,?,?,?,?,?)");
         $stmt3->bind_param("isssss", $student_number, $organization_id, $date_joined, $date_left, $status, $state);
         $stmt3->execute();
 
@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if($stmt5->execute()) {
                         $document_id = $stmt5->insert_id;
 
-                        $activityKeyCount = 1;
+                        $dcoumentKeyCount = 1;
 
                         do {
                             $public_key = generatePublicKey();
@@ -136,10 +136,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $stmtKey = $conn->prepare("SELECT COUNT(*) FROM key_student_document WHERE public_key = ?");
                             $stmtKey->bind_param("s", $public_key);
                             $stmtKey->execute();
-                            $stmtKey->bind_result($activityKeyCount);
+                            $stmtKey->bind_result($dcoumentKeyCount);
                             $stmtKey->fetch();
                             $stmtKey->close();
-                        } while ($activityKeyCount > 0);
+                        } while ($dcoumentKeyCount > 0);
 
                         $stmt7 = $conn->prepare("INSERT INTO key_student_document (document_id, public_key) VALUES (?, ?)");
                         $stmt7->bind_param("is", $document_id, $public_key);

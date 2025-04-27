@@ -79,7 +79,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       try {
         // Fetch organization name
-        const orgResponse = await fetch("/cca/assets/sql/get-organization.php");
+        const orgResponse = await fetch(
+          "/cca/assets/sql/priv-get-organization.php"
+        );
         const orgData = await orgResponse.json();
 
         if (orgData.error) {
@@ -101,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("Unauthorized access");
           return;
         }
+
         if (data.length === 0) {
           alert("No data found for the selected period.");
           return;

@@ -15,11 +15,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accomplishments</title>
+    <title>My Accomplishments</title>
 
     <?php require_once BASE_PATH . '/assets/components/header-links.php'?>
 
-    <link rel="stylesheet" href="accomplishments-page.css">
+    <link rel="stylesheet" href="my-accomplishments-page.css">
 
     <!-- GOOGLE MATERIAL SYMBOLS -->
     <link rel="stylesheet"
@@ -35,7 +35,7 @@
             <div class="col main-content">
                 <div class="row page-header">
                     <div class="col">
-                        <h1>My Accomplishments</h1>
+                        <h1>My Activities</h1>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addAccomplishmentModal">
                             <i class="bi bi-plus"></i>Add Accomplishment
@@ -47,19 +47,19 @@
                         <?php foreach ($accomplishments as $year => $months) { ?>
                         <div class="row container">
                             <div class="col">
-                                <div class="row content-header">
+                                <div class="row header">
                                     <div class="col-12">
                                         <h2><?php echo $year?></h2>
-                                        <button type="button" id="addActivityButton" data-bs-toggle="modal"
+                                        <button class="no-style-btn" id="addActivityButton" data-bs-toggle="modal"
                                             data-bs-target="#addActivityModal">
                                             <i class="bi bi-plus-lg"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="row content-list">
+                                <div class="row body">
                                     <div class="col-12">
-                                        <?php foreach ($months as $monthIndex => $month) { ?>
-                                        <?php $uniqueID="collapse".$year."-".$monthIndex?>
+                                        <?php foreach ($months as $month) { ?>
+                                        <?php $uniqueID = "collapse" . $year . "-" . $month['id'];?>
                                         <div class="accordion accordion-accomplishments">
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header">
@@ -199,10 +199,10 @@
 
 
     <!-- JSPDF -->
-    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
 
-    <script type="module" src="accomplishments-page.js"></script>
+    <script type="module" src="my-accomplishments-page.js"></script>
 
     <script>
         console.log(

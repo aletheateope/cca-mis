@@ -16,7 +16,7 @@ document.querySelector("form").addEventListener("submit", function () {
 });
 
 if (window.performance.getEntriesByType("navigation")[0]?.type === "reload") {
-  window.location.href = "finance-page.php";
+  window.location.href = "my-records-page.php";
 }
 
 // CHECK IF STARTING FUND EXISTS
@@ -132,7 +132,7 @@ document
 
       if (result.success) {
         alert(result.message);
-        window.location.href = "finance-page.php";
+        window.location.href = "my-records-page.php";
       } else {
         alert("Error: " + result.message); // Show error message
       }

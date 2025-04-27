@@ -10,7 +10,7 @@ $sql = "SELECT public_key, first_name, last_name
             ON student_organization.student_number = student.student_number
         INNER JOIN key_student
             ON key_student.student_number = student.student_number
-        WHERE student_organization.state = 'Active' AND student_organization.organization_id = ?
+        WHERE student_organization.state = 'Active' AND student_organization.organization = ?
         ORDER BY first_name ASC, last_name ASC";
 
 $stmt = $conn->prepare($sql);

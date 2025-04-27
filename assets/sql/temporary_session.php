@@ -4,7 +4,7 @@ session_start();
 unset($_SESSION['user_id']);
 
 if (!isset($_SESSION['user_id'])) {
-    $_SESSION['user_id'] = 6;
+    $_SESSION['user_id'] = 7;
 }
 
 require_once BASE_PATH . '/assets/sql/conn.php';

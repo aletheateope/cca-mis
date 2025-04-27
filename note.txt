@@ -21,7 +21,7 @@
             <div class="col-auto">
                 <?php include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
             </div>
-            <div class="col main-content">
+            <main class="col main-content">
                 <div class="row page-header">
                     <div class="col">
                         <h1>Dashboard</h1>
@@ -29,12 +29,12 @@
                 </div>
                 <div class="row page-body">
                     <div class="col">
-                        <div class="row content">
+                        <section class="row container">
                             <div class="col"></div>
-                        </div>
+                        </section>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     </div>
 
@@ -68,6 +68,29 @@ do {
     
     $stmtKey = $conn->prepare("SELECT COUNT(*) FROM key_activity WHERE public_key = ?");
     $stmtKey->bind_param("s", $public_key);
+    $stmtKey->execute();
+    $stmtKey->bind_result($count);
+    $stmtKey->fetch();
+    $stmtKey->close();
+} while ($count > 0);
+
+-----------------------------
+
+<?php
+require_once BASE_PATH . '/assets/sql/public-key.php';
+
+$count = 1;
+
+do {
+    $private_key = generatePrivateKey();
+    $public_key = generatePublicKey();
+
+    if ($private_key === $public_key) {
+        continue;
+    }
+    
+    $stmtKey = $conn->prepare("SELECT COUNT(*) FROM key_activity WHERE private_key = ? OR public_key = ?");
+    $stmtKey->bind_param("ss", $private_key, $public_key);
     $stmtKey->execute();
     $stmtKey->bind_result($count);
     $stmtKey->fetch();

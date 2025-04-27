@@ -18,12 +18,6 @@ function formatDate(dateString) {
 
 const tableBody = document.querySelector(".members tbody");
 
-function clearActiveRows() {
-  tableBody
-    .querySelectorAll("tr")
-    .forEach((row) => row.classList.remove("active"));
-}
-
 // SEARCH FUNTION
 document
   .getElementById("selectMemberState")
@@ -102,6 +96,12 @@ function populateTable(members) {
 // DISPLAY MEMBER INFO
 const infoPanel = document.querySelector(".member-info-panel");
 const closeBtn = document.getElementById("closePanelBtn");
+
+function clearActiveRows() {
+  tableBody
+    .querySelectorAll("tr")
+    .forEach((row) => row.classList.remove("active"));
+}
 
 tableBody.addEventListener("click", async function (event) {
   const row = event.target.closest("tr");

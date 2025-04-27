@@ -45,43 +45,16 @@ function closeSubMenu() {
 
 function tooltip() {
   tippy("#orgMembersBtn", {
-    content: "Org. Members",
+    content: "Organization Members",
     theme: "light-no-border",
     arrow: false,
-    offset: [0, 16],
+    offset: [0, 27],
     placement: "right",
     interactive: true,
     onShow() {
       tippy.hideAll();
     },
     appendTo: () => document.body,
-  });
-
-  tippy("#orgMembersBtn", {
-    content: `
-      <div class="tippy-no-bullets">
-        <ul>
-          <li><a href="#">Blck Mvmnt</a></li>
-          <li><a href="#">Chorale</a></li>
-          <li><a href="#">Dulangsining</a></li>
-          <li><a href="#">Euphoria</a></li>
-          <li><a href="#">FDC</a></li>
-          <li><a href="#">Kultura Teknika</a></li>
-          <li><a href="#">Search</a></li>
-        </ul>
-      </div>
-    `,
-    theme: "light-no-border",
-    allowHTML: true,
-    arrow: false,
-    offset: [0, 16],
-    placement: "right",
-    trigger: "click",
-    appendTo: () => document.body,
-    interactive: true,
-    onShow() {
-      tippy.hideAll();
-    },
   });
 
   tippy("#calendarBtn", {

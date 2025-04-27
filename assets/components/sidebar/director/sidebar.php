@@ -22,23 +22,12 @@
                 <span>Dashboard</span>
             </a>
         </li>
-        <li>
-            <button onclick="toggleSubMenu(this)" class="dropdown-btn" id="orgMembersBtn">
-                <i class="icon bi bi-people-fill"></i>
+        <li
+            class="<?= ($currentPage == 'members-page.php') ? 'active' : '' ?>">
+            <a href="/cca/assets/pages/director/members/members-page.php">
+                <i class="icon bi bi-people-fill" id="orgMembersBtn"></i>
                 <span>Org. Members</span>
-                <i class="icon iconrotate bi bi-chevron-right"></i>
-            </button>
-            <ul class="sub-menu">
-                <div>
-                    <li><a href="#">Blck Mvmnt</a></li>
-                    <li><a href="#">Chorale</a></li>
-                    <li><a href="#">Dulangsining</a></li>
-                    <li><a href="#">Euphoria</a></li>
-                    <li><a href="#">FDC</a></li>
-                    <li><a href="#">Kultura Teknika</a></li>
-                    <li><a href="#">Search</a></li>
-                </div>
-            </ul>
+            </a>
         </li>
         <li
             class="<?= ($currentPage == 'calendar-page.php') ? 'active' : '' ?>">
@@ -47,14 +36,16 @@
                 <span>Calendar</span>
             </a>
         </li>
-        <li>
-            <a href="#">
+        <li
+            class="<?= ($currentPage == 'records-page.php') ? 'active' : '' ?>">
+            <a href="/cca/assets/pages/public/finance/records-page.php">
                 <i class="icon bi bi-file-text-fill" id="financeBtn"></i>
                 <span>Finance</span>
             </a>
         </li>
-        <li>
-            <a href="#">
+        <li
+            class="<?= ($currentPage == 'accomplishments-page.php') ? 'active' : '' ?>">
+            <a href="/cca/assets/pages/public/accomplishments/accomplishments-page.php">
                 <i class="icon bi bi-calendar-check-fill" id="accomplishmentsBtn"></i>
                 <span>Accomplishments</span>
             </a>

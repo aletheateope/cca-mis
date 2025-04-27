@@ -15,11 +15,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance</title>
+    <title>My Records</title>
 
     <?php require_once BASE_PATH . '/assets/components/header-links.php'?>
 
-    <link rel="stylesheet" href="finance-page.css">
+    <link rel="stylesheet" href="my-records-page.css">
 </head>
 
 <body>
@@ -31,7 +31,7 @@
             <div class="col main-content">
                 <div class="row page-header">
                     <div class="col">
-                        <h1>Finance</h1>
+                        <h1>My Records</h1>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addRecordModal">
                             <span><i class="bi bi-plus add-button"></i> Add Record</span>
@@ -324,7 +324,7 @@
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
 
-    <script type="module" src="finance-page.js"></script>
+    <script type="module" src="my-records-page.js"></script>
 
     <script>
         var sessionID =

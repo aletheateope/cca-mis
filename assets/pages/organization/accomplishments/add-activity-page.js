@@ -20,7 +20,7 @@ document.querySelector("form").addEventListener("submit", function () {
 });
 
 if (window.performance.getEntriesByType("navigation")[0]?.type === "reload") {
-  window.location.href = "accomplishments-page.php";
+  window.location.href = "my-accomplishments-page.php";
 }
 
 document
@@ -404,7 +404,7 @@ document
       if (result.success) {
         confirmedSubmit = true;
         localStorage.setItem("submissionStatus", "success");
-        window.location.href = "accomplishments-page.php";
+        window.location.href = "my-accomplishments-page.php";
       } else {
         console.log("Error response:", result.message);
         alert("Error: " + result.message);

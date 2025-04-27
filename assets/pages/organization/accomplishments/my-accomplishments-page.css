@@ -2,28 +2,31 @@ h2 {
   font-weight: var(--medium);
 }
 
-.content-header .col-12 {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+.container {
+  .header {
+    .col-12 {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
 
-  margin-bottom: 0.5rem;
-}
+      margin-bottom: 0.5rem;
+    }
 
-.content-header button {
-  background: none;
-  border: none;
-
-  i {
-    -webkit-text-stroke: 1px;
+    button {
+      i {
+        -webkit-text-stroke: 1px;
+      }
+    }
   }
-}
 
-.content-list .col-12 {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  .body {
+    .col-12 {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
 }
 
 /* ACCORDION */
@@ -61,6 +64,7 @@ h2 {
       p {
         color: var(--inactive-text-dark);
       }
+
       span {
         color: var(--active-background);
       }
@@ -123,10 +127,12 @@ h2 {
 
       li:hover {
         background-color: var(--hovered);
+        cursor: pointer;
       }
     }
   }
 }
+
 .accordion-button:not(.collapsed) {
   .action-group {
     .events {

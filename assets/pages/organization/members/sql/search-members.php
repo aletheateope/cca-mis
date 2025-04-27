@@ -36,7 +36,7 @@ $sql = "SELECT public_key, first_name, last_name, status, state, date_joined
             ON so.student_number = student.student_number
         INNER JOIN key_student ks
             ON ks.student_number = so.student_number
-        WHERE organization_id = ?";
+        WHERE organization = ?";
 
 $params = [$organization_id];
 $types = 'i';

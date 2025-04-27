@@ -48,7 +48,7 @@
                         <div class="row">
                             <div class="col">
                                 <h1>Add Activity</h1>
-                                <a href="accomplishments-page.php" class="back-button">Go Back</a>
+                                <a href="my-accomplishments-page.php" class="back-button">Go Back</a>
                             </div>
                         </div>
                         <div class="row">
