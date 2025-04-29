@@ -109,3 +109,66 @@ closeBtn.addEventListener("click", function () {
 
   clearActiveRows();
 });
+
+// SEARCH FUNCTION
+document
+  .getElementById("memberSearch")
+  .addEventListener("input", searchMembers);
+
+document
+  .getElementById("selectMemberOrganization")
+  .addEventListener("change", searchMembers);
+
+document
+  .getElementById("selectMemberState")
+  .addEventListener("change", searchMembers);
+
+async function searchMembers() {
+  const query = document.getElementById("memberSearch").value;
+  const state = document.getElementById("selectMemberState").value;
+  const organization = document.getElementById(
+    "selectMemberOrganization"
+  ).value;
+
+  try {
+    const response = await fetch("sql/search-members.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, state, organization }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const members = await response.json();
+
+    if (members.success) {
+      populateTable(members.data);
+    } else {
+      console.log(members.message);
+    }
+  } catch (error) {
+    console.error("Error fetching members:", error);
+  }
+}
+
+async function populateTable(members) {
+  tableBody.innerHTML = "";
+
+  members.forEach((member, index) => {
+    const row = document.createElement("tr");
+    row.setAttribute("data-id", member.public_key);
+
+    row.innerHTML = `
+      <td>${member.first_name} ${member.last_name}</td>
+      <td>${member.organization}</td>
+      <td>${member.status}</td>
+      <td>${member.state}</td>
+      <td>${formatDate(member.date_joined)}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+
+  document.getElementById("totalMembers").textContent = members.length;
+}

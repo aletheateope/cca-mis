@@ -1,3 +1,5 @@
+import { generateFileName } from "../../../components/fileNameGenerator.js";
+
 // ACCORDION
 document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
   collapse.addEventListener("show.bs.collapse", function () {
@@ -9,7 +11,7 @@ document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
   });
 });
 
-//
+// ORGANIZATION LIST (REPORT)
 document.addEventListener("DOMContentLoaded", function () {
   const academicYearSelect = document.getElementById("selectAcademicYear");
   const orgList = document.querySelector(".organization-list");
@@ -328,4 +330,91 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     });
+});
+
+// FINANCIAL STATEMENT (SUMMARY)
+document
+  .querySelector(".page-body")
+  .addEventListener("click", async function (event) {
+    const generateBtn = event.target.closest(".fetchRecordSum");
+
+    if (generateBtn) {
+      const accordion = generateBtn.closest(".accordion-finance");
+      const listItem = generateBtn.closest("li");
+
+      const year = accordion.getAttribute("data-year");
+      const month = accordion.getAttribute("data-month");
+      const organization = listItem.getAttribute("data-id");
+
+      try {
+        const response = await fetch("sql/fetch-financial-statement.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ year, month, organization }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+          const fields = {
+            date: new Date(result.data.date_updated).toLocaleDateString(
+              "en-US"
+            ),
+            startingFund: result.data.starting_fund,
+            weeklyContribution: result.data.weekly_contribution,
+            internalProjects: result.data.internal_projects,
+            externalProjects: result.data.external_projects,
+            internalInitiativeFunding: result.data.initiative_funding,
+            donationsSponsorships: result.data.donations_sponsorships,
+            adviserCredit: result.data.adviser_credit,
+            carriCredit: result.data.carri_credit,
+            finalFunding: result.data.final_funding,
+          };
+
+          for (const [id, value] of Object.entries(fields)) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+          }
+
+          document.querySelectorAll(".academicYear").forEach((el) => {
+            el.textContent = result.data.academic_year;
+          });
+
+          document.querySelectorAll(".totalCredit").forEach((el) => {
+            el.textContent = result.data.total_credit;
+          });
+
+          document.querySelectorAll(".totalExpenses").forEach((el) => {
+            el.textContent = result.data.total_expenses;
+          });
+        } else {
+          alert(result.message);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  });
+
+// HTML2CANVAS DOWNLOAD AS IMAGE
+document.getElementById("download").addEventListener("click", function () {
+  const captureElement = document.getElementById("capture");
+
+  html2canvas(captureElement, {
+    scale: 2,
+  }).then((canvas) => {
+    let image = canvas.toDataURL("image/jpeg", 0.95);
+    let fileName = `${generateFileName(10)}.jpg`;
+
+    let link = document.createElement("a");
+    link.href = image;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
 });

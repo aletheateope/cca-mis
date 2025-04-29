@@ -21,10 +21,11 @@ $user_id = $_SESSION['user_id'];
 $month = (int) $_GET['month'];
 $year = (int) $_GET['year'];
 
-$sql = "SELECT academic_year, date_updated, starting_fund, weekly_contribution, internal_projects, external_projects, initiative_funding, donations_sponsorships, adviser_credit, carri_credit, total_credit, total_expenses, final_funding
+$sql = "SELECT academic_year, date_updated, starting_fund, weekly_contribution, internal_projects, external_projects, initiative_funding, donations_sponsorships,
+                adviser_credit, carri_credit, total_credit, total_expenses, final_funding
         FROM financial_statement fs
-        INNER JOIN financial_statement_report frs
-            ON frs.statement_id = fs.statement_id
+        INNER JOIN financial_statement_report fsr
+            ON fsr.statement_id = fs.statement_id
         WHERE organization_id = ? AND month = ? AND year = ?";
 
 $stmt = $conn->prepare($sql);

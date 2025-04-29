@@ -330,7 +330,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// DISPLAY DATA INTO GENERATEIMG MODAL
+// GENERATE FINANCE SUMMARY (HTML2CANVAS)
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".generateIMG").forEach((button) => {
     button.addEventListener("click", async function () {

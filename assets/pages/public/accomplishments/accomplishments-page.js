@@ -16,10 +16,14 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .querySelector(".page-body")
     .addEventListener("click", async function (event) {
-      if (event.target && event.target.classList.contains("generatePDF")) {
-        const month = event.target.getAttribute("data-month");
-        const year = event.target.getAttribute("data-year");
-        const organization = event.target.closest("li").getAttribute("data-id");
+      const generatePDFBtn = event.target.closest(".generatePDF");
+
+      if (generatePDFBtn) {
+        const month = generatePDFBtn.getAttribute("data-month");
+        const year = generatePDFBtn.getAttribute("data-year");
+        const organization = generatePDFBtn
+          .closest("li")
+          .getAttribute("data-id");
 
         try {
           // Fetch organization name

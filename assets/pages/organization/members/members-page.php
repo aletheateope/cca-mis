@@ -126,7 +126,10 @@
                                     </div>
                                 </div>
 
-                                <h4>Total Number: <span id="totalMembers">3942</span></h4>
+                                <h4>Total Number: <span id="totalMembers">
+                                        <?php echo $count?>
+                                    </span>
+                                </h4>
                             </div>
                         </section>
                     </div>

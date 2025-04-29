@@ -33,7 +33,7 @@
                     include BASE_PATH . '/assets/components/sidebar/director/sidebar.php';
                 }?>
             </div>
-            <div class="col main-content">
+            <main class="col main-content">
                 <div class="row page-header">
                     <div class="col">
                         <h1>Records</h1>
@@ -44,7 +44,7 @@
                 <div class="row page-body">
                     <div class="col">
                         <?php foreach ($records as $academic_year => $months) {?>
-                        <div class="row container">
+                        <section class="row container">
                             <div class="col">
                                 <div class="row header">
                                     <div class="col-12">
@@ -57,8 +57,12 @@
                                         <?php foreach ($months as $month => $organizations) {?>
                                         <?php $accordionId = "accordion-" . $academic_year . "-" . $month;?>
                                         <?php $collapseId = "collapse-" . $academic_year . "-" . $month;?>
+                                        <?php $month_id = $organizations[0]['month_id'];?>
+                                        <?php $year = $organizations[0]['year'];?>
                                         <div class="accordion accordion-finance"
-                                            id="<?php echo $accordionId?>">
+                                            id="<?php echo $accordionId?>"
+                                            data-month="<?php echo $month_id ?>"
+                                            data-year="<?php echo $year ?>">
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header">
                                                     <button class="accordion-button collapsed" type="button"
@@ -82,7 +86,9 @@
                                                             <li class="list-group-item"
                                                                 data-id="<?php echo $organization['public_key']?>">
                                                                 <?php echo $organization['organization']?>
-                                                                <button class="no-style-btn">
+                                                                <button class="no-style-btn fetchRecordSum"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#statementSummaryModal">
                                                                     <i class="bi bi-image"></i>
                                                                 </button>
                                                             </li>
@@ -96,14 +102,16 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </section>
                         <?php }?>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     </div>
 
+    <!-- MODAL -->
+    <!-- GENERATE REPORT MODAL -->
     <div class="modal fade generate-report-modal" id="generateReportModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -167,13 +175,121 @@
         </div>
     </div>
 
+    <!-- STATEMENT SUMMARY MODAL -->
+    <div class="modal fade statement-summary-modal" id="statementSummaryModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Financial Statement</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="containter-fluid">
+                        <div class="row financial-statement" id="capture">
+                            <div class="col">
+                                <div class="row header">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h4>Report Updated As Of: <span id="date">MM/DD/YYYY</span></h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <h4>FINANCIAL STATEMENT <span class="academicYear">YYYY-YYYY</span></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-end">AY <span class="academicYear">YYYY-YYYY</span> Starting
+                                                Fund</td>
+                                            <td class="text-center"><span id="startingFund">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>CREDIT FROM WEEKLY CONTRIBUTION</td>
+                                            <td class="text-center"><span id="weeklyContribution">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>REVENUE FROM INTERNAL PROJECTS</td>
+                                            <td class="text-center"><span id="internalProjects">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>REVENUE FROM EXTERNAL PROJECTS</td>
+                                            <td class="text-center"><span id="externalProjects">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>CREDIT FROM INTERNAL INTIATIVE FUNDING</td>
+                                            <td class="text-center"><span id="internalInitiativeFunding">0.00</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>CREDIT FROM DONATIONS / SPONSORSHIPS</td>
+                                            <td class="text-center"><span id="donationsSponsorships">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>CREDIT FROM ADVISER</td>
+                                            <td class="text-center"><span id="adviserCredit">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>CREDIT FROM CARRI</td>
+                                            <td class="text-center"><span id="carriCredit">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">TOTAL CREDIT</td>
+                                            <td class="text-center"><span class="totalCredit">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>COST AND EXPENSES</td>
+                                            <td class="text-center"><span class="totalExpenses">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">TOTAL EXPENSES</td>
+                                            <td class="text-center"><span class="totalExpenses">0.00</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-end">TOTAL CREDIT</td>
+                                            <td class="text-center"><span class="totalCredit">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">TOTAL EXPENSES</td>
+                                            <td class="text-center"><span class="totalExpenses">0.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Final FUNDING Less All Expenses</td>
+                                            <td class="text-center"><span id="finalFunding">0.00</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="download">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <?php require_once BASE_PATH . '/assets/components/footer-links.php'; ?>
 
     <!-- JSPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
 
-    <script src="records-page.js"></script>
+    <!-- HTML2CANVAS -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <script type="module" src="records-page.js"></script>
 </body>
 
 </html>

@@ -16,4 +16,6 @@ $stmt->bind_param("i", $organization_id);
 $stmt->execute();
 $active_members = $stmt->get_result();
 
+$count = $active_members->num_rows;
+
 $stmt->close();

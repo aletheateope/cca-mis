@@ -90,6 +90,8 @@ th {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   gap: 1rem;
+
+  padding-bottom: 1rem;
 }
 
 .page-header {
@@ -167,7 +169,6 @@ th {
 
 /* ADD PAGE */
 .submit-row {
-  margin-bottom: 1rem;
   .col {
     display: flex;
     justify-content: flex-end;

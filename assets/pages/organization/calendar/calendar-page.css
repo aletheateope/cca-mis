@@ -1,3 +1,11 @@
+.page-body {
+  height: 100%;
+}
+
+.calendar-container {
+  height: 100%;
+}
+
 /* TIPPY */
 .tippy-event-details {
   padding-left: 0.25rem;

@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: "dayGridMonth",
-    height: "85vh",
+    height: "100%",
     headerToolbar: {
       left: "prev,next today",
       center: "title",

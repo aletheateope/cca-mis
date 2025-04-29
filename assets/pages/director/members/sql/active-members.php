@@ -9,10 +9,12 @@ $stmt = $conn->prepare("SELECT public_key, first_name, last_name, ao.name AS org
                             ON ao.organization_id = so.organization
                         INNER JOIN key_student ks
                             ON ks.student_number = student.student_number
-                        WHERE state = 'Active'
+                        WHERE state = 'Active' AND organization = 1
                         ORDER BY first_name ASC, last_name ASC");
 
 $stmt->execute();
 $active_members = $stmt->get_result();
+
+$count = $active_members->num_rows;
 
 $stmt->close();

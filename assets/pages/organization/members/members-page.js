@@ -20,11 +20,12 @@ const tableBody = document.querySelector(".members tbody");
 
 // SEARCH FUNTION
 document
-  .getElementById("selectMemberState")
-  .addEventListener("change", searchMembers);
-document
   .getElementById("memberSearch")
   .addEventListener("input", searchMembers);
+
+document
+  .getElementById("selectMemberState")
+  .addEventListener("change", searchMembers);
 
 async function searchMembers() {
   const state = document.getElementById("selectMemberState").value;
@@ -33,9 +34,7 @@ async function searchMembers() {
   try {
     const response = await fetch("sql/search-members.php", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ state, query }),
     });
 
@@ -91,6 +90,7 @@ function populateTable(members) {
     `;
     tableBody.appendChild(row);
   });
+  document.getElementById("totalMembers").textContent = members.length;
 }
 
 // DISPLAY MEMBER INFO

@@ -16,6 +16,7 @@ h2 {
   }
 }
 
+/* ACCORDION */
 .accordion-finance {
   .accordion-button :first-child {
     margin-right: auto;
@@ -114,6 +115,93 @@ h2 {
 
       ul {
         width: 100%;
+      }
+    }
+  }
+}
+
+.statement-summary-modal {
+  .financial-statement {
+    --orange: #ffd084;
+    --yellow: #fcfc83;
+    --green: #b4dab7;
+    --blue: #96abdf;
+
+    padding: 1rem;
+
+    --border-weight: 2px;
+    --border-color: #575757;
+
+    > .col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .table > :not(caption) > * > * {
+        background-color: transparent;
+      }
+
+      .header {
+        > .col {
+          .row:first-child {
+            border: var(--border-weight) solid var(--border-color);
+          }
+          .row:last-child {
+            background-color: var(--orange);
+
+            border-bottom: var(--border-weight) solid var(--border-color);
+            border-left: var(--border-weight) solid var(--border-color);
+            border-right: var(--border-weight) solid var(--border-color);
+
+            h4 {
+              font-weight: var(--medium);
+            }
+          }
+          .col {
+            padding: 0.5rem;
+            text-align: center;
+          }
+        }
+      }
+
+      .table {
+        border: var(--border-weight) solid var(--border-color);
+
+        margin-bottom: 0;
+
+        tr td:last-child {
+          border-left: 1px solid var(--border-color);
+        }
+      }
+
+      .table:first-of-type {
+        tr:first-child {
+          border: 1px solid var(--border-color);
+          background-color: var(--orange);
+        }
+        tr:nth-child(9) {
+          border: 1px solid var(--border-color);
+          background-color: var(--yellow);
+        }
+        tr:last-child {
+          border: 1px solid var(--border-color);
+          background-color: var(--green);
+        }
+      }
+
+      .table:last-of-type {
+        tr:first-child {
+          border: 1px solid var(--border-color);
+          background-color: var(--yellow);
+        }
+        tr:nth-child(2) {
+          border: 1px solid var(--border-color);
+          background-color: var(--green);
+        }
+        tr:last-child {
+          border: 1px solid var(--border-color);
+          background-color: var(--blue);
+        }
       }
     }
   }

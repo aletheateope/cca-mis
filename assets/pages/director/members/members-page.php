@@ -7,6 +7,8 @@
 
 <?php include_once BASE_PATH . '/assets/sql/temporary_session.php'?>
 
+<?php require_once 'sql/organizations.php'?>
+
 <?php require_once 'sql/active-members.php'?>
 
 <!DOCTYPE html>
@@ -47,13 +49,30 @@
                                         </div>
                                     </div>
                                     <div class="col-auto">
-                                        <select class="form-select" id="selectMemberState">
-                                            <option value="1">All</option>
-                                            <option selected value="2">Active</option>
-                                            <option value="3">Inactive</option>
-                                            <option value="4">Exited</option>
-                                            <option value="5">Terminated</option>
-                                        </select>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-funnel-fill"></i></i></span>
+                                            <select class="form-select" id="selectMemberOrganization">
+                                                <option value="0">All</option>
+                                                <?php $first = true?>
+                                                <?php while ($row_org = $result_organizations->fetch_assoc()) { ?>
+                                                <option <?php if ($first) {
+                                                    echo 'selected';
+                                                    $first = false;
+                                                }?>
+                                                    value="<?php echo $row_org['public_key']?>">
+                                                    <?php echo $row_org['organization']?>
+                                                </option>
+                                                <?php }?>
+                                            </select>
+
+                                            <select class="form-select" id="selectMemberState">
+                                                <option value="1">All</option>
+                                                <option selected value="2">Active</option>
+                                                <option value="3">Inactive</option>
+                                                <option value="4">Exited</option>
+                                                <option value="5">Terminated</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row table-row">
@@ -94,7 +113,10 @@
                                     </div>
                                 </div>
 
-                                <h4>Total Number: <span id="totalMembers">3942</span></h4>
+                                <h4>Total Number: <span id="totalMembers">
+                                        <?php echo $count?>
+                                    </span>
+                                </h4>
                             </div>
                         </section>
                     </div>
@@ -244,6 +266,17 @@
     <?php require_once BASE_PATH . '/assets/components/footer-links.php'; ?>
 
     <script src="members-page.js"></script>
+
+    <script>
+        var sessionID =
+            "<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'undefined'; ?>";
+
+        var sessionRole =
+            "<?php echo isset($_SESSION['user_role']) ? $_SESSION['user_role'] : 'undefined'; ?>";
+
+        console.log("User ID: " + sessionID);
+        console.log("User Role: " + sessionRole);
+    </script>
 </body>
 
 </html>

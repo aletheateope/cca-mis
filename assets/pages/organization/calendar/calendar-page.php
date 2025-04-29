@@ -37,7 +37,7 @@
                 </div>
                 <div class="row page-body">
                     <div class="col">
-                        <div class="row container">
+                        <div class="row container calendar-container">
                             <div class="col">
                                 <div class="calendar" id='calendar'></div>
                             </div>

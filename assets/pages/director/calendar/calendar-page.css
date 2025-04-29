@@ -1,3 +1,11 @@
+.page-body {
+  height: 100%;
+}
+
+.calendar-container {
+  height: 100%;
+}
+
 /* TIPPY */
 .tippy-event-details {
   padding-left: 0.25rem;
@@ -184,29 +192,4 @@
 .add-event-modal .modal-body .row .col {
   display: grid;
   gap: 1rem;
-}
-
-/* MEDIA QUERIES */
-/* Mobile */
-@media (max-width: 576px) {
-}
-
-/* Tablet */
-@media (min-width: 576px) {
-}
-
-/* Desktop */
-@media (min-width: 768px) {
-}
-
-/* Large Desktop */
-@media (min-width: 992px) {
-}
-
-/* Extra Large Desktop */
-@media (min-width: 1200px) {
-}
-
-/* Extra Extra Large Desktop */
-@media (min-width: 1400px) {
 }
