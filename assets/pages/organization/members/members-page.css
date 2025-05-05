@@ -241,6 +241,12 @@
       gap: 0.5rem;
       margin-bottom: 1.5rem;
 
+      button {
+        font-size: var(--small);
+        color: var(--info);
+        text-decoration: underline;
+      }
+
       .profile-image {
         width: 150px;
         height: 150px;
@@ -248,13 +254,12 @@
         position: relative;
       }
 
-      .removeProfile {
+      .remove-profile {
         display: none;
       }
 
-      .link {
-        color: var(--info);
-        font-size: var(--small);
+      .input-profile {
+        display: none;
       }
     }
 
@@ -270,7 +275,7 @@
       }
     }
 
-    .name {
+    .name-row {
       .col {
         gap: 0.625rem;
 

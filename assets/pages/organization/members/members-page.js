@@ -32,7 +32,7 @@ async function searchMembers() {
   const query = document.getElementById("memberSearch").value;
 
   try {
-    const response = await fetch("sql/search-members.php", {
+    const response = await fetch("sql/search_members.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ state, query }),
@@ -173,7 +173,7 @@ tableBody.addEventListener("click", async function (event) {
       const studentNum = data.student_number;
 
       if (seeMoreLink) {
-        seeMoreLink.href = `member-page.php?stud-num=${studentNum}`;
+        seeMoreLink.href = `member_page.php?stud-num=${studentNum}`;
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -200,7 +200,7 @@ tableBody.addEventListener("click", async function (event) {
   const publicKey = row.getAttribute("data-id");
 
   try {
-    const response = await fetch("sql/member-name.php", {
+    const response = await fetch("sql/member_name.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -254,7 +254,7 @@ tableBody.addEventListener("click", async function (event) {
         });
 
         try {
-          const deleteResponse = await fetch("sql/delete-member.php", {
+          const deleteResponse = await fetch("sql/delete_member.php", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -487,7 +487,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       try {
-        const response = await fetch("sql/add-member.php", {
+        const response = await fetch("sql/add_member.php", {
           method: "POST",
           body: formData,
         });

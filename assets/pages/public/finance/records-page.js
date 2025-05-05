@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
           const orgResponse = await fetch(
-            "/cca/assets/sql/pub-get-organization.php",
+            "/cca/assets/sql/pub_get_organization.php",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const organizationID = orgData.organization_id;
           const organizationName = orgData.organization_name;
 
-          const response = await fetch("sql/fetch-statement-report.php", {
+          const response = await fetch("sql/fetch_statement_report.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ academicYear, organizationID }),
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
               3: "icon-dulangsining.png",
               4: "icon-euphoria.png",
               5: "icon-fdc.png",
-              6: "icon-kultura-teknika.png",
+              6: "icon-kultura_teknika.png",
             };
 
             return `/cca/assets/img/organization/${
@@ -347,7 +347,7 @@ document
       const organization = listItem.getAttribute("data-id");
 
       try {
-        const response = await fetch("sql/fetch-financial-statement.php", {
+        const response = await fetch("sql/fetch_financial_statement.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ year, month, organization }),

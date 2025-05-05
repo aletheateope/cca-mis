@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/json");
 
-require_once '../../../../sql/base-path.php';
+require_once '../../../../sql/base_path.php';
 
 require_once BASE_PATH . '/assets/sql/conn.php';
 

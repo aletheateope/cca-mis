@@ -214,7 +214,7 @@ document
     const formData = new FormData(this);
 
     try {
-      const response = await fetch("sql/submit-event-request.php", {
+      const response = await fetch("sql/submit_event_request.php", {
         method: "POST",
         body: formData,
       });

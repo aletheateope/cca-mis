@@ -12,6 +12,7 @@
   padding-right: 0.25rem;
   padding-top: 0.625rem;
   padding-bottom: 1rem;
+
   > .col {
     display: flex;
     flex-direction: column;
@@ -51,6 +52,7 @@
         }
       }
     }
+
     .title {
       .col {
         display: flex;
@@ -63,6 +65,10 @@
       }
     }
     .date {
+      h5 {
+        color: var(--inactive-text-dark);
+      }
+
       gap: 1rem;
 
       /* .col {
@@ -85,18 +91,30 @@
 
 /* PANEL: EVENT APPROVAL */
 .event-approval-panel {
-  width: 22rem;
-  height: 100vh;
-  overflow-y: auto;
-  background-color: var(--primary-background);
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--primary-background);
+
+  width: 0rem;
+  height: 100vh;
+
+  border-left: 1px solid var(--border-color);
+
+  padding: 0rem;
   gap: 1rem;
 
+  transition: 0.3s ease;
   h3 {
     font-weight: var(--medium);
   }
+}
+
+.event-approval-panel.show {
+  width: 22rem;
+  padding: 1rem;
 }
 
 /* CARD: EVENT REQUEST */

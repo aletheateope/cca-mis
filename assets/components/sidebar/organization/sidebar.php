@@ -21,66 +21,66 @@
             </a>
         </li>
         <li
-            class="<?= ($currentPage == 'dashboard-page.php') ? 'active' : '' ?>">
-            <a href="/cca/assets/pages/organization/dashboard-page.php">
+            class="<?= ($currentPage == 'dashboard_page.php') ? 'active' : '' ?>">
+            <a href="/cca/assets/pages/organization/dashboard/dashboard_page.php">
                 <i class="icon bi bi-grid-1x2-fill"></i>
                 <span>Dashboard</span>
             </a>
         </li>
         <li
-            class="<?= ($currentPage == 'members-page.php' || $currentPage == 'member-page.php') ? 'active' : '' ?>">
-            <a href="/cca/assets/pages/organization/members/members-page.php">
+            class="<?= ($currentPage == 'members_page.php' || $currentPage == 'member_page.php') ? 'active' : '' ?>">
+            <a href="/cca/assets/pages/organization/members/members_page.php">
                 <i class="icon bi bi-people-fill" id="membersBtn"></i>
                 <span>Members</span>
             </a>
         </li>
         <li
-            class="<?= ($currentPage == 'calendar-page.php') ? 'active' : '' ?>">
-            <a href="/cca/assets/pages/organization/calendar/calendar-page.php">
+            class="<?= ($currentPage == 'calendar_page.php') ? 'active' : '' ?>">
+            <a href="/cca/assets/pages/organization/calendar/calendar_page.php">
                 <i class="icon bi bi-calendar-event-fill"></i>
                 <span>Calendar</span>
             </a>
         </li>
         <li>
             <button onclick="toggleSubMenu(this)"
-                class="dropdown-btn <?= ($currentPage == 'my-records-page.php' || $currentPage == 'add-record-page.php' || $currentPage == 'records-page.php') ? 'rotate' : '' ?>"
+                class="dropdown-btn <?= ($currentPage == 'my_records_page.php' || $currentPage == 'add_record_page.php' || $currentPage == 'records_page.php') ? 'rotate' : '' ?>"
                 id="financeBtn">
                 <i class="icon bi bi-file-text-fill"></i>
                 <span>Finance</span>
                 <i class="icon iconrotate bi bi-chevron-right"></i>
             </button>
             <ul
-                class="sub-menu <?= ($currentPage == 'my-records-page.php' || $currentPage == 'add-record-page.php' || $currentPage == 'records-page.php') ? 'show' : '' ?>">
+                class="sub-menu <?= ($currentPage == 'my_records_page.php' || $currentPage == 'add_record_page.php' || $currentPage == 'records_page.php') ? 'show' : '' ?>">
                 <div>
                     <li
-                        class="<?= ($currentPage == 'records-page.php') ? 'active' : '' ?>">
-                        <a href="/cca/assets/pages/public/finance/records-page.php">View Records</a>
+                        class="<?= ($currentPage == 'records_page.php') ? 'active' : '' ?>">
+                        <a href="/cca/assets/pages/public/finance/records_page.php">View Records</a>
                     </li>
                     <li
-                        class="<?= ($currentPage == 'my-records-page.php' || $currentPage == 'add-record-page.php') ? 'active' : '' ?>">
-                        <a href="/cca/assets/pages/organization/finance/my-records-page.php">My Records</a>
+                        class="<?= ($currentPage == 'my_records_page.php' || $currentPage == 'add_record_page.php') ? 'active' : '' ?>">
+                        <a href="/cca/assets/pages/organization/finance/my_records_page.php">My Records</a>
                     </li>
                 </div>
             </ul>
         </li>
         <li>
             <button onclick="toggleSubMenu(this)"
-                class="dropdown-btn <?= ($currentPage == 'my-accomplishments-page.php'|| $currentPage == 'add-activity-page.php' || $currentPage == 'accomplishments-page.php') ? 'rotate' : '' ?>"
+                class="dropdown-btn <?= ($currentPage == 'my_accomplishments_page.php'|| $currentPage == 'add_activity_page.php' || $currentPage == 'accomplishments_page.php') ? 'rotate' : '' ?>"
                 id="accomplishmentsBtn">
                 <i class="icon bi bi-calendar-check-fill"></i>
                 <span>Accomplisments</span>
                 <i class="icon iconrotate bi bi-chevron-right"></i>
             </button>
             <ul
-                class="sub-menu <?= ($currentPage == 'my-accomplishments-page.php'|| $currentPage == 'add-activity-page.php'|| $currentPage == 'accomplishments-page.php') ? 'show' : '' ?>">
+                class="sub-menu <?= ($currentPage == 'my_accomplishments_page.php'|| $currentPage == 'add_activity_page.php'|| $currentPage == 'accomplishments_page.php') ? 'show' : '' ?>">
                 <div>
                     <li
-                        class="<?= ($currentPage == 'accomplishments-page.php') ? 'active' : '' ?>">
-                        <a href="/cca/assets/pages/public/accomplishments/accomplishments-page.php">View Activities</a>
+                        class="<?= ($currentPage == 'accomplishments_page.php') ? 'active' : '' ?>">
+                        <a href="/cca/assets/pages/public/accomplishments/accomplishments_page.php">View Activities</a>
                     </li>
                     <li
-                        class="<?= ($currentPage == 'my-accomplishments-page.php'|| $currentPage == 'add-activity-page.php') ? 'active' : '' ?>">
-                        <a href="/cca/assets/pages/organization/accomplishments/my-accomplishments-page.php">My
+                        class="<?= ($currentPage == 'my_accomplishments_page.php'|| $currentPage == 'add_activity_page.php') ? 'active' : '' ?>">
+                        <a href="/cca/assets/pages/organization/accomplishments/my_accomplishments_page.php">My
                             Activities</a>
                     </li>
                 </div>

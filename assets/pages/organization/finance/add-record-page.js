@@ -7,7 +7,7 @@ function beforeUnloadHandler(event) {
 window.addEventListener("beforeunload", beforeUnloadHandler);
 
 window.addEventListener("pagehide", function () {
-  navigator.sendBeacon("sql/kill-session.php");
+  navigator.sendBeacon("sql/kill_session.php");
 });
 
 // DISABLE WARNING ON SUBMIT
@@ -16,7 +16,7 @@ document.querySelector("form").addEventListener("submit", function () {
 });
 
 if (window.performance.getEntriesByType("navigation")[0]?.type === "reload") {
-  window.location.href = "my-records-page.php";
+  window.location.href = "my_records_page.php";
 }
 
 // CHECK IF STARTING FUND EXISTS
@@ -26,7 +26,7 @@ function startingFund() {
   let finalFunding = document.getElementById("finalFundingTable");
 
   // Fetch the count from the PHP file
-  fetch("sql/starting-fund.php")
+  fetch("sql/starting_fund.php")
     .then((response) => response.json())
     .then((data) => {
       let count = data.count;
@@ -108,10 +108,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // FILEPOND
 FilePond.registerPlugin(FilePondPluginFileValidateType);
+FilePond.registerPlugin(FilePondPluginFileRename);
+FilePond.registerPlugin(FilePondPluginImageExifOrientation);
+FilePond.registerPlugin(FilePondPluginImagePreview);
 
 const inputElement = document.getElementById("uploadReceipts");
 const pond = FilePond.create(inputElement, {
-  acceptedFileTypes: ["image/png", "image/jpeg", "image/heic", "image/heif"],
+  acceptedFileTypes: ["image/png", "image/jpeg"],
+
+  fileRenameFunction: (file) => {
+    const extension = file.name.slice(file.name.lastIndexOf(".")); // Get file extension
+    const baseName = file.name.slice(0, file.name.lastIndexOf(".")); // Get filename without extension
+    const newBaseName = window.prompt("Enter new filename", baseName); // Prompt for new name
+    return newBaseName ? newBaseName + extension : file.name;
+  },
+
+  // imagePreviewMinHeight: 50,
+  // imagePreviewMaxHeight: 100,
 });
 
 // SUBMIT RECORD
@@ -122,8 +135,16 @@ document
 
     const formData = new FormData(this);
 
+    pond.getFiles().forEach((fileItem) => {
+      const file = fileItem.file;
+      const renamedFile = new File([file], fileItem.filename, {
+        type: file.type,
+      }); // Use renamed filename
+      formData.append(`receipt[]`, renamedFile);
+    });
+
     try {
-      const response = await fetch("sql/record-submit.php", {
+      const response = await fetch("sql/record_submit.php", {
         method: "POST",
         body: formData,
       });
@@ -132,7 +153,8 @@ document
 
       if (result.success) {
         alert(result.message);
-        window.location.href = "my-records-page.php";
+        localStorage.setItem("submissionStatus", "success");
+        window.location.href = "my_records_page.php";
       } else {
         alert("Error: " + result.message); // Show error message
       }

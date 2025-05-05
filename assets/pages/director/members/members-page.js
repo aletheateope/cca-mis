@@ -93,7 +93,7 @@ tableBody.addEventListener("click", async function (event) {
       const studentNum = data.student_number;
 
       if (seeMoreLink) {
-        seeMoreLink.href = `member-page.php?stud-num=${studentNum}`;
+        seeMoreLink.href = `member_page.php?stud-num=${studentNum}`;
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -131,7 +131,7 @@ async function searchMembers() {
   ).value;
 
   try {
-    const response = await fetch("sql/search-members.php", {
+    const response = await fetch("sql/search_members.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query, state, organization }),

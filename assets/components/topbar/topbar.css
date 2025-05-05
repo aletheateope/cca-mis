@@ -1,0 +1,12 @@
+.topbar {
+  display: flex;
+  flex-direction: row;
+
+  gap: 1rem;
+
+  margin-right: 1rem;
+
+  button {
+    font-size: 20px;
+  }
+}

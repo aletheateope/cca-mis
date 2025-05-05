@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/json");
 
-require_once "../../../../sql/base-path.php";
+require_once "../../../../sql/base_path.php";
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(["error" => "Invalid request method"]);

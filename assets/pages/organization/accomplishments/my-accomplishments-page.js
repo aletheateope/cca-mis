@@ -47,7 +47,7 @@ $(document).ready(function () {
     const formData = new FormData(this);
 
     $.ajax({
-      url: "sql/create-accomplishment.php",
+      url: "sql/create_accomplishment.php",
       type: "POST",
       data: formData,
       contentType: false,
@@ -58,7 +58,7 @@ $(document).ready(function () {
         if (data.success) {
           let encodedRef = btoa(data.ref);
 
-          window.location.href = "add-activity-page.php?ref=" + encodedRef;
+          window.location.href = "add_activity_page.php?ref=" + encodedRef;
         } else {
           alert(
             "Failed to create accomplishment report: " +
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         // Fetch organization name
         const orgResponse = await fetch(
-          "/cca/assets/sql/priv-get-organization.php"
+          "/cca/assets/sql/priv_get_organization.php"
         );
         const orgData = await orgResponse.json();
 
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Fetch accomplishment data
         const response = await fetch(
-          `sql/fetch-accomplishment.php?month=${month}&year=${year}`
+          `sql/fetch_accomplishment.php?month=${month}&year=${year}`
         );
 
         const data = await response.json();
@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
             3: "icon-dulangsining.png",
             4: "icon-euphoria.png",
             5: "icon-fdc.png",
-            6: "icon-kultura-teknika.png",
+            6: "icon-kultura_teknika.png",
           };
 
           return `/cca/assets/img/organization/${

@@ -9,6 +9,10 @@ body {
   background-color: var(--secondary-background);
   font-family: var(--font-family);
   color: var(--primary-text);
+
+  button {
+    color: var(--primary-text);
+  }
 }
 
 h1 {
@@ -95,6 +99,15 @@ th {
 }
 
 .page-header {
+  position: sticky;
+  top: 0;
+
+  z-index: 10;
+
+  background-color: var(--secondary-background);
+
+  border-bottom: 1px solid var(--border-color);
+
   > .col {
     display: flex;
     flex-direction: row;
@@ -110,6 +123,10 @@ th {
 }
 
 .page-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
   > .col {
     display: flex;
     flex-direction: column;
@@ -118,6 +135,8 @@ th {
 
   .container {
     background-color: var(--primary-background);
+
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     padding: 1.5rem;
 

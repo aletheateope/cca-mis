@@ -127,11 +127,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
                 <div class="row date">
                   <div class="col">
-                    <h4>Start Date</h4>
+                    <h5>Start Date</h5>
                     <p>${formattedStart}</p>
                   </div>
                   <div class="col">
-                    <h4>End Date</h4>
+                    <h5>End Date</h5>
                     <p>${formattedEnd}</p>
                   </div>
                 </div>
@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     },
                   });
                   try {
-                    const response = await fetch("sql/delete-event.php", {
+                    const response = await fetch("sql/delete_event.php", {
                       method: "DELETE",
                       headers: {
                         "content-type": "application/json",
@@ -373,7 +373,7 @@ document
 
     Swal.fire({
       title: "Processing...",
-      text: "Please wait while we approve the event.",
+      text: "Please wait while we add the event.",
       allowOutsideClick: false,
       showClass: {
         popup: onShow,
@@ -387,24 +387,24 @@ document
     });
 
     try {
-      const response = await fetch("sql/add-event.php", {
+      const response = await fetch("sql/add_event.php", {
         method: "POST",
         body: formData,
       });
 
-      const data = await response.json(); // Assuming response is plain text (adjust if JSON)
+      const data = await response.json();
 
       Swal.close();
 
       if (data.success) {
         const notyf = createNotyf();
-        notyf.success("The requested event has been approved successfully.");
+        notyf.success("The event has been added successfully.");
 
         calendar.addEvent(data.event);
       } else {
         Swal.fire({
           title: "Error!",
-          text: "Failed to approve the requested event. Please try again.",
+          text: "Failed to add the event. Please try again.",
           icon: "error",
           showClass: {
             popup: onShow,
@@ -420,7 +420,7 @@ document
       Swal.close();
       Swal.fire({
         title: "Error!",
-        text: "Failed to approve the requested event. Please try again.",
+        text: "Failed to add the event. Please try again.",
         icon: "error",
         showClass: {
           popup: onShow,
@@ -433,6 +433,20 @@ document
       console.error("Error details:", error);
     }
   });
+
+// EVENT REQUEST PANEL VISIBILITY
+function eventRequestPanelVisibility() {
+  const requestCards = document.querySelectorAll(".event-request-card");
+  const panel = document.querySelector(".event-approval-panel");
+
+  if (panel && requestCards.length === 0) {
+    panel.classList.remove("show");
+
+    setTimeout(() => {
+      calendar.updateSize();
+    }, 300); // small delay to let the DOM settle
+  }
+}
 
 // APPROVE EVENT
 document.querySelectorAll(".approve-btn").forEach((button) => {
@@ -455,7 +469,7 @@ document.querySelectorAll(".approve-btn").forEach((button) => {
     });
 
     try {
-      const response = await fetch("sql/approve-event.php", {
+      const response = await fetch("sql/approve_event.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -476,6 +490,7 @@ document.querySelectorAll(".approve-btn").forEach((button) => {
         notyf.success("The requested event has been approved successfully.");
 
         this.closest(".event-request-card").remove();
+        eventRequestPanelVisibility();
 
         calendar.addEvent(data.event);
       } else {
@@ -515,7 +530,7 @@ document.querySelectorAll(".approve-btn").forEach((button) => {
 // FETCH REQUESTED EVENT TITLE
 async function fetchRequestEventTitle(publicKey) {
   try {
-    const response = await fetch("sql/request-event-title.php", {
+    const response = await fetch("sql/request_event_title.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -600,7 +615,7 @@ document.querySelectorAll(".reject-btn").forEach((button) => {
         });
 
         try {
-          const response = await fetch("sql/reject-event.php", {
+          const response = await fetch("sql/reject_event.php", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -620,6 +635,7 @@ document.querySelectorAll(".reject-btn").forEach((button) => {
             const notyf = createNotyf();
             notyf.success("Requested event rejected successfully.");
             this.closest(".event-request-card").remove();
+            eventRequestPanelVisibility();
           } else {
             swal.fire({
               title: "Error",

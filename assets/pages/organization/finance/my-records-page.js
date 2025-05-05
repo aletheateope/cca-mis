@@ -1,8 +1,18 @@
 import { generateFileName } from "../../../components/fileNameGenerator.js";
+import { createNotyf } from "../../../components/notyf.js";
+// SUCCESS MESSAGE
+const submissionStatus = localStorage.getItem("submissionStatus");
+
+if (submissionStatus === "success") {
+  const notyf = createNotyf();
+  notyf.success("Accomplishment added successfully.");
+
+  localStorage.removeItem("submissionStatus");
+}
 
 // PAGE HIDE
 window.addEventListener("pagehide", function () {
-  navigator.sendBeacon("sql/month-unset.php");
+  navigator.sendBeacon("sql/month_unset.php");
 });
 
 // CLEAVE
@@ -80,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         // Fetch organization name
         const orgResponse = await fetch(
-          "/cca/assets/sql/priv-get-organization.php"
+          "/cca/assets/sql/priv_get_organization.php"
         );
         const orgData = await orgResponse.json();
 
@@ -94,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Fetch financial data
         const response = await fetch(
-          `sql/fetch-statement-report.php?academicYear=${academicYear}`
+          `sql/fetch_statement_report.php?academicYear=${academicYear}`
         );
 
         const data = await response.json();
@@ -131,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
             3: "icon-dulangsining.png",
             4: "icon-euphoria.png",
             5: "icon-fdc.png",
-            6: "icon-kultura-teknika.png",
+            6: "icon-kultura_teknika.png",
           };
 
           return `/cca/assets/img/organization/${
@@ -339,7 +349,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       try {
         const response = await fetch(
-          `sql/fetch-statement.php?month=${month}&year=${year}`
+          `sql/fetch_statement.php?month=${month}&year=${year}`
         );
 
         const data = await response.json();
@@ -455,7 +465,7 @@ document.addEventListener("DOMContentLoaded", function () {
     sessionMonth.append("month", monthValue);
 
     try {
-      const sessionResponse = await fetch("sql/month-set.php", {
+      const sessionResponse = await fetch("sql/month_set.php", {
         method: "POST",
         body: sessionMonth,
       });
@@ -483,7 +493,7 @@ document.addEventListener("DOMContentLoaded", function () {
       formData.append("startYear", startYearInput.value);
       formData.append("endYear", endYearInput.value);
 
-      const response = await fetch("sql/check-academic-year.php", {
+      const response = await fetch("sql/check_academic_year.php", {
         method: "POST",
         body: formData,
       });
@@ -536,7 +546,7 @@ document
 
     // CHECK MONTHS
     try {
-      const checkResponse = await fetch("sql/check-months.php", {
+      const checkResponse = await fetch("sql/check_months.php", {
         method: "POST",
         body: JSON.stringify({ startYear, endYear }),
         headers: { "Content-Type": "application/json" },
@@ -562,7 +572,7 @@ document
     const formData = new FormData(this);
 
     try {
-      const response = await fetch("sql/record-add.php", {
+      const response = await fetch("sql/record_add.php", {
         method: "POST",
         body: formData,
       });
@@ -572,7 +582,7 @@ document
       if (result.success) {
         let encodedRef = btoa(result.ref);
 
-        window.location.href = "add-record-page.php?ref=" + encodedRef;
+        window.location.href = "add_record_page.php?ref=" + encodedRef;
       } else {
         alert("Error: " + result.error);
       }

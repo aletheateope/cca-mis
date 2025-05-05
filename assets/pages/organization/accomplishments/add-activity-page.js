@@ -10,7 +10,7 @@ window.addEventListener("beforeunload", beforeUnloadHandler);
 
 window.addEventListener("pagehide", function () {
   if (!confirmedSubmit) {
-    navigator.sendBeacon("sql/kill-session.php");
+    navigator.sendBeacon("sql/kill_session.php");
   }
 });
 
@@ -20,7 +20,7 @@ document.querySelector("form").addEventListener("submit", function () {
 });
 
 if (window.performance.getEntriesByType("navigation")[0]?.type === "reload") {
-  window.location.href = "my-accomplishments-page.php";
+  window.location.href = "my_accomplishments_page.php";
 }
 
 document
@@ -31,7 +31,7 @@ document
     if (public_key !== "0") {
       try {
         const response = await fetch(
-          "sql/fetch-event-details.php?public_key=" + public_key
+          "sql/fetch_event_details.php?public_key=" + public_key
         );
         const data = await response.json();
 
@@ -345,6 +345,7 @@ tippy("#addRecognition", {
   placement: "top",
 });
 
+// SUBMIT ACTIVITY
 document
   .getElementById("submitActivityForm")
   .addEventListener("submit", async function (event) {
@@ -390,7 +391,7 @@ document
       });
 
     try {
-      const response = await fetch("sql/submit-activity.php", {
+      const response = await fetch("sql/submit_activity.php", {
         method: "POST",
         body: formData,
       });
@@ -404,7 +405,7 @@ document
       if (result.success) {
         confirmedSubmit = true;
         localStorage.setItem("submissionStatus", "success");
-        window.location.href = "my-accomplishments-page.php";
+        window.location.href = "my_accomplishments_page.php";
       } else {
         console.log("Error response:", result.message);
         alert("Error: " + result.message);
