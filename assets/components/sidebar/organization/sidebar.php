@@ -1,3 +1,5 @@
+<?php include_once BASE_PATH . "/assets/sql/org_profile.php"?>
+
 <!-- Get the current page name -->
 <?php $currentPage = basename($_SERVER['PHP_SELF']);?>
 
@@ -13,7 +15,8 @@
             </button>
         </li>
         <li>
-            <i class="profile-icon"></i>
+            <img class="profile-icon" src="<?php echo $imagePath; ?>"
+                alt="Profile Icon">
             <a href="">
                 <span>
                     <?php echo isset($_SESSION['organization_name']) ? $_SESSION['organization_name'] : 'Organization'; ?>

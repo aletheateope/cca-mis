@@ -6,7 +6,7 @@ header("Content-Type: application/json");
 $receiptDirectory = BASE_PATH . '/uploads/receipt/';
 
 if (!is_dir($receiptDirectory)) {
-    mkdir($receiptDirectory, 0777, true);
+    mkdir($receiptDirectory, 0755, true);
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -90,6 +90,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode(["success" => false, "message" => "Error: " . $stmt->error]);
         exit;
     }
+    $stmt->close();
+
+    require_once BASE_PATH . '/assets/sql/public_key.php';
+
+    $count = 1;
+
+    do {
+        $public_key = generatePublicKey();
+    
+        $stmtKey = $conn->prepare("SELECT COUNT(*) FROM key_statement WHERE public_key = ?");
+        $stmtKey->bind_param("s", $public_key);
+        $stmtKey->execute();
+        $stmtKey->bind_result($count);
+        $stmtKey->fetch();
+        $stmtKey->close();
+    } while ($count > 0);
+
+    $stmt = $conn->prepare("INSERT INTO key_statement (statement_id, public_key) VALUES (?, ?)");
+    $stmt->bind_param("is", $statement_id, $public_key);
+
+    if (!$stmt->execute()) {
+        echo json_encode(["success" => false, "message" => "Error: " . $stmt->error]);
+        exit;
+    }
+
     $stmt->close();
 
     if (!empty($_FILES['receipt']['name'][0])) {

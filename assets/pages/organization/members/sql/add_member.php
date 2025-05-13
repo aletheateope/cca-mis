@@ -9,10 +9,10 @@ $documentDirectory = BASE_PATH . '/uploads/student_document/';
 $profileImgDirectory = BASE_PATH . '/uploads/profile_img/';
 
 if (!is_dir($documentDirectory)) {
-    mkdir($documentDirectory, 0777, true);
+    mkdir($documentDirectory, 0755, true);
 }
 if (!is_dir($profileImgDirectory)) {
-    mkdir($profileImgDirectory, 0777, true);
+    mkdir($profileImgDirectory, 0755, true);
 }
 
 require_once BASE_PATH . '/assets/sql/public_key.php';
@@ -25,8 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $last_name = $_POST['last_name'] ?? null;
     $birthdate = $_POST['birthdate'] ?? null;
     $age = $_POST['age'] ?? null;
-    $gender = $_POST['gender'];
+    $gender_value = $_POST['gender'];
+   
     $mobile_number = $_POST['contact_number'] ?? null;
+  
+
     $email = $_POST['email'] ?? null;
     $address = $_POST['address'] ?? null;
 
@@ -41,12 +44,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $organization_id = $_SESSION['user_id'] ?? null;
 
-    // if ($organization_id === null) {
-    //     $response[] = 'Error: Unauthorized access or session expired.';
-    //     echo json_encode($response);
-    //     exit;
-    // }
-    
+    $mobile_number = str_replace(' ', '', $mobile_number);
+
+    $genderMap = [
+       '1' => 'Male',
+       '2' => 'Female',
+       '3' => 'LGBTQ'
+   ];
+
+    $gender = $genderMap[$gender_value] ?? 'Male';
+
     require_once BASE_PATH . '/assets/sql/plmun_program.php';
 
 

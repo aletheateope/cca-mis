@@ -3,7 +3,7 @@ header("content-type: application/json");
 
 require_once '../../../../sql/base_path.php';
 
-require_once BASE_PATH . '/assets/sql/calendar/service_account.php';
+require_once 'google_calendar/service_account.php';
 
 use Google\Service\Calendar;
 use Google\Service\Calendar\Event;
@@ -14,7 +14,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 $client = googleClient();
 $service = new Calendar($client);
 
-require_once BASE_PATH . '/assets/sql/calendar/calendar_id.php';
+require_once 'google_calendar/calendar_id.php';
 
 if(isset($data["id"])) {
     require_once BASE_PATH . '/assets/sql/conn.php';

@@ -1,6 +1,6 @@
-<?php require_once 'assets/sql/base-path.php'?>
+<?php require_once 'assets/sql/base_path.php'?>
 
-<?php require_once BASE_PATH . '/assets/sql/login/google-login.php'?>
+<?php require_once BASE_PATH . '/assets/sql/login/google_login.php'?>
 
 <!DOCTYPE html>
 <html lang="en">

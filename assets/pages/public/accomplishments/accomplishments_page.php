@@ -1,10 +1,13 @@
 <?php require_once '../../../sql/base_path.php'?>
 
-<?php include_once BASE_PATH . '/assets/sql/temporary_session.php'?>
+<?php
+session_start();
+?>
 
 <?php
-// session_start();
+// include_once BASE_PATH . '/assets/sql/temporary_session.php'
 ?>
+
 
 <?php require_once 'sql/display_accomplishments.php'?>
 
@@ -26,16 +29,18 @@
         <div class="row">
             <div class="col-auto">
                 <?php if ($_SESSION['user_role'] === 'Organization') {
-                    include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php';
+                    include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php';
                 } elseif ($_SESSION['user_role'] === 'Director') {
-                    include BASE_PATH . '/assets/components/sidebar/director/sidebar.php';
+                    include_once BASE_PATH . '/assets/components/sidebar/director/sidebar.php';
+                } elseif ($_SESSION['user_role'] === 'VPSLD') {
+                    include_once BASE_PATH . '/assets/components/sidebar/vpsld/sidebar.php';
                 }?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
                     <div class="col">
                         <h1>Accomplishments</h1>
-                        <?php include BASE_PATH . '/assets/components/topbar/topbar.php'?>
+                        <?php include_once BASE_PATH . '/assets/components/topbar/topbar.php'?>
                     </div>
                 </div>
                 <div class="row page-body">
@@ -108,6 +113,11 @@
         </div>
     </div>
 
+    <!-- MODAL -->
+    <!-- Topbar -->
+    <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
+
+    <!-- FOOTER LINKS -->
     <?php require_once BASE_PATH . '/assets/components/footer_links.php'; ?>
 
     <!-- JSPDF -->

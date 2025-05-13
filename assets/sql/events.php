@@ -1,5 +1,5 @@
 <?php
-require_once '../../../../sql/base_path.php';
+require_once 'base_path.php';
 
 header('Content-Type: application/json');
 

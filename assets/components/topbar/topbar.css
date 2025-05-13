@@ -10,3 +10,11 @@
     font-size: 20px;
   }
 }
+
+.topbar-modal {
+  .modal-body .container-fluid {
+    > .row {
+      align-items: center;
+    }
+  }
+}

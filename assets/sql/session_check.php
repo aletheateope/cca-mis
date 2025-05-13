@@ -11,7 +11,7 @@ function check_role($required_role)
     }
 
     // Check the role
-    if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== $required_role) {
+    if (!isset($_SESSION['user_role']) || !in_array($_SESSION['user_role'], (array)$required_role)) {
         header("Location: /cca/assets/pages/access_denied.php");
         exit();
     }

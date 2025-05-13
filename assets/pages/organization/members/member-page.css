@@ -1,12 +1,4 @@
-body {
-  .edit-btn {
-    color: var(--info);
-  }
-
-  .delete-btn {
-    color: var(--danger);
-  }
-
+.page-body {
   i {
     font-size: 18px;
   }
@@ -80,6 +72,7 @@ body {
     img {
       height: 100px;
       width: 100px;
+      object-fit: cover;
     }
   }
 

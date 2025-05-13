@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/json");
 
-require_once "../../../../sql/base-path.php";
+require_once "../../../../sql/base_path.php";
 
 require_once BASE_PATH . '/assets/sql/conn.php';
 
@@ -36,17 +36,20 @@ if (!$student_number) {
 
 $stmt->close();
 
-$stmt = $conn->prepare("SELECT first_name, middle_name, last_name, birthdate, age, gender, mobile_number, email, address, s.student_number, abbreviation AS course, year_level, status, state, date_joined, date_left
+$stmt = $conn->prepare("SELECT pi.path AS profile, first_name, middle_name, last_name, birthdate, age, gender, mobile_number, email, address, s.student_number, abbreviation AS course, year_level, status, state, date_joined, date_left
                         FROM student s
                         INNER JOIN student_organization so
                             ON so.student_number = s.student_number
                         INNER JOIN student_academic_info sci
                             ON sci.student_number = s.student_number
+                        INNER JOIN profile_image pi
+                            ON pi.student_number = s.student_number
                         INNER JOIN program p
                             ON p.program_id = sci.program_id
                         INNER JOIN program_course pc
                             ON pc.course_id = p.course_id
-                        WHERE s.student_number = ? AND organization = ?");
+                        
+                        WHERE s.student_number = ? AND so.organization = ?");
 
 $stmt->bind_param("ii", $student_number, $organization_id);
 $stmt->execute();

@@ -1,4 +1,10 @@
 import { createNotyf } from "../../../components/notyf.js";
+import {
+  onShow,
+  onHide,
+} from "../../../components/sweetalert2/alertAnimation.js";
+
+const notyf = createNotyf();
 
 // FULL CALENDAR
 let eventTippy = null;
@@ -26,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
       dayGridMonth: { buttonText: "Month" },
       listYear: { buttonText: "My Schedules" },
     },
-    events: "sql/events.php",
+    events: "/cca/assets/sql/events.php",
     eventDidMount: function (info) {
       if (info.view.type === "listYear") {
         let scheduledBy = info.event.extendedProps.scheduled_by || "Unknown";
@@ -213,6 +219,21 @@ document
 
     const formData = new FormData(this);
 
+    Swal.fire({
+      title: "Processing...",
+      text: "Please wait while we submit the event.",
+      allowOutsideClick: false,
+      showClass: {
+        popup: onShow,
+      },
+      hideClass: {
+        popup: onHide,
+      },
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     try {
       const response = await fetch("sql/submit_event_request.php", {
         method: "POST",
@@ -225,12 +246,22 @@ document
 
       const result = await response.json();
 
+      Swal.close();
+
       if (result.success) {
-        alert(result.message);
+        notyf.success("Event submitted successfully.");
+
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("requestEventModal")
+        );
+        modal.hide();
+
+        this.reset();
       } else {
         alert("Error: " + result.message);
       }
     } catch (error) {
+      Swal.close();
       console.error("Error:", error);
       alert("Error: " + error.message);
     }

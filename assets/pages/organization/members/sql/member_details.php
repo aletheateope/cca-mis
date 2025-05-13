@@ -10,25 +10,27 @@ if(!isset($_GET['stud-num'])) {
 
 $student_number = $_GET['stud-num'];
 
-$stmt = $conn->prepare("SELECT COUNT(*)
+$stmt = $conn->prepare("SELECT 1
                         FROM student_organization
                         WHERE student_number = ? AND organization = ?");
 $stmt->bind_param("ii", $student_number, $user_id);
 $stmt->execute();
-$stmt->bind_result($count);
-$stmt->fetch();
+$stmt->store_result();
 
-$stmt->close();
-
-if ($count == 0) {
+if ($stmt->num_rows === 0) {
     include BASE_PATH . '/assets/pages/access_denied.php';
     exit;
 }
 
+$stmt->close();
+
+
 // PERSONAL INFORMATION
-$stmt = $conn-> prepare("SELECT first_name, middle_name, last_name, birthdate, age, gender, mobile_number, email, address
-                        FROM student
-                        WHERE student_number = ?");
+$stmt = $conn-> prepare("SELECT pi.path AS profile, first_name, middle_name, last_name, birthdate, age, gender, mobile_number, email, address
+                        FROM student s
+                        INNER JOIN profile_image pi
+                            ON pi.student_number = s.student_number
+                        WHERE s.student_number = ?");
 $stmt->bind_param("i", $student_number);
 $stmt->execute();
 $result_personal_information = $stmt->get_result();

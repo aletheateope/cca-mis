@@ -1,11 +1,13 @@
 <?php include_once '../../../sql/base_path.php';?>
 
 <?php
-//require_once '../../sql/session_check.php';
-//check_role('Director');
+require_once BASE_PATH . '/assets/sql/session_check.php';
+check_role('Director');
 ?>
 
-<?php include BASE_PATH . '/assets/sql/temporary_session.php'?>
+<?php
+// include BASE_PATH . '/assets/sql/temporary_session.php'
+?>
 
 <?php require_once 'sql/display_event_requests.php'?>
 
@@ -26,19 +28,18 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include BASE_PATH . '/assets/components/sidebar/director/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/director/sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
                     <div class="col">
                         <h1>Calendar</h1>
-                        <?php include BASE_PATH . '/assets/components/topbar/topbar.php'?>
+                        <?php include_once BASE_PATH . '/assets/components/topbar/topbar.php'?>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
                             Add Event
                         </button>
                     </div>
                 </div>
-
                 <div class="row page-body">
                     <div class="col">
                         <div class="row container calendar-container">
@@ -51,6 +52,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- EVENT APPROVAL PANEL -->
             <div
                 class="col-auto event-approval-panel <?php echo $hasData ? 'show' : '' ?>">
                 <div class="row title">
@@ -198,6 +201,11 @@
         </div>
     </div>
 
+    <!-- MODAL -->
+    <!-- Topbar -->
+    <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
+
+    <!-- Add Event -->
     <form id="addEventForm" enctype="multipart/form-data">
         <div class="modal fade add-event-modal" id="addEventModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">

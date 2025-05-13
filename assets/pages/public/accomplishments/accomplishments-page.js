@@ -1,3 +1,5 @@
+import { initializeFancybox } from "../../../components/fancybox.js";
+
 // ACCORDION
 document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
   collapse.addEventListener("show.bs.collapse", function () {
@@ -362,3 +364,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 });
+
+// FANCYBOX
+initializeFancybox();
+
+const pageBody = document.querySelector(".page-body");

@@ -1,5 +1,5 @@
 <?php
-require_once 'assets/sql/base_path.php';
+// require_once 'assets/sql/base_path.php';
 
 require_once BASE_PATH .'/vendor/autoload.php';
 

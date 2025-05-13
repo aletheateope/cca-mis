@@ -1,4 +1,5 @@
 import { createNotyf } from "../../../components/notyf.js";
+import { initializeFancybox } from "../../../components/fancybox.js";
 
 // SUCCESS MESSAGE
 const submissionStatus = localStorage.getItem("submissionStatus");
@@ -10,9 +11,28 @@ if (submissionStatus === "success") {
   localStorage.removeItem("submissionStatus");
 }
 
+// PREVENT ACTIVITY MODAL FROM OPENING
+document
+  .getElementById("viewActivityModal")
+  .addEventListener("show.bs.modal", function (e) {
+    var button = e.relatedTarget;
+    if (
+      button.classList.contains("edit-btn") ||
+      button.classList.contains("delete-btn")
+    ) {
+      e.preventDefault();
+    }
+  });
+
 // ACCORDION
 document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
-  collapse.addEventListener("show.bs.collapse", function () {
+  collapse.addEventListener("show.bs.collapse", function (e) {
+    const btn = e.target.closest(".delete-btn");
+
+    if (this.closest(".accordion").id === "activityGalleryAccordion") {
+      return;
+    }
+
     document.querySelectorAll(".accordion-collapse").forEach((item) => {
       if (item !== this) {
         new bootstrap.Collapse(item, { toggle: false }).hide();
@@ -435,4 +455,196 @@ tippy(".readEvents", {
   theme: "light",
   content: "Read Events",
   placement: "top",
+});
+
+// FANCYBOX
+initializeFancybox();
+
+const pageBody = document.querySelector(".page-body");
+
+// VIEW ACTIVITY
+pageBody.addEventListener("click", async function (e) {
+  const li = e.target.closest(".accordion-accomplishments .accordion-body li");
+
+  if (li) {
+    const publicKey = li.dataset.id;
+
+    try {
+      const response = await fetch("sql/fetch_activity.php", {
+        method: "POST",
+        body: JSON.stringify({
+          publicKey,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        const { start_date, end_date, start_time, end_time } = data.result;
+
+        const formatDate = (dateStr) =>
+          new Date(dateStr).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "2-digit",
+          });
+
+        const formatTime = (timeStr) => {
+          const [hour, minute] = timeStr.split(":");
+          const date = new Date();
+          date.setHours(+hour, +minute);
+          return date.toLocaleTimeString([], {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+          });
+        };
+
+        const formattedStartDate = formatDate(start_date);
+        const formattedEndDate = formatDate(end_date);
+
+        let formattedStartTime = start_time ? formatTime(start_time) : "";
+        let formattedEndTime = end_time ? formatTime(end_time) : "";
+
+        let dateString = "";
+
+        // Case 1: start and end dates are the same
+        if (start_date === end_date) {
+          if (start_time && end_time) {
+            // Same date, with time
+            dateString = `${formattedStartDate} · ${formattedStartTime} - ${formattedEndTime}`;
+          } else {
+            // Same date, no time
+            dateString = `${formattedStartDate}`;
+          }
+        } else {
+          // Different dates
+          if (start_time && end_time) {
+            dateString = `${formattedStartDate} · ${formattedStartTime} - ${formattedEndDate} · ${formattedEndTime}`;
+          } else {
+            dateString = `${formattedStartDate} - ${formattedEndDate}`;
+          }
+        }
+
+        const elementIds = {
+          title: "activityTitle",
+          description: "activityDescription",
+          location: "activityLocation",
+          date: "activityDate",
+
+          targetParticipants: "activityTargetParticipants",
+          actualParticipants: "activityParticipatingMembers",
+
+          objectives: "activityObjectives",
+          challengesSolutions: "activityChallengesSolutions",
+          lessonLearned: "activityLessonLearned",
+          suggestions: "activitySuggestions",
+          remarks: "activityRemarks",
+
+          budgetUtilized: "activityBudgetUtilized",
+        };
+
+        const elements = Object.fromEntries(
+          Object.entries(elementIds).map(([key, id]) => [
+            key,
+            document.getElementById(id),
+          ])
+        );
+
+        function getValueOrDefault(value) {
+          return value === null ? "---" : value;
+        }
+
+        const actualParticipants = data.result.actual_participants;
+
+        // Update element values
+        elements.title.textContent = data.result.title;
+        elements.description.textContent = data.result.description;
+        elements.location.textContent = data.result.location;
+        elements.date.textContent = dateString;
+
+        elements.targetParticipants.textContent =
+          data.result.target_participants;
+        if (actualParticipants > 0) {
+          elements.actualParticipants.innerHTML = `
+            ${actualParticipants} <button class="no-style-btn view-list-btn">[View List]</button>
+          `;
+        } else {
+          elements.actualParticipants.innerHTML = `
+            ${actualParticipants}
+          `;
+        }
+
+        elements.objectives.textContent = getValueOrDefault(
+          data.result.objectives
+        );
+        elements.challengesSolutions.textContent = getValueOrDefault(
+          data.result.challenges_solutions
+        );
+        elements.lessonLearned.textContent = getValueOrDefault(
+          data.result.lesson_learned
+        );
+        elements.suggestions.textContent = getValueOrDefault(
+          data.result.suggestions
+        );
+
+        elements.remarks.innerHTML =
+          data.result.remarks === 1
+            ? `<i class="bi bi-emoji-smile remark-type-one"></i> Accomplished`
+            : `<i class="bi bi-emoji-frown remark-type-two"></i> Accomplished but did not meet the target number of members.`;
+
+        elements.budgetUtilized.textContent = data.result.budget_utilized;
+
+        const galleryContainer = document.querySelector(".activity-gallery");
+
+        if (data.gallery && data.gallery.length > 0) {
+          galleryContainer.innerHTML = "";
+
+          if (galleryContainer.classList.contains("single-col")) {
+            galleryContainer.classList.remove("single-col");
+          }
+
+          data.gallery.forEach((galleryPath) => {
+            const galleryItemHTML = `
+              <div class="gallery-item">
+                <a href="${galleryPath}" data-fancybox="gallery">
+                  <img src="${galleryPath}" alt="Activity Image" />
+                </a>
+              </div>
+            `;
+
+            galleryContainer.innerHTML += galleryItemHTML;
+          });
+        } else {
+          galleryContainer.classList.add("single-col");
+
+          galleryContainer.innerHTML = "<p class='text-center'>Empty</p>";
+        }
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    const deleteBtn = e.target.closest(".delete-btn");
+    const editBtn = e.target.closest(".edit-btn");
+
+    if (deleteBtn) {
+      console.log("delete-btn");
+    }
+
+    if (editBtn) {
+      console.log("edit-btn");
+    }
+  }
+});
+
+// ACTIVITY GALLERY AUTO SCROLL
+document.addEventListener("DOMContentLoaded", function () {
+  const collapseGallery = document.getElementById("collapseGallery");
+
+  collapseGallery.addEventListener("shown.bs.collapse", function () {
+    collapseGallery.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 });

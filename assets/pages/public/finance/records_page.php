@@ -1,9 +1,11 @@
 <?php require_once '../../../sql/base_path.php'?>
 
-<?php include_once BASE_PATH . '/assets/sql/temporary_session.php'?>
+<?php
+session_start();
+?>
 
 <?php
-// session_start();
+// include_once BASE_PATH . '/assets/sql/temporary_session.php'
 ?>
 
 <?php require_once 'sql/display_records.php'?>
@@ -28,16 +30,18 @@
         <div class="row">
             <div class="col-auto">
                 <?php if ($_SESSION['user_role'] === 'Organization') {
-                    include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php';
+                    include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php';
                 } elseif ($_SESSION['user_role'] === 'Director') {
-                    include BASE_PATH . '/assets/components/sidebar/director/sidebar.php';
+                    include_once BASE_PATH . '/assets/components/sidebar/director/sidebar.php';
+                } elseif ($_SESSION['user_role'] === 'VPSLD') {
+                    include_once BASE_PATH . '/assets/components/sidebar/vpsld/sidebar.php';
                 }?>
             </div>
             <main class="col main-content">
                 <div class="row page-header">
                     <div class="col">
                         <h1>Records</h1>
-                        <?php include BASE_PATH . '/assets/components/topbar/topbar.php'?>
+                        <?php include_once BASE_PATH . '/assets/components/topbar/topbar.php'?>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateReportModal">
                             Generate Report
                         </button>
@@ -113,6 +117,9 @@
     </div>
 
     <!-- MODAL -->
+    <!-- Topbar -->
+    <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
+
     <!-- GENERATE REPORT MODAL -->
     <div class="modal fade generate-report-modal" id="generateReportModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">

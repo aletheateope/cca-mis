@@ -1,18 +1,13 @@
 <?php require_once '../../../sql/base_path.php'?>
 
 <?php
-//require_once '../../sql/session_check.php';
-//check_role('Organization');
+require_once BASE_PATH . '/assets/sql/session_check.php';
+check_role('Organization');
 ?>
 
-<?php session_start();?>
-
 <?php require_once 'sql/check_report_id.php'?>
-
 <?php require_once 'sql/get_month_year.php'?>
-
 <?php require_once 'sql/events.php'?>
-
 <?php require_once 'sql/active_members.php'?>
 
 
@@ -40,7 +35,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
@@ -48,7 +43,7 @@
                         <div class="row">
                             <div class="col">
                                 <h1>Add Activity</h1>
-                                <?php include BASE_PATH . '/assets/components/topbar/topbar.php'?>
+                                <?php include_once BASE_PATH . '/assets/components/topbar/topbar.php'?>
                                 <a href="my_accomplishments_page.php" class="back-button">Go Back</a>
                             </div>
                         </div>
@@ -211,13 +206,13 @@
                                     <h3>Activity Insights</h3>
                                     <div class="row row-gap">
                                         <div class="col">
-                                            <label for="inputEventObjective" class="form-label">Objective</label>
+                                            <label for="inputEventObjective" class="form-label">Objectives</label>
                                             <textarea name="objective" class="form-control"
                                                 id="inputEventObjective"></textarea>
                                         </div>
                                         <div class="col">
                                             <label for="inputEventChallengesSolution" class="form-label">Challenges and
-                                                Solution</label>
+                                                Solutions</label>
                                             <textarea name="challenges_solution" class="form-control"
                                                 id="inputEventChallengesSolution"></textarea>
                                         </div>
@@ -275,6 +270,11 @@
         </div>
     </div>
 
+    <!-- MODAL -->
+    <!-- Topbar -->
+    <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
+
+    <!-- FOOTER LINKS -->
     <?php require_once BASE_PATH . '/assets/components/footer_links.php'; ?>
 
     <!-- SPLIDE.JS -->

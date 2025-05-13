@@ -61,10 +61,10 @@
 }
 
 .sidebar .profile-icon {
-  background-color: gray;
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .sidebar .icon {
@@ -144,7 +144,7 @@
 .sidebar a:hover,
 .sidebar .collapse-btn:hover,
 .sidebar .dropdown-btn:hover {
-  background-color: var(--secondary-background);
+  background-color: var(--hovered);
 }
 
 .sidebar li.active,

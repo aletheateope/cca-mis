@@ -38,14 +38,6 @@
             font-size: 1.25em;
           }
 
-          .delete-btn {
-            color: var(--danger);
-          }
-
-          .edit-btn {
-            color: var(--info);
-          }
-
           .options-btn {
             color: var(--primary-text);
           }

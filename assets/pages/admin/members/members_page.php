@@ -1,11 +1,13 @@
 <?php require_once '../../../sql/base_path.php'?>
 
 <?php
-// require_once BASE_PATH . '/assets/sql/session_check.php';
-// check_role('Director');
+require_once BASE_PATH . '/assets/sql/session_check.php';
+check_role(['Director', 'VPSLD']);
 ?>
 
-<?php include_once BASE_PATH . '/assets/sql/temporary_session.php'?>
+<?php
+//  include_once BASE_PATH . '/assets/sql/temporary_session.php'
+?>
 
 <?php require_once 'sql/organizations.php'?>
 
@@ -28,13 +30,17 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include BASE_PATH . '/assets/components/sidebar/director/sidebar.php' ?>
+                <?php if ($_SESSION['user_role'] === 'Director') {
+                    include_once BASE_PATH . '/assets/components/sidebar/director/sidebar.php';
+                } elseif ($_SESSION['user_role'] === 'VPSLD') {
+                    include_once BASE_PATH . '/assets/components/sidebar/vpsld/sidebar.php';
+                }?>
             </div>
             <main class="col main-content">
                 <div class="row page-header">
                     <div class="col">
                         <h1>Organization Members</h1>
-                        <?php include BASE_PATH . '/assets/components/topbar/topbar.php'?>
+                        <?php include_once BASE_PATH . '/assets/components/topbar/topbar.php'?>
                     </div>
                 </div>
                 <div class="row page-body">
@@ -263,6 +269,8 @@
             </div>
         </div>
     </div>
+
+    <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
 
     <?php require_once BASE_PATH . '/assets/components/footer_links.php'; ?>
 

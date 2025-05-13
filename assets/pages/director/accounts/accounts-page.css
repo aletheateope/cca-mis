@@ -1,0 +1,35 @@
+.actions-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+tbody {
+  tr td:last-child {
+    width: 100px;
+    text-align: center;
+
+    button {
+      font-size: 20px;
+    }
+  }
+}
+
+.missing-email {
+  color: var(--inactive-text-dark);
+}
+
+.modal {
+  .modal-body .container-fluid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+}

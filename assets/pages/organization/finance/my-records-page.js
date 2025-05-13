@@ -1,5 +1,8 @@
 import { generateFileName } from "../../../components/fileNameGenerator.js";
 import { createNotyf } from "../../../components/notyf.js";
+import { formatDate } from "../../../components/formatDate.js";
+import { initializeFancybox } from "../../../components/fancybox.js";
+
 // SUCCESS MESSAGE
 const submissionStatus = localStorage.getItem("submissionStatus");
 
@@ -25,6 +28,183 @@ var cleaveEndYear = new Cleave("#inputEndYear", {
   date: true,
   datePattern: ["Y"],
 });
+
+// ADD RECORDMODAL
+document.addEventListener("DOMContentLoaded", async function () {
+  try {
+    const response = await fetch("sql/warning.php");
+    const data = await response.json();
+
+    if (data.error) {
+      console.error("Error:", data.error);
+      return;
+    }
+
+    if (data.exists) {
+      const warningElement = document.getElementById("addRecordModalBody");
+      if (warningElement) {
+        warningElement.insertAdjacentHTML(
+          "afterbegin",
+          `
+        <div class="row warning">
+          <div class="col-auto">
+            <i class="bi bi-exclamation-triangle"></i>
+          </div>
+          <div class="col">
+            <h6>
+              Creating a new record makes the previous one uneditable. <br />
+              Review and confirm before Proceeding
+            </h6>
+          </div>
+        </div> `
+        );
+      } else {
+        console.warn("Warning element not found in the DOM.");
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+});
+
+const startYearInput = document.getElementById("inputStartYear");
+const endYearInput = document.getElementById("inputEndYear");
+
+// CHECK ACADEMIC YEAR
+document.addEventListener("DOMContentLoaded", function () {
+  const monthDropdown = document.getElementById("month");
+
+  // SET SESSION MONTH
+  const setSessionMonth = async (monthValue) => {
+    let sessionMonth = new FormData();
+    sessionMonth.append("month", monthValue);
+
+    try {
+      const sessionResponse = await fetch("sql/month_set.php", {
+        method: "POST",
+        body: sessionMonth,
+      });
+
+      const sessionData = await sessionResponse.json();
+
+      if (sessionData.success) {
+        // console.log("Session month set successfully.", monthValue);
+      } else {
+        console.error(
+          "Error setting session month:",
+          sessionData.error || "No error message received"
+        );
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const checkAcademicYear = async () => {
+    try {
+      if (!startYearInput.value || !endYearInput.value) return;
+
+      const formData = new FormData();
+      formData.append("startYear", startYearInput.value);
+      formData.append("endYear", endYearInput.value);
+
+      const response = await fetch("sql/check_academic_year.php", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.exists) {
+        monthDropdown.value = data.nextMonth;
+        monthDropdown.disabled = true;
+        setSessionMonth(data.nextMonth);
+      } else {
+        monthDropdown.disabled = false;
+        monthDropdown.value = "1";
+        setSessionMonth("1");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  monthDropdown.addEventListener("change", function () {
+    setSessionMonth(monthDropdown.value);
+  });
+
+  [startYearInput, endYearInput].forEach((input) =>
+    input.addEventListener("input", checkAcademicYear)
+  );
+});
+
+// ADD RECORD
+document
+  .getElementById("addRecordForm")
+  .addEventListener("submit", async function (event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const startYear = parseInt(startYearInput.value);
+    const endYear = parseInt(endYearInput.value);
+
+    if (endYear < startYear) {
+      alert("End year cannot be less than the start year.");
+      startYearInput.value = "";
+      return; // Stop from submitting the form
+    }
+
+    if (endYear > startYear + 1) {
+      alert("The academic year cannot be a span of two years or more.");
+      endYearInput.value = "";
+      return;
+    }
+
+    // CHECK MONTHS
+    try {
+      const checkResponse = await fetch("sql/check_months.php", {
+        method: "POST",
+        body: JSON.stringify({ startYear, endYear }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const checkResult = await checkResponse.json();
+
+      if (checkResult.error) {
+        alert("Error: " + checkResult.error);
+        return;
+      }
+
+      if (checkResult.totalMonths >= 12) {
+        alert("This academic year already has 12 months recorded.");
+        return;
+      }
+    } catch (error) {
+      console.error("Error checking records:", error);
+      return;
+    }
+
+    // Get form data
+    const formData = new FormData(this);
+
+    try {
+      const response = await fetch("sql/record_add.php", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        let encodedRef = btoa(result.ref);
+
+        window.location.href = "add_record_page.php?ref=" + encodedRef;
+      } else {
+        alert("Error: " + result.error);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  });
 
 // COLORS
 const blue = getComputedStyle(document.documentElement)
@@ -340,59 +520,151 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// GENERATE FINANCE SUMMARY (HTML2CANVAS)
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll(".generateIMG").forEach((button) => {
-    button.addEventListener("click", async function () {
-      const month = this.getAttribute("data-month");
-      const year = this.getAttribute("data-year");
+// FANCYBOX
+initializeFancybox();
 
-      try {
-        const response = await fetch(
-          `sql/fetch_statement.php?month=${month}&year=${year}`
-        );
+// VIEW RECORD
+const pageBody = document.querySelector(".page-body");
 
-        const data = await response.json();
+pageBody.addEventListener("click", async function (e) {
+  const li = e.target.closest(".financial-records .list-group li");
+  const generateIMG = e.target.closest(".generateIMG");
 
-        if (!data.error) {
-          document.getElementById("date").textContent = new Date(
-            data.date_updated
-          ).toLocaleDateString("en-US");
-          document.querySelectorAll(".academicYear").forEach((el) => {
-            el.textContent = data.academic_year;
-          });
-          document.getElementById("startingFund").textContent =
-            data.starting_fund;
-          document.getElementById("weeklyContribution").textContent =
-            data.weekly_contribution;
-          document.getElementById("internalProjects").textContent =
-            data.internal_projects;
-          document.getElementById("externalProjects").textContent =
-            data.external_projects;
-          document.getElementById("internalInitiativeFunding").textContent =
-            data.initiative_funding;
-          document.getElementById("donationsSponsorships").textContent =
-            data.donations_sponsorships;
-          document.getElementById("adviserCredit").textContent =
-            data.adviser_credit;
-          document.getElementById("carriCredit").textContent =
-            data.carri_credit;
-          document.querySelectorAll(".totalCredit").forEach((el) => {
-            el.textContent = data.total_credit;
-          });
-          document.querySelectorAll(".totalExpenses").forEach((el) => {
-            el.textContent = data.total_expenses;
-          });
-          document.getElementById("finalFunding").textContent =
-            data.final_funding;
-        } else {
-          console.log("Error:", data.error);
-        }
-      } catch (error) {
-        console.error("Error:", error);
+  if (generateIMG) {
+    console.log("generateIMG");
+    const month = generateIMG.getAttribute("data-month");
+    const year = generateIMG.getAttribute("data-year");
+
+    try {
+      const response = await fetch(
+        `sql/fetch_statement.php?month=${month}&year=${year}`
+      );
+
+      const data = await response.json();
+
+      if (!data.error) {
+        document.getElementById("date").textContent = new Date(
+          data.date_updated
+        ).toLocaleDateString("en-US");
+        document.querySelectorAll(".academicYear").forEach((el) => {
+          el.textContent = data.academic_year;
+        });
+        document.getElementById("startingFund").textContent =
+          data.starting_fund;
+        document.getElementById("weeklyContribution").textContent =
+          data.weekly_contribution;
+        document.getElementById("internalProjects").textContent =
+          data.internal_projects;
+        document.getElementById("externalProjects").textContent =
+          data.external_projects;
+        document.getElementById("internalInitiativeFunding").textContent =
+          data.initiative_funding;
+        document.getElementById("donationsSponsorships").textContent =
+          data.donations_sponsorships;
+        document.getElementById("adviserCredit").textContent =
+          data.adviser_credit;
+        document.getElementById("carriCredit").textContent = data.carri_credit;
+        document.querySelectorAll(".totalCredit").forEach((el) => {
+          el.textContent = data.total_credit;
+        });
+        document.querySelectorAll(".totalExpenses").forEach((el) => {
+          el.textContent = data.total_expenses;
+        });
+        document.getElementById("finalFunding").textContent =
+          data.final_funding;
+      } else {
+        console.log("Error:", data.error);
       }
-    });
-  });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  if (li) {
+    const publicKey = li.dataset.id;
+
+    try {
+      const response = await fetch("sql/fetch_record.php", {
+        method: "POST",
+        body: JSON.stringify({ publicKey }),
+      });
+
+      if (!response.ok) {
+        console.error("Error fetching record:", response.statusText);
+        return;
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        const date = formatDate(data.result.date_updated);
+
+        const fields = {
+          recordDate: date,
+          recordMonthYear: `${data.result.month}, ${data.result.year}`,
+          recordStartingFund: data.result.starting_fund,
+          recordWeeklyContribution: data.result.weekly_contribution,
+          recordInternalProjects: data.result.internal_projects,
+          recordExternalProjects: data.result.external_projects,
+          recordInternalInitiativeFunding: data.result.initiative_funding,
+          recordDonationsSponsorships: data.result.donations_sponsorships,
+          recordAdviserCredit: data.result.adviser_credit,
+          recordCarriCredit: data.result.carri_credit,
+          recordFinalFunding: data.result.final_funding,
+        };
+
+        for (const [id, value] of Object.entries(fields)) {
+          document.getElementById(id).textContent = value;
+        }
+
+        const elementsMap = {
+          ".recordTotalCredit": data.result.total_credit,
+          ".recordTotalExpenses": data.result.total_expenses,
+        };
+
+        for (const [selector, value] of Object.entries(elementsMap)) {
+          document.querySelectorAll(selector).forEach((el) => {
+            el.textContent = value;
+          });
+        }
+
+        const galleryContainer = document.querySelector(".receipts-gallery");
+
+        if (data.receipt && data.receipt.length > 0) {
+          galleryContainer.innerHTML = "";
+
+          if (galleryContainer.classList.contains("single-col")) {
+            galleryContainer.classList.remove("single-col");
+          }
+
+          data.receipt.forEach((receipt) => {
+            const galleryItemHTML = `
+              <div class="gallery-item">
+                <a
+                  href="${receipt.path}"
+                  data-fancybox="gallery"
+                  data-caption="${receipt.file_name}"
+                  data-download-filename="${generateFileName(10)}.jpg"
+                >
+                  <img src="${receipt.path}" alt="Receipt Image" />
+                </a>
+              </div>
+            `;
+
+            galleryContainer.innerHTML += galleryItemHTML;
+          });
+        } else {
+          galleryContainer.classList.add("single-col");
+
+          galleryContainer.innerHTML = "<p class='text-center'>Empty</p>";
+        }
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching record:", error);
+    }
+  }
 });
 
 // HTML2CANVAS DOWNLOAD AS IMAGE
@@ -413,180 +685,3 @@ document.getElementById("download").addEventListener("click", function () {
     document.body.removeChild(link);
   });
 });
-
-// MODAL
-document.addEventListener("DOMContentLoaded", async function () {
-  try {
-    const response = await fetch("sql/warning.php");
-    const data = await response.json();
-
-    if (data.error) {
-      console.error("Error:", data.error);
-      return;
-    }
-
-    if (data.exists) {
-      const warningElement = document.getElementById("addRecordModalBody");
-      if (warningElement) {
-        warningElement.insertAdjacentHTML(
-          "afterbegin",
-          `
-        <div class="row warning">
-          <div class="col-auto">
-            <i class="bi bi-exclamation-triangle"></i>
-          </div>
-          <div class="col">
-            <h6>
-              Creating a new record makes the previous one uneditable. <br />
-              Review and confirm before Proceeding
-            </h6>
-          </div>
-        </div> `
-        );
-      } else {
-        console.warn("Warning element not found in the DOM.");
-      }
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-});
-
-const startYearInput = document.getElementById("inputStartYear");
-const endYearInput = document.getElementById("inputEndYear");
-
-// CHECK ACADEMIC YEAR
-document.addEventListener("DOMContentLoaded", function () {
-  const monthDropdown = document.getElementById("month");
-
-  // SET SESSION MONTH
-  const setSessionMonth = async (monthValue) => {
-    let sessionMonth = new FormData();
-    sessionMonth.append("month", monthValue);
-
-    try {
-      const sessionResponse = await fetch("sql/month_set.php", {
-        method: "POST",
-        body: sessionMonth,
-      });
-
-      const sessionData = await sessionResponse.json();
-
-      if (sessionData.success) {
-        // console.log("Session month set successfully.", monthValue);
-      } else {
-        console.error(
-          "Error setting session month:",
-          sessionData.error || "No error message received"
-        );
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  const checkAcademicYear = async () => {
-    try {
-      if (!startYearInput.value || !endYearInput.value) return;
-
-      const formData = new FormData();
-      formData.append("startYear", startYearInput.value);
-      formData.append("endYear", endYearInput.value);
-
-      const response = await fetch("sql/check_academic_year.php", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (data.exists) {
-        monthDropdown.value = data.nextMonth;
-        monthDropdown.disabled = true;
-        setSessionMonth(data.nextMonth);
-      } else {
-        monthDropdown.disabled = false;
-        monthDropdown.value = "1";
-        setSessionMonth("1");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  monthDropdown.addEventListener("change", function () {
-    setSessionMonth(monthDropdown.value);
-  });
-
-  [startYearInput, endYearInput].forEach((input) =>
-    input.addEventListener("input", checkAcademicYear)
-  );
-});
-
-// ADD RECORD
-document
-  .getElementById("addRecordForm")
-  .addEventListener("submit", async function (event) {
-    event.preventDefault(); // Prevent default form submission
-
-    const startYear = parseInt(startYearInput.value);
-    const endYear = parseInt(endYearInput.value);
-
-    if (endYear < startYear) {
-      alert("End year cannot be less than the start year.");
-      startYearInput.value = "";
-      return; // Stop from submitting the form
-    }
-
-    if (endYear > startYear + 1) {
-      alert("The academic year cannot be a span of two years or more.");
-      endYearInput.value = "";
-      return;
-    }
-
-    // CHECK MONTHS
-    try {
-      const checkResponse = await fetch("sql/check_months.php", {
-        method: "POST",
-        body: JSON.stringify({ startYear, endYear }),
-        headers: { "Content-Type": "application/json" },
-      });
-
-      const checkResult = await checkResponse.json();
-
-      if (checkResult.error) {
-        alert("Error: " + checkResult.error);
-        return;
-      }
-
-      if (checkResult.totalMonths >= 12) {
-        alert("This academic year already has 12 months recorded.");
-        return;
-      }
-    } catch (error) {
-      console.error("Error checking records:", error);
-      return;
-    }
-
-    // Get form data
-    const formData = new FormData(this);
-
-    try {
-      const response = await fetch("sql/record_add.php", {
-        method: "POST",
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        let encodedRef = btoa(result.ref);
-
-        window.location.href = "add_record_page.php?ref=" + encodedRef;
-      } else {
-        alert("Error: " + result.error);
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
-  });

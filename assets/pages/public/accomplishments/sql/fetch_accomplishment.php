@@ -33,7 +33,7 @@ $stmt = $conn->prepare("SELECT COALESCE(ec.title, ac.title) AS title,
                         INNER JOIN activity_accomplishment ac
                             ON ac.activity_id = ar.activity_id
                         INNER JOIN activity_remark
-                            ON activity_remark.remark_id = ac.remark
+                            ON activity_remark.remark_id = ac.remarks
                         LEFT JOIN event_calendar ec
                             ON ec.event_id = ac.event_id
 

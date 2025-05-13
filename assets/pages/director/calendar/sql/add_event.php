@@ -3,7 +3,7 @@ header("content-type: application/json");
 
 require_once '../../../../sql/base_path.php';
 
-require_once BASE_PATH . '/assets/sql/calendar/service_account.php';
+require_once 'google_calendar/service_account.php';
 
 session_start();
 

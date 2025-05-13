@@ -1,14 +1,15 @@
 <?php require_once '../../../sql/base_path.php'?>
 
 <?php
-// require_once '../../sql/session_check.php';
-// check_role('Organization');
+require_once BASE_PATH . '/assets/sql/session_check.php';
+check_role('Organization');
 ?>
 
-<?php session_start();?>
+<?php
+// include_once BASE_PATH . '/assets/sql/temporary_session.php'
+?>
 
 <?php require_once 'sql/check_statement_id.php'?>
-
 <?php require_once 'sql/get_month_year.php'?>
 
 
@@ -38,7 +39,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
@@ -46,6 +47,7 @@
                         <div class="row">
                             <div class="col">
                                 <h1>Add Financial Statement</h1>
+                                <?php include_once BASE_PATH . '/assets/components/topbar/topbar.php'?>
                                 <a href="#" class="back-button">Go Back</a>
                             </div>
                         </div>
@@ -227,7 +229,12 @@
         </div>
     </div>
 
-    <?php require_once BASE_PATH . '/assets/components/footer_links.php'; ?>
+    <!-- MODAL -->
+    <!-- Topbar -->
+    <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
+
+    <!-- FOOTER LINKS -->
+    <?php require_once BASE_PATH . '/assets/components/footer_links.php'?>
 
     <!-- HEIC2ANY -->
     <!-- <script src="https://raw.githubusercontent.com/alexcorvi/heic2any/master/dist/heic2any.min.js"></script> -->

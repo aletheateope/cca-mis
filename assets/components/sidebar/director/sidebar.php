@@ -12,46 +12,47 @@
             </button>
         </li>
         <li>
-            <i class="profile-icon"></i>
+            <img class="profile-icon" src="/cca/assets/img/CCA/cca.png" alt="">
             <a href=""><span>Director</span></a>
         </li>
         <li
-            class="<?= ($currentPage == 'dashboard_page.php') ? 'active' : '' ?>">
+            class="<?= ($currentPage == 'dashboard_page.php') ? 'active' : ''?>">
             <a href="/cca/assets/pages/director/dashboard/dashboard_page.php">
                 <i class="icon bi bi-grid-1x2-fill"></i>
                 <span>Dashboard</span>
             </a>
         </li>
         <li
-            class="<?= ($currentPage == 'members_page.php' || $currentPage == 'member_page.php') ? 'active' : '' ?>">
-            <a href="/cca/assets/pages/director/members/members_page.php">
+            class="<?= ($currentPage == 'members_page.php' || $currentPage == 'member_page.php') ? 'active' : ''?>">
+            <a href="/cca/assets/pages/admin/members/members_page.php">
                 <i class="icon bi bi-people-fill" id="orgMembersBtn"></i>
                 <span>Org. Members</span>
             </a>
         </li>
         <li
-            class="<?= ($currentPage == 'calendar_page.php') ? 'active' : '' ?>">
+            class="<?= ($currentPage == 'calendar_page.php') ? 'active' : ''?>">
             <a href="/cca/assets/pages/director/calendar/calendar_page.php">
                 <i class="icon bi bi-calendar-event-fill" id="calendarBtn"></i>
                 <span>Calendar</span>
             </a>
         </li>
         <li
-            class="<?= ($currentPage == 'records_page.php') ? 'active' : '' ?>">
+            class="<?= ($currentPage == 'records_page.php') ? 'active' : ''?>">
             <a href="/cca/assets/pages/public/finance/records_page.php">
                 <i class="icon bi bi-file-text-fill" id="financeBtn"></i>
                 <span>Finance</span>
             </a>
         </li>
         <li
-            class="<?= ($currentPage == 'accomplishments_page.php') ? 'active' : '' ?>">
+            class="<?= ($currentPage == 'accomplishments_page.php') ? 'active' : ''?>">
             <a href="/cca/assets/pages/public/accomplishments/accomplishments_page.php">
                 <i class="icon bi bi-calendar-check-fill" id="accomplishmentsBtn"></i>
                 <span>Accomplishments</span>
             </a>
         </li>
-        <li>
-            <a href="#">
+        <li
+            class="<?= ($currentPage == 'accounts_page.php') ? 'active' : ''?>">
+            <a href="/cca/assets/pages/director/accounts/accounts_page.php">
                 <i class="icon bi bi-person-fill" id="accountsBtn"></i>
                 <span>Accounts</span>
             </a>

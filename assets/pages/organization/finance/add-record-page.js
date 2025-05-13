@@ -152,11 +152,10 @@ document
       const result = await response.json();
 
       if (result.success) {
-        alert(result.message);
         localStorage.setItem("submissionStatus", "success");
         window.location.href = "my_records_page.php";
       } else {
-        alert("Error: " + result.message); // Show error message
+        alert("Error: " + result.message);
       }
     } catch (error) {
       console.error("Error:", error);

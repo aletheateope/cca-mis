@@ -6,7 +6,7 @@ require_once '../../../../sql/base_path.php';
 $activityGalleryDirectory = BASE_PATH . '/uploads/activity_gallery/';
 
 if (!is_dir($activityGalleryDirectory)) {
-    mkdir($activityGalleryDirectory, 0777, true);
+    mkdir($activityGalleryDirectory, 0755, true);
 }
 
 if($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -45,8 +45,8 @@ $remark = $_POST['remark'] ?? null;
 
 if ($event == 0) {
     $stmt = $conn->prepare("INSERT INTO activity_accomplishment (title, description, location, start_date, end_date, target_participants,
-                                                        actual_participants, objective, challenges_solution, lesson_learned, suggestion,
-                                                        budget_utilized, remark) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                                                        actual_participants, objectives, challenges_solutions, lesson_learned, suggestions,
+                                                        budget_utilized, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param(
         "sssssiissssdi",
         $title,
@@ -87,7 +87,7 @@ if ($event == 0) {
     }
 
     $stmt = $conn->prepare("INSERT INTO activity_accomplishment 
-                            (event_id, target_participants, actual_participants, objective, challenges_solution, lesson_learned, suggestion, budget_utilized, remark)
+                            (event_id, target_participants, actual_participants, objectives, challenges_solutions, lesson_learned, suggestions, budget_utilized, remarks)
                              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param(
         "iiissssdi",

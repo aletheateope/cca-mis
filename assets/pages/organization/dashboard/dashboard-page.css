@@ -1,0 +1,160 @@
+.save-report-btn {
+  margin-top: 1rem;
+  font-size: var(--very-small);
+  color: var(--info);
+  align-self: end;
+  text-decoration: underline;
+}
+
+.page-body {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .row,
+    .col {
+      gap: 1rem;
+    }
+  }
+}
+
+.member-state {
+  .col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    i {
+      font-size: 80px;
+    }
+
+    p {
+      font-size: calc(var(--extra-large) + 4px);
+      font-weight: var(--semi-bold);
+    }
+
+    .group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h5 {
+      text-align: center;
+      color: var(--inactive-text-dark);
+    }
+  }
+
+  .active-state {
+    i {
+      color: var(--success);
+    }
+  }
+
+  .inactive-state {
+    i {
+      color: var(--warning);
+    }
+  }
+
+  .exited-state {
+    i {
+      color: var(--info);
+    }
+  }
+
+  .terminated-state {
+    i {
+      color: var(--danger);
+    }
+  }
+}
+
+.member-last-month {
+  .pie-chart {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+.member-last-month {
+  .member-state-lm {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    .member-state-chart {
+      flex-grow: 1;
+    }
+  }
+}
+
+.save-report-container {
+  position: absolute;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: white;
+
+  top: -1000px;
+  width: 600px;
+
+  .report-chart {
+    padding: 1rem;
+    height: 600px;
+  }
+  .report-table-container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    .report-table {
+      padding: 1rem;
+    }
+  }
+}
+
+/* MEDIA QUERIES */
+/* Mobile */
+@media (max-width: 576px) {
+}
+
+/* Large Phone */
+@media (min-width: 576px) {
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+}
+
+/* Large Desktop */
+@media (min-width: 992px) {
+}
+
+/* Extra Large Desktop */
+@media (min-width: 1200px) {
+  .member-state-lm {
+    max-width: 100%;
+    height: 20rem;
+  }
+}
+
+/* Extra Extra Large Desktop */
+@media (min-width: 1400px) {
+  .member-state-lm {
+    max-width: 600px;
+    height: auto;
+  }
+}

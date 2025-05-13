@@ -3,32 +3,40 @@
 :root {
   --font-family: "Inter", serif;
 
-  /* BACKGROUND */
+  /* Background */
   --primary-background: #ffffff;
   --secondary-background: #f5f5f5;
 
-  /* HOVERED COLOR */
+  /* Hovered Color */
   --hovered: #f5f5f5; /* when the primary background is hovered */
 
-  /* ACTIVE */
+  /* Active */
   --active-background: #2d642b;
   --active-text: #ffffff;
 
-  /* SEMANTIC COLORS */
+  /* Semantic Colors */
   --success: #0c9515;
   --danger: #ba1515;
   --warning: #ffbb27;
   --info: #153da3;
 
-  /* COLORS */
-  /* --gray */
+  /* Colors */
+  --pink: #ad2454;
+  --purple: #8219a8;
 
-  /* FONT COLORS */
+  /* finance table colors */
+  --gray: #575757;
+  --light-orange: #ffd084;
+  --light-yellow: #fcfc83;
+  --light-green: #b4dab7;
+  --light-blue: #96abdf;
+
+  /* Font Colors */
   --primary-text: #383838;
   --inactive-text-dark: #787878;
   --inactive-text-light: #e3e3e3;
 
-  /* FONT SIZES */
+  /* Font Sizes */
   --very-small: 0.75rem; /* 12px */
   --small: 0.875rem; /* 14px */
   --default: 1rem; /* 16px */
@@ -36,15 +44,57 @@
   --extra-large: 1.375rem; /* 22px */
   --extra-extra-large: 2.375rem; /* 38px */
 
-  /* FONT WEIGHTS */
+  /* Font Weights */
   --regular: 400;
   --medium: 500;
   --semi-bold: 600;
   --bold: 700;
 
-  /* BORDER */
+  /* Border */
   --border-color: #dfdee1;
   --border-radius: 8px;
+
+  /* Box Shadow */
+  /* For focused elements */
+  --box-shadow: 196, 169, 21; /* GOLD */
+}
+
+/* DARK MODE */
+[data-theme="dark"] {
+  /* Background */
+  --primary-background: #1e262f;
+  --secondary-background: #151922;
+
+  /* Hovered Color */
+  --hovered: #252d37; /* when the primary background is hovered */
+
+  /* Active */
+  --active-background: #21531f;
+  --active-text: #d3d3d3;
+
+  /* Semantic Colors */
+  --success: #0c9515;
+  --danger: #ba1515;
+  --warning: #ffbb27;
+  --info: #153da3;
+
+  /* Font Colors */
+  --primary-text: #b8b8b8;
+  --inactive-text-dark: #888888;
+  --inactive-text-light: #cccccc;
+
+  /* Border */
+  --border-color: #343b44;
+
+  /* BOOTSTRAP */
+  /* Accordion */
+  .accordion {
+    --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23b8b8b8' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+    --bs-accordion-btn-active-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23c7c7c7' stroke-linecap='round' stroke-linejoin='round'><path d='M2 5L8 11L14 5'/></svg>");
+  }
+
+  /* FULLCALENDAR */
+  --fc-border-color: var(--border-color);
 }
 
 /* BOOTSTRAP */
@@ -55,6 +105,7 @@
   --bs-body-bg: var(--primary-background);
 }
 
+/* Container */
 @media (min-width: 1400px) {
   .container,
   .container-lg,
@@ -99,7 +150,13 @@
     max-width: none;
   }
 }
+/* Icons */
+.bi-plus-lg,
+.bi-plus {
+  -webkit-text-stroke: 1px;
+}
 
+/* Headings */
 .h1,
 .h2,
 .h3,
@@ -124,6 +181,7 @@ h6 {
   --bs-table-border-color: var(--border-color);
 }
 
+/* Form */
 .form-control {
   border-radius: 0;
 }
@@ -155,6 +213,7 @@ h6 {
   border-radius: 0;
 }
 
+/* Buttons */
 .btn {
   --bs-btn-font-family: var(--font-family);
   --bs-btn-font-size: var(--default);
@@ -169,7 +228,7 @@ h6 {
   --bs-btn-hover-color: var(--active-text);
   --bs-btn-hover-bg: #477245;
   --bs-btn-hover-border-color: #41683f;
-  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+  --bs-btn-focus-shadow-rgb: var(--box-shadow);
   --bs-btn-active-color: var(--active-text);
   --bs-btn-active-bg: var(--active-background);
   --bs-btn-active-border-color: #2d642b;
@@ -192,6 +251,11 @@ h6 {
   --bs-btn-disabled-border-color: var(--active-background);
 }
 
+.btn-close {
+  --bs-btn-close-focus-shadow: 0 0 0 0.25rem rgba(var(--box-shadow), 0.25);
+}
+
+/* ACCORDION */
 .accordion {
   --bs-accordion-btn-padding-x: 1.25rem;
   --bs-accordion-btn-padding-y: 1rem;
@@ -208,7 +272,7 @@ h6 {
   --bs-accordion-border-color: var(--active-background);
 }
 
-/* NAV */
+/* Nav */
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
   color: var(--active-text);
@@ -218,6 +282,11 @@ h6 {
 .nav {
   --bs-nav-link-color: var(--primary-text);
   --bs-nav-link-hover-color: var(--active-background);
+}
+
+/* SWEET ALERT 2 */
+:root {
+  --swal2-color: var(--primary-text) !important;
 }
 
 /* FULLCALENDAR */
@@ -237,9 +306,15 @@ h6 {
   color: var(--primary-text);
   text-decoration: none;
 }
+
 .fc-others-button {
   .others {
     height: 22px;
     font-size: 18px !important;
   }
+}
+
+/* FANCYBOX */
+.fancybox__container {
+  z-index: var(--fancybox-zIndex, 2000) !important;
 }

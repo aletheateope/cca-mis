@@ -1,11 +1,13 @@
 <?php require_once '../../../sql/base_path.php'?>
 
 <?php
-//require_once '../../sql/session_check.php';
-//check_role('Organization');
+require_once BASE_PATH . '/assets/sql/session_check.php';
+check_role('Organization');
 ?>
 
-<?php include_once '../../../sql/temporary_session.php'?>
+<?php
+// include_once BASE_PATH . '/assets/sql/temporary_session.php'
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,13 +27,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php';?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php';?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
                     <div class="col">
                         <h1>Calendar</h1>
-                        <?php include BASE_PATH . '/assets/components/topbar/topbar.php'?>
+                        <?php include_once BASE_PATH . '/assets/components/topbar/topbar.php'?>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestEventModal">
                             Request Event
                         </button>
@@ -113,6 +115,11 @@
         </div>
     </form>
 
+    <!-- MODAL -->
+    <!-- Topbar -->
+    <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
+
+    <!-- FOOTER LINKS -->
     <?php require_once BASE_PATH . '/assets/components/footer_links.php';?>
 
     <!-- FULLCALENDAR -->

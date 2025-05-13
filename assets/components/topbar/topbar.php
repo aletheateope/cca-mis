@@ -4,7 +4,7 @@
     <button class="no-style-btn">
         <i class="bi bi-bell-fill"></i>
     </button>
-    <button class="no-style-btn">
+    <button class="no-style-btn" data-bs-toggle="modal" data-bs-target="#topbarModal">
         <i class="bi bi-gear-fill"></i>
     </button>
 </div>

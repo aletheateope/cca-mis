@@ -5,6 +5,8 @@ import {
   onHide,
 } from "../../../components/sweetalert2/alertAnimation.js";
 
+const notyf = createNotyf();
+
 function formatDate(dateString) {
   if (!dateString) return "---";
 
@@ -153,6 +155,11 @@ tableBody.addEventListener("click", async function (event) {
       const updateField = (id, value) =>
         (document.getElementById(id).textContent = value || "---");
 
+      const profileImage = data.profile;
+      const memberProfile = document.getElementById("memberProfile");
+
+      memberProfile.src = profileImage || "/cca/assets/img/blank-profile.png";
+
       updateField("memberName", fullName);
       updateField("memberAge", data.age);
       updateField("memberDob", formatDate(data.birthdate));
@@ -271,17 +278,15 @@ tableBody.addEventListener("click", async function (event) {
           Swal.close();
 
           if (deleteData.success) {
-            const notyf = createNotyf();
             notyf.success("The member has been deleted successfully.");
 
             deleteBtn.closest("tr").remove();
           } else {
-            alert(deleteData.message);
+            console.log(deleteData.message);
           }
         } catch (error) {
           swal.close();
           console.error("Error fetching data:", error);
-          console.error("Fetch or parse error:", error.message);
         }
       }
     });
@@ -291,6 +296,7 @@ tableBody.addEventListener("click", async function (event) {
 });
 
 // MODAL
+// Add Member Modal
 // CLEAVE
 var cleave = new Cleave("#inputContactNumber", {
   phone: true,
@@ -326,53 +332,57 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("change", calculateAge);
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  // ADD PROFILE IMAGE
-  const addProfileBtn = document.getElementById("addProfileButton");
-  const inputProfile = document.getElementById("inputProfile");
+// ADD PROFILE IMAGE
+const addProfileBtn = document.getElementById("addProfileButton");
+const inputProfile = document.getElementById("inputProfile");
 
-  addProfileBtn.addEventListener("click", function (event) {
-    event.preventDefault();
-    inputProfile.click();
-  });
-
-  // LOAD IMAGE
-  inputProfile.addEventListener("change", function (event) {
-    const file = event.target.files[0];
-
-    // Check if a valid file is selected
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-
-      // When the file is loaded, set it as the source of the image
-      reader.onload = function (e) {
-        document.getElementById("blank-profile").src = e.target.result;
-        document.getElementById("removeProfile").style.display = "block";
-      };
-
-      // Read the file as a data URL
-      reader.readAsDataURL(file);
-
-      addProfileBtn.textContent = "Change Profile";
-    } else {
-      alert("Please select a valid image file.");
-    }
-  });
-
-  // REMOVE PROFILE
-  const removeProfile = document.getElementById("removeProfile");
-
-  removeProfile.addEventListener("click", function (event) {
-    event.preventDefault();
-
-    inputProfile.value = ""; // Clear the file input
-    document.getElementById("blank-profile").src =
-      "/cca/assets/img/blank-profile.png"; // Reset to default image
-    removeProfile.style.display = "none"; // Hide "X" icon
-
-    addProfileBtn.textContent = "Add Profile";
-  });
+addProfileBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  inputProfile.click();
 });
+
+// LOAD IMAGE
+inputProfile.addEventListener("change", function (event) {
+  const file = event.target.files[0];
+
+  // Check if a valid file is selected
+  if (file && file.type.startsWith("image/")) {
+    const reader = new FileReader();
+
+    // When the file is loaded, set it as the source of the image
+    reader.onload = function (e) {
+      document.getElementById("blank-profile").src = e.target.result;
+      document.getElementById("removeProfile").style.display = "block";
+    };
+
+    // Read the file as a data URL
+    reader.readAsDataURL(file);
+
+    addProfileBtn.textContent = "Change Profile";
+  } else {
+    alert("Please select a valid image file.");
+  }
+});
+
+function removeProfileImage() {
+  inputProfile.value = ""; // Clear the file input
+
+  document.getElementById("blank-profile").src =
+    "/cca/assets/img/blank-profile.png"; // Reset to default
+
+  document.getElementById("removeProfile").style.display = "none"; // Hide "X" icon
+
+  addProfileBtn.textContent = "Add Profile";
+}
+
+// REMOVE PROFILE
+document
+  .getElementById("removeProfile")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+
+    removeProfileImage();
+  });
 
 // NEXT BUTTON
 const nextButton = document.getElementById("nextButton");
@@ -497,15 +507,17 @@ document.addEventListener("DOMContentLoaded", function () {
         Swal.close();
 
         if (result.success) {
+          searchMembers();
+
           const modal = bootstrap.Modal.getInstance(
             document.getElementById("addMemberModal2")
           );
           modal.hide();
 
-          document.getElementById("addMemberForm").reset();
+          this.reset();
           pond.removeFiles();
+          removeProfileImage();
 
-          const notyf = createNotyf();
           notyf.success("Member added successfully.");
         } else {
           alert("Error: " + result.message);

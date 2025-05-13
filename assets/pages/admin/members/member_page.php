@@ -1,11 +1,13 @@
 <?php require_once '../../../sql/base_path.php'?>
 
 <?php
-// require_once BASE_PATH . '/assets/sql/session_check.php';
-// check_role('Director');
+require_once BASE_PATH . '/assets/sql/session_check.php';
+check_role(['Director', 'VPSLD']);
 ?>
 
-<?php include_once BASE_PATH . '/assets/sql/temporary_session.php';?>
+<?php
+// include_once BASE_PATH . '/assets/sql/temporary_session.php'
+?>
 
 <?php require_once 'sql/member_details.php'?>
 
@@ -29,13 +31,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include BASE_PATH . '/assets/components/sidebar/director/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/director/sidebar.php' ?>
             </div>
             <main class="col main-content">
                 <div class="row page-header">
                     <div class="col">
                         <h1>Member Details</h1>
-                        <?php include BASE_PATH . '/assets/components/topbar/topbar.php'?>
+                        <?php include_once BASE_PATH . '/assets/components/topbar/topbar.php'?>
                         <a href="members_page.php" class="back-button">Go Back</a>
                     </div>
                 </div>
@@ -212,15 +214,7 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                id="allDocument">
-                                                            <label class="form-check-label" for="allDocument">
-                                                                Name
-                                                            </label>
-                                                        </div>
-                                                    </th>
+                                                    <th>File Name</th>
                                                     <th class="text-center">Actions</th>
                                                 </tr>
                                             </thead>
@@ -229,12 +223,9 @@
                                                 <?php while ($document_row = $result_documents->fetch_assoc()) {?>
                                                 <tr>
                                                     <td>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" id="doc-1">
-                                                            <label class="form-check-label" for="doc-1">
-                                                                <?php echo $document_row['file_name']?>
-                                                            </label>
-                                                        </div>
+                                                        <button class="no-style-btn">
+                                                            <?php echo $document_row['file_name']?>
+                                                        </button>
                                                     </td>
                                                     <td>
                                                         <div class="action-group">
@@ -315,6 +306,9 @@
     </div>
 
     <!-- MODALS -->
+    <!-- Topbar -->
+    <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
+
     <!-- VIEW ALL RECOGNITION -->
     <div class="modal fade" id="recognitionModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">

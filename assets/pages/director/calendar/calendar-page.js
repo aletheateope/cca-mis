@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
       dayGridMonth: { buttonText: "Month" },
       listYear: { buttonText: "Schedules" },
     },
-    events: "sql/events.php",
+    events: "/cca/assets/sql/events.php",
     eventDidMount: function (info) {
       if (info.view.type === "listYear") {
         let scheduledBy = info.event.extendedProps.scheduled_by || "Unknown";

@@ -1,11 +1,13 @@
 <?php require_once '../../../sql/base_path.php'?>
 
 <?php
-//require_once '../../../sql/session_check.php';
-//check_role('Organization');
+require_once BASE_PATH . '/assets/sql/session_check.php';
+check_role('Organization');
 ?>
 
-<?php include BASE_PATH . '/assets/sql/temporary_session.php'?>
+<?php
+// include BASE_PATH . '/assets/sql/temporary_session.php'
+?>
 
 <?php require_once 'sql/display_record.php'?>
 
@@ -19,6 +21,9 @@
 
     <?php require_once BASE_PATH . '/assets/components/header_links.php'?>
 
+    <!-- FANCYBOX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+
     <link rel="stylesheet" href="my-records-page.css">
 </head>
 
@@ -26,13 +31,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
                     <div class="col">
                         <h1>My Records</h1>
-                        <?php include BASE_PATH . '/assets/components/topbar/topbar.php'?>
+                        <?php include_once BASE_PATH . '/assets/components/topbar/topbar.php'?>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addRecordModal">
                             <i class="bi bi-plus add-button"></i>
@@ -141,7 +146,8 @@
 
                                 <ul class="list-group">
                                     <?php foreach ($months as $month) { ?>
-                                    <li class="list-group-item">
+                                    <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#viewRecordModal"
+                                        data-id="<?php echo $month['public_key']?>">
                                         <h4><?php echo $month['name'] . ", " . $month['year'] ?>
                                         </h4>
                                         <button class="no-style-btn generateIMG" data-bs-toggle="modal"
@@ -162,6 +168,11 @@
         </div>
     </div>
 
+    <!-- MODAL -->
+    <!-- Topbar -->
+    <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
+
+    <!-- Add Record Modal -->
     <form id="addRecordForm" enctype="multipart/form-data">
         <div class="modal fade add-record-modal" id="addRecordModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
@@ -185,7 +196,7 @@
                                 </div>
                             </div>
                         </div>
-                        <label for="month" class="form-label">Month</label>
+                        <label for="month" class="form-label">For the Month of</label>
                         <select class="form-select" id="month">
                             <option value="1" selected>January</option>
                             <option value="2">February</option>
@@ -210,6 +221,130 @@
         </div>
     </form>
 
+    <!-- VIEW RECORD -->
+    <div class="modal fade view-record-modal" id="viewRecordModal" tabindex="-1" aria-labelledby="viewRecordModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Financial Record</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <section class="container-fluid section">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Statement</h3>
+                                </div>
+                            </div>
+                            <div class="container-fluid">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2" class="text-center" id="recordMonthYear">January, 2020</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="text-center">Update As Of: <span
+                                                    id="recordDate">January 20, 2020</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" class="text-center">Credit and Revenues</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Starting Fund</td>
+                                            <td id="recordStartingFund">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Credit From Weekly Contribution</td>
+                                            <td id="recordWeeklyContribution">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Revenue From Internal Projects</td>
+                                            <td id="recordInternalProjects">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Revenue From External Projects</td>
+                                            <td id="recordExternalProjects">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Credit for Internal Initiative Funding</td>
+                                            <td id="recordInternalInitiativeFunding">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Credit From Donations/Sponsorships</td>
+                                            <td id="recordDonationsSponsorships">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Credit From Adviser</td>
+                                            <td id="recordAdviserCredit">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Credit From Carri</td>
+                                            <td id="recordCarriCredit">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Total Credit</td>
+                                            <td class="recordTotalCredit">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" class="text-center">Cost and Expenses</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Cost and Expenses</td>
+                                            <td class="recordTotalExpenses">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Total Expenses</td>
+                                            <td class="recordTotalExpenses">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" class="text-center">Summary</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Total Credit</td>
+                                            <td class="recordTotalCredit">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Total Expenses</td>
+                                            <td class="recordTotalExpenses">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Final Funding Less All Expenses</td>
+                                            <td id="recordFinalFunding">Test</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                        <section class="container-fluid section">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Receipts</h3>
+                                </div>
+                            </div>
+                            <div class="container-fluid gallery-container receipts-gallery">
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HTML2CANVAS -->
     <div class="modal fade generate-img-modal" id="generateIMGModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
@@ -314,17 +449,21 @@
         </div>
     </div>
 
+    <!-- FOOTER LINKS -->
     <?php require_once BASE_PATH . '/assets/components/footer_links.php' ?>
 
     <!-- CHART.JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
 
-    <!-- HTML2CANVAS -->
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-
     <!-- JSPDF -->
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- FANCYBOX -->
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+
+    <!-- HTML2CANVAS -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
     <script type="module" src="my-records-page.js"></script>
 

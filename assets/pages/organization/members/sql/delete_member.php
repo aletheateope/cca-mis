@@ -18,13 +18,18 @@ if (!isset($data['public_key'])) {
 
 $public_key = $data['public_key'];
 
-$stmt = $conn->prepare("SELECT ks.student_number 
+$stmt = $conn->prepare("SELECT ks.student_number
                         FROM key_student ks
                         INNER JOIN student_organization so
                         ON so.student_number = ks.student_number
-                        WHERE organization_id = ? AND public_key = ?");
+                        WHERE organization = ? AND public_key = ?");
 $stmt->bind_param("is", $organization_id, $public_key);
-$stmt->execute();
+
+if (!$stmt->execute()) {
+    echo json_encode(["success" => false, "message" => "Error executing statement: " . $stmt->error]);
+    exit();
+}
+
 $stmt->bind_result($student_number);
 $stmt->fetch();
 
@@ -34,6 +39,30 @@ if (!$student_number) {
     echo json_encode(["success" => false, "message" => "Student not found"]);
     exit();
 }
+
+$stmt = $conn->prepare("SELECT path FROM student_document WHERE student_number = ?");
+$stmt->bind_param("i", $student_number);
+
+if (!$stmt->execute()) {
+    echo json_encode(["success" => false, "message" => "Error executing statement: " . $stmt->error]);
+    exit();
+}
+
+$stmt->bind_result($path);
+$stmt->fetch();
+
+if ($path) {
+    $absolutePath = $_SERVER['DOCUMENT_ROOT'] . $path;
+
+    if (file_exists($absolutePath)) {
+        if (!unlink($absolutePath)) {
+            echo json_encode(["success" => false, "message" => "Failed to delete the document file."]);
+            exit();
+        }
+    }
+}
+
+$stmt->close();
 
 $stmt = $conn->prepare("DELETE FROM student WHERE student_number = ?");
 $stmt->bind_param("i", $student_number);

@@ -1,11 +1,13 @@
 <?php require_once '../../../sql/base_path.php'?>
 
 <?php
-//require_once BASE_PATH . '/assets/sql/session_check.php';
-//check_role('Organization');
+require_once BASE_PATH . '/assets/sql/session_check.php';
+check_role('Organization');
 ?>
 
-<?php include_once BASE_PATH . '/assets/sql/temporary_session.php'?>
+<?php
+// include_once BASE_PATH . '/assets/sql/temporary_session.php'
+?>
 
 <?php require_once 'sql/active_members.php'?>
 
@@ -29,14 +31,14 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
             </div>
 
             <main class="col main-content">
                 <div class="row page-header">
                     <div class="col">
                         <h1>Members</h1>
-                        <?php include BASE_PATH . '/assets/components/topbar/topbar.php'?>
+                        <?php include_once BASE_PATH . '/assets/components/topbar/topbar.php'?>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addMemberModal">
                             <i class="bi bi-plus"></i> Add Member
@@ -146,7 +148,7 @@
                 </div>
                 <div class="row profile-container">
                     <div class="col">
-                        <img src="/cca/assets/img/blank_profile.png" alt="">
+                        <img src="/cca/assets/img/blank-profile.png" alt="Profile Picture" id="memberProfile">
                         <a href class="change-profile">Change Profile</a>
                     </div>
                 </div>
@@ -278,6 +280,9 @@
     </div>
 
     <!-- MODAL -->
+    <!-- Topbar -->
+    <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
+
     <!-- ADD MEMBER MODAL -->
     <form id="addMemberForm" enctype="multipart/form-data">
         <div class="add-member-modal modal fade" id="addMemberModal" tabindex="-1">
@@ -335,8 +340,9 @@
                                 <div class="col">
                                     <label for="inputGender" class="form-label">Gender</label>
                                     <select name="gender" class="form-select" id="inputGender">
-                                        <option selected>Female</option>
-                                        <option>Male</option>
+                                        <option selected value="1">Male</option>
+                                        <option value="2">Female</option>
+                                        <option value="3">LGBTQ</option>
                                     </select>
                                 </div>
                             </div>

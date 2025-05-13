@@ -12,19 +12,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
 
-    <?php require_once BASE_PATH . '/assets/components/header-links.php' ?>
+    <?php require_once BASE_PATH . '/assets/components/header_links.php' ?>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
             </div>
             <main class="col main-content">
                 <div class="row page-header">
                     <div class="col">
                         <h1>Dashboard</h1>
+                        <?php include_once BASE_PATH . '/assets/components/topbar/topbar.php'?>
                     </div>
                 </div>
                 <div class="row page-body">
@@ -37,11 +38,22 @@
             </main>
         </div>
     </div>
+    
+    <!-- MODAL -->
+    <!-- Topbar -->
+    <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
 
-    <?php require_once BASE_PATH . '/assets/components/footer-links.php'; ?>
+    <?php require_once BASE_PATH . '/assets/components/footer_links.php'; ?>
 </body>
 
 </html>
+
+-----------------------------
+
+check_role('Director');
+
+// Allow both Director and VPSLD roles
+check_role(['Director', 'VPSLD']);
 
 -----------------------------
 
@@ -59,7 +71,7 @@
 -----------------------------
 
 <?php
-require_once BASE_PATH . '/assets/sql/public-key.php';
+require_once BASE_PATH . '/assets/sql/public_key.php';
 
 $count = 1;
 
@@ -77,7 +89,7 @@ do {
 -----------------------------
 
 <?php
-require_once BASE_PATH . '/assets/sql/public-key.php';
+require_once BASE_PATH . '/assets/sql/public_key.php';
 
 $count = 1;
 
@@ -174,6 +186,11 @@ Swal.close();
 }
 
 -----------------------------
+
+ const modal = bootstrap.Modal.getInstance(
+          document.getElementById("addUserModal")
+        );
+        modal.hide();
 
 this.closest(".event-request-card").remove();
 
