@@ -1,4 +1,6 @@
 import { generateFileName } from "../../../components/fileNameGenerator.js";
+import { formatDate } from "../../../components/formatDate.js";
+import { initializeFancybox } from "../../../components/fancybox.js";
 
 // ACCORDION
 document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
@@ -332,19 +334,109 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// FANCYBOX
+initializeFancybox();
+
 // FINANCIAL STATEMENT (SUMMARY)
 document
   .querySelector(".page-body")
   .addEventListener("click", async function (event) {
+    const accordion = event.target.closest(".accordion-finance");
+    const li = event.target.closest(".accordion-finance .accordion-body li");
     const generateBtn = event.target.closest(".fetchRecordSum");
 
-    if (generateBtn) {
-      const accordion = generateBtn.closest(".accordion-finance");
-      const listItem = generateBtn.closest("li");
-
+    if (li) {
+      const publicKey = li.getAttribute("data-id");
       const year = accordion.getAttribute("data-year");
       const month = accordion.getAttribute("data-month");
-      const organization = listItem.getAttribute("data-id");
+
+      try {
+        const response = await fetch("sql/fetch_record.php", {
+          method: "POST",
+          body: JSON.stringify({ publicKey, year, month }),
+        });
+
+        if (!response.ok) {
+          console.error("Error fetching record:", response.statusText);
+          return;
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+          const date = formatDate(data.result.date_updated);
+
+          const fields = {
+            recordDate: date,
+            recordMonthYear: `${data.result.month}, ${data.result.year}`,
+            recordStartingFund: data.result.starting_fund,
+            recordWeeklyContribution: data.result.weekly_contribution,
+            recordInternalProjects: data.result.internal_projects,
+            recordExternalProjects: data.result.external_projects,
+            recordInternalInitiativeFunding: data.result.initiative_funding,
+            recordDonationsSponsorships: data.result.donations_sponsorships,
+            recordAdviserCredit: data.result.adviser_credit,
+            recordCarriCredit: data.result.carri_credit,
+            recordFinalFunding: data.result.final_funding,
+          };
+
+          for (const [id, value] of Object.entries(fields)) {
+            document.getElementById(id).textContent = value;
+          }
+
+          const elementsMap = {
+            ".recordTotalCredit": data.result.total_credit,
+            ".recordTotalExpenses": data.result.total_expenses,
+          };
+
+          for (const [selector, value] of Object.entries(elementsMap)) {
+            document.querySelectorAll(selector).forEach((el) => {
+              el.textContent = value;
+            });
+          }
+
+          const galleryContainer = document.querySelector(".receipts-gallery");
+
+          if (data.receipt && data.receipt.length > 0) {
+            galleryContainer.innerHTML = "";
+
+            if (galleryContainer.classList.contains("single-col")) {
+              galleryContainer.classList.remove("single-col");
+            }
+
+            data.receipt.forEach((receipt) => {
+              const galleryItemHTML = `
+              <div class="gallery-item">
+                <a
+                  href="${receipt.path}"
+                  data-fancybox="gallery"
+                  data-caption="${receipt.file_name}"
+                  data-download-filename="${generateFileName(10)}.jpg"
+                >
+                  <img src="${receipt.path}" alt="Receipt Image" />
+                </a>
+              </div>
+            `;
+
+              galleryContainer.innerHTML += galleryItemHTML;
+            });
+          } else {
+            galleryContainer.classList.add("single-col");
+
+            galleryContainer.innerHTML = "<p class='text-center'>Empty</p>";
+          }
+        } else {
+          console.log(data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching record:", error);
+      }
+    }
+
+    if (generateBtn) {
+      const year = accordion.getAttribute("data-year");
+      const month = accordion.getAttribute("data-month");
+      const organization = li.getAttribute("data-id");
 
       try {
         const response = await fetch("sql/fetch_financial_statement.php", {

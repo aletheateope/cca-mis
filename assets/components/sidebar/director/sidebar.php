@@ -13,7 +13,9 @@
         </li>
         <li>
             <img class="profile-icon" src="/cca/assets/img/CCA/cca.png" alt="">
-            <a href=""><span>Director</span></a>
+            <button class="no-style-btn profile-btn" data-bs-toggle="modal" data-bs-target="#viewProfileModal">
+                <span>Director</span>
+            </button>
         </li>
         <li
             class="<?= ($currentPage == 'dashboard_page.php') ? 'active' : ''?>">

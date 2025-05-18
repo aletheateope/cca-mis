@@ -140,6 +140,9 @@ check_role('Organization');
     <!-- Topbar -->
     <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
 
+    <!-- View Profile Modal -->
+    <?php include_once BASE_PATH . '/assets/components/sidebar/org_modal.php'; ?>
+
     <!-- Add Accomplishment Modal -->
     <form id="addAccomplishmentForm" enctype="multipart/form-data">
         <div class="modal fade" id="addAccomplishmentModal" tabindex="-1">

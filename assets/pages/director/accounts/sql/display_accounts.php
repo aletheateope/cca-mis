@@ -1,8 +1,6 @@
 <?php
 require_once BASE_PATH . '/assets/sql/conn.php';
 
-session_start();
-
 $user_id = $_SESSION['user_id'];
 
 $stmt = $conn->prepare("SELECT public_key, first_name, last_name, email, role

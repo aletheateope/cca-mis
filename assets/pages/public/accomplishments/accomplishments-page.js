@@ -2,7 +2,13 @@ import { initializeFancybox } from "../../../components/fancybox.js";
 
 // ACCORDION
 document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
-  collapse.addEventListener("show.bs.collapse", function () {
+  collapse.addEventListener("show.bs.collapse", function (e) {
+    const btn = e.target.closest(".delete-btn");
+
+    if (this.closest(".accordion").id === "activityGalleryAccordion") {
+      return;
+    }
+
     document.querySelectorAll(".accordion-collapse").forEach((item) => {
       if (item !== this) {
         new bootstrap.Collapse(item, { toggle: false }).hide();
@@ -10,6 +16,16 @@ document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
     });
   });
 });
+
+// PREVENT ACTIVITY MODAL FROM OPENING
+document
+  .getElementById("viewActivityModal")
+  .addEventListener("show.bs.modal", function (e) {
+    var button = e.relatedTarget;
+    if (button.classList.contains("generatePDF")) {
+      e.preventDefault();
+    }
+  });
 
 // GENERATE PDF
 document.addEventListener("DOMContentLoaded", function () {
@@ -369,3 +385,12 @@ document.addEventListener("DOMContentLoaded", function () {
 initializeFancybox();
 
 const pageBody = document.querySelector(".page-body");
+
+// ACTIVITY GALLERY AUTO SCROLL
+document.addEventListener("DOMContentLoaded", function () {
+  const collapseGallery = document.getElementById("collapseGallery");
+
+  collapseGallery.addEventListener("shown.bs.collapse", function () {
+    collapseGallery.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});

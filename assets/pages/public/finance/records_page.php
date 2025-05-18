@@ -22,6 +22,9 @@ session_start();
 
     <?php require_once BASE_PATH . '/assets/components/header_links.php' ?>
 
+    <!-- FANCYBOX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+
     <link rel="stylesheet" href="records-page.css">
 </head>
 
@@ -90,7 +93,9 @@ session_start();
                                                         <ul class="list-group">
                                                             <?php foreach ($organizations as $organization) {?>
                                                             <li class="list-group-item"
-                                                                data-id="<?php echo $organization['public_key']?>">
+                                                                data-id="<?php echo $organization['public_key']?>"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#viewRecordModal">
                                                                 <?php echo $organization['organization']?>
                                                                 <button class="no-style-btn fetchRecordSum"
                                                                     data-bs-toggle="modal"
@@ -119,6 +124,13 @@ session_start();
     <!-- MODAL -->
     <!-- Topbar -->
     <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
+
+    <!-- View Profile Modal -->
+    <?php if ($_SESSION['user_role'] === 'Organization') {
+        include_once BASE_PATH . '/assets/components/sidebar/org_modal.php';
+    } elseif ($_SESSION['user_role'] === 'Director' || $_SESSION['user_role'] === 'VPSLD') {
+        include_once BASE_PATH . '/assets/components/sidebar/admin_modal.php';
+    }?>
 
     <!-- GENERATE REPORT MODAL -->
     <div class="modal fade generate-report-modal" id="generateReportModal" tabindex="-1" aria-hidden="true">
@@ -179,6 +191,129 @@ session_start();
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="generatePDF">Generate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW RECORD -->
+    <div class="modal fade view-record-modal" id="viewRecordModal" tabindex="-1" aria-labelledby="viewRecordModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Financial Record</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <section class="container-fluid section">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Statement</h3>
+                                </div>
+                            </div>
+                            <div class="container-fluid">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2" class="text-center" id="recordMonthYear">January, 2020</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="text-center">Update As Of: <span
+                                                    id="recordDate">January 20, 2020</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" class="text-center">Credit and Revenues</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Starting Fund</td>
+                                            <td id="recordStartingFund">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Credit From Weekly Contribution</td>
+                                            <td id="recordWeeklyContribution">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Revenue From Internal Projects</td>
+                                            <td id="recordInternalProjects">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Revenue From External Projects</td>
+                                            <td id="recordExternalProjects">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Credit for Internal Initiative Funding</td>
+                                            <td id="recordInternalInitiativeFunding">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Credit From Donations/Sponsorships</td>
+                                            <td id="recordDonationsSponsorships">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Credit From Adviser</td>
+                                            <td id="recordAdviserCredit">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Credit From Carri</td>
+                                            <td id="recordCarriCredit">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Total Credit</td>
+                                            <td class="recordTotalCredit">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" class="text-center">Cost and Expenses</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Cost and Expenses</td>
+                                            <td class="recordTotalExpenses">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Total Expenses</td>
+                                            <td class="recordTotalExpenses">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" class="text-center">Summary</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Total Credit</td>
+                                            <td class="recordTotalCredit">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Total Expenses</td>
+                                            <td class="recordTotalExpenses">Test</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end">Final Funding Less All Expenses</td>
+                                            <td id="recordFinalFunding">Test</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                        <section class="container-fluid section">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Receipts</h3>
+                                </div>
+                            </div>
+                            <div class="container-fluid gallery-container receipts-gallery">
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -289,7 +424,11 @@ session_start();
         </div>
     </div>
 
+    <!-- FOOTER LINKS -->
     <?php require_once BASE_PATH . '/assets/components/footer_links.php'; ?>
+
+    <!-- FANCYBOX -->
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 
     <!-- JSPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>

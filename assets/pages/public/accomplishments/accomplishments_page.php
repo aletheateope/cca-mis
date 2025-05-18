@@ -21,6 +21,9 @@ session_start();
 
     <?php require_once BASE_PATH . '/assets/components/header_links.php' ?>
 
+    <!-- FANCYBOX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+
     <link rel="stylesheet" href="accomplishments-page.css" />
 </head>
 
@@ -81,7 +84,9 @@ session_start();
                                                         <ul class="list-group">
                                                             <?php foreach ($organizations as $organization) {?>
                                                             <li class="list-group-item"
-                                                                data-id="<?php echo $organization['public_key']?>">
+                                                                data-id="<?php echo $organization['public_key']?>"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#viewActivityModal">
                                                                 <?php echo $organization['organization']?>
                                                                 <div class="group">
                                                                     <p>
@@ -90,7 +95,9 @@ session_start();
                                                                     </p>
                                                                     <button class="btn btn-outline-primary generatePDF"
                                                                         data-month="<?php echo $organization['month_id']?>"
-                                                                        data-year="<?php echo $year?>">
+                                                                        data-year="<?php echo $year?>"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#viewActivityModal">
                                                                         Generate Report
                                                                     </button>
                                                                 </div>
@@ -117,8 +124,180 @@ session_start();
     <!-- Topbar -->
     <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
 
+    <!-- View Profile Modal -->
+    <?php if ($_SESSION['user_role'] === 'Organization') {
+        include_once BASE_PATH . '/assets/components/sidebar/org_modal.php';
+    } elseif ($_SESSION['user_role'] === 'Director' || $_SESSION['user_role'] === 'VPSLD') {
+        include_once BASE_PATH . '/assets/components/sidebar/admin_modal.php';
+    }?>
+
+    <!-- View Activity Details Modal -->
+    <div class="modal fade view-activity-modal" id="viewActivityModal" tabindex="-1"
+        aria-labelledby="viewActivityModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Activity Accomplishment</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid activity-details">
+                        <section class="container-fluid section">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Activity Overview</h3>
+                                </div>
+                            </div>
+                            <div class="container-fluid wrapper">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Title</h5>
+                                        <p id="activityTitle">Youth Art Showcase</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Description</h5>
+                                        <p id="activityDescription">A community outreach initiative aimed at providing
+                                            educational materials to underprivileged children.</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Location</h5>
+                                        <p id="activityLocation">Barangay San Isidro, Quezon City</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Date</h5>
+                                        <p id="activityDate">August 18, 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="container-fluid section">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Participants</h3>
+                                </div>
+                            </div>
+                            <div class="container-fluid wrapper">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Target Number of Participants</h5>
+                                        <p id="activityTargetParticipants">6</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Participating Members</h5>
+                                        <p id="activityParticipatingMembers">
+                                            3 <button class="no-style-btn view-list-btn">[View List]</button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="container-fluid section">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Activity Insights</h3>
+                                </div>
+                            </div>
+                            <div class="container-fluid wrapper">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Objectives</h5>
+                                        <p id="activityObjectives">To distribute school supplies and provide educational
+                                            support to 200 children in need.</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Challenges and Solutions</h5>
+                                        <p id="activityChallengesSolutions">The main challenge was the lack of supplies,
+                                            which we overcame by partnering with local art suppliers for donations.</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Lesson Learned</h5>
+                                        <p id="activityLessonLearned">Preparation and clear communication with local
+                                            vendors are essential for securing resources on time.</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Suggestions</h5>
+                                        <p id="activitySuggestions">Plan for additional backup supplies in case of
+                                            last-minute shortages.</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Remarks</h5>
+                                        <p id="activityRemarks"><i class="bi bi-emoji-frown remark-type-two"></i>
+                                            Accomplished but did not meet the target number of members.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="container-fluid section">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Budget</h3>
+                                </div>
+                            </div>
+                            <div class="container-fluid wrapper">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Budget Utilized</h5>
+                                        <p id="activityBudgetUtilized">0.00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="container-fluid section">
+                            <div class="accordion gallery-accordion" id="activityGalleryAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseGallery"
+                                            aria-expanded="true" aria-controls="collapseGallery">
+                                            Gallery
+                                        </button>
+                                    </h2>
+                                    <div id="collapseGallery" class="accordion-collapse collapse"
+                                        data-bs-parent="#activityGalleryAccordion">
+                                        <div class="accordion-body">
+                                            <div class="gallery-container activity-gallery">
+                                                <div class="gallery-item">
+                                                    <a href="/cca/uploads/activity_gallery/1747150888_682368280a161.jpg"
+                                                        data-fancybox="gallery">
+                                                        <img src="/cca/uploads/activity_gallery/1747150888_682368280a161.jpg"
+                                                            alt="Activity Image" />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </section>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- FOOTER LINKS -->
     <?php require_once BASE_PATH . '/assets/components/footer_links.php'; ?>
+
+    <!-- FANCYBOX -->
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 
     <!-- JSPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>

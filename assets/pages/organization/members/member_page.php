@@ -320,6 +320,9 @@ check_role('Organization');
     <!-- Topbar -->
     <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
 
+    <!-- View Profile Modal -->
+    <?php include_once BASE_PATH . '/assets/components/sidebar/org_modal.php'; ?>
+
     <!-- VIEW ALL RECOGNITION -->
     <div class="modal fade" id="recognitionModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">

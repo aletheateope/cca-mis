@@ -227,12 +227,12 @@ new Chart(ctx, {
     datasets: [
       {
         label: "Hidden Base",
-        data: [0, 20, 0],
+        data: [0, 46.51, 0],
         backgroundColor: "rgba(0, 0, 0, 0)",
       },
       {
         label: "Values",
-        data: [100, 80, 20],
+        data: [100, 53.49, 46.51],
         backgroundColor: [blue, red, green],
       },
     ],

@@ -113,7 +113,9 @@ check_role('Organization');
                                                     </td>
                                                     <td class="actions-column">
                                                         <div class="actions">
-                                                            <button class="no-style-btn edit-btn" title="Edit">
+                                                            <button class="no-style-btn edit-btn" title="Edit"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editMemberModal">
                                                                 <i class="bi bi-pencil-square"></i>
                                                             </button>
                                                             <button class="no-style-btn delete-btn" title="Delete">
@@ -282,6 +284,9 @@ check_role('Organization');
     <!-- MODAL -->
     <!-- Topbar -->
     <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
+
+    <!-- View Profile Modal -->
+    <?php include_once BASE_PATH . '/assets/components/sidebar/org_modal.php'; ?>
 
     <!-- ADD MEMBER MODAL -->
     <form id="addMemberForm" enctype="multipart/form-data">
@@ -478,6 +483,31 @@ check_role('Organization');
             </div>
         </div>
     </form>
+
+    <div class="modal fade" id="editMemberModal" tabindex="-1" aria-labelledby="editMemberModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Member</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <?php require_once BASE_PATH . '/assets/components/footer_links.php'?>
 

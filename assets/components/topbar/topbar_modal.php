@@ -27,3 +27,5 @@
         </div>
     </div>
 </div>
+
+<script src="/cca/assets/components/topbar/topbar.js"></script>

@@ -55,39 +55,39 @@ check_role('Organization');
                                     <tbody>
                                         <tr>
                                             <td>Starting Fund</td>
-                                            <td>Test</td>
+                                            <td>20,000</td>
                                         </tr>
                                         <tr>
                                             <td>Credit From Weekly Contribution</td>
-                                            <td>Test</td>
+                                            <td>500</td>
                                         </tr>
                                         <tr>
                                             <td>Revenue From Internal Projects</td>
-                                            <td>Test</td>
+                                            <td>0.00</td>
                                         </tr>
                                         <tr>
                                             <td>Revenue From External Projects</td>
-                                            <td>Test</td>
+                                            <td>0.00</td>
                                         </tr>
                                         <tr>
                                             <td>Credit for Internal Initiative Funding</td>
-                                            <td>Test</td>
+                                            <td>0.00</td>
                                         </tr>
                                         <tr>
                                             <td>Credit From Donations/Sponsorships</td>
-                                            <td>Test</td>
+                                            <td>300</td>
                                         </tr>
                                         <tr>
                                             <td>Credit From Adviser</td>
-                                            <td>Test</td>
+                                            <td>300</td>
                                         </tr>
                                         <tr>
                                             <td>Credit From Carri</td>
-                                            <td>Test</td>
+                                            <td>400</td>
                                         </tr>
                                         <tr>
                                             <td>Total Credit</td>
-                                            <td>Test</td>
+                                            <td>21,500</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -101,15 +101,15 @@ check_role('Organization');
                                             <thead>
                                                 <tr>
                                                     <td>Total Credit</td>
-                                                    <td>Test</td>
+                                                    <td>21,500</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Total Expenses</td>
-                                                    <td>Test</td>
+                                                    <td>10,000</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Final Balance</td>
-                                                    <td>Test</td>
+                                                    <td>11,500</td>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -125,7 +125,7 @@ check_role('Organization');
                                                     id="horizontalWaterfall"></canvas>
                                             </div>
                                         </div>
-                                        <p>20% of Funds Left</p>
+                                        <p>46.51% of Funds Left</p>
                                     </div>
                                 </div>
                             </div>
@@ -171,6 +171,9 @@ check_role('Organization');
     <!-- MODAL -->
     <!-- Topbar -->
     <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
+
+    <!-- View Profile Modal -->
+    <?php include_once BASE_PATH . '/assets/components/sidebar/org_modal.php'; ?>
 
     <!-- Add Record Modal -->
     <form id="addRecordForm" enctype="multipart/form-data">

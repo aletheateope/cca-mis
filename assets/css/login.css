@@ -1,4 +1,9 @@
-.container {
+.container-fluid {
+  background-image: url(/cca/assets/img/background.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   height: 100vh;
 }
 
@@ -14,20 +19,30 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: var(--primary-background);
-  border-top-right-radius: var(--border-radius);
-  border-bottom-right-radius: var(--border-radius);
+  overflow: hidden;
 }
 
 .row > .col-auto:first-child {
   position: relative;
+
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
 }
 
 .row > .col-auto:last-child {
+  background-color: #ffffff;
+
   width: 400px;
   padding: 50px;
   gap: 5rem;
   height: 279px;
+
+  h2 {
+    font-weight: var(--semi-bold);
+  }
+
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 
 .bg {
@@ -36,9 +51,6 @@
 
   object-fit: cover;
   object-position: center;
-
-  border-top-left-radius: var(--border-radius);
-  border-bottom-left-radius: var(--border-radius);
 }
 
 .logo-container {

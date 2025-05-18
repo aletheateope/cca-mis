@@ -28,33 +28,26 @@ $user_id = $_SESSION['user_id'];
 $data = json_decode(file_get_contents('php://input'), true);
 
 $publicKey = $data['publicKey'];
+$year = $data['year'];
+$month = $data['month'];
 
-$stmt = $conn->prepare("SELECT ks.statement_id   
-                        FROM key_statement ks 
-                        INNER JOIN financial_statement_report frs
-                            ON frs.statement_id = ks.statement_id
-                        WHERE public_key = ? AND organization_id = ?");
-$stmt->bind_param("si", $publicKey, $user_id);
+$stmt = $conn->prepare("SELECT fs.statement_id
+                        FROM financial_statement fs
+                        INNER JOIN financial_statement_report fsr
+                            ON fsr.statement_id = fs.statement_id
+                        INNER JOIN key_user ku
+                            ON ku.user_id = fsr.organization_id
+                        WHERE ku.public_key = ? AND fs.year = ? AND fs.month = ?");
+$stmt->bind_param("sii", $publicKey, $year, $month);
 
 if (!$stmt->execute()) {
     echo json_encode([
         'success' => false,
-        'message' => 'Failed to execute statement.',
+        'message' => 'Failed to read record.',
     ]);
-    exit;
 }
-
 $stmt->bind_result($statement_id);
 $stmt->fetch();
-
-if (!$statement_id) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Record not found',
-    ]);
-    exit;
-}
-
 $stmt->close();
 
 $stmt = $conn->prepare("SELECT dm.month_name AS month, year, date_updated, starting_fund, weekly_contribution, internal_projects, external_projects,
@@ -62,7 +55,7 @@ $stmt = $conn->prepare("SELECT dm.month_name AS month, year, date_updated, start
                         FROM financial_statement fs
                         INNER JOIN date_month dm
                             ON dm.month_id = fs.month
-                        WHERE statement_id = ?");
+                        WHERE fs.statement_id = ?");
 $stmt->bind_param("i", $statement_id);
 
 if (!$stmt->execute()) {

@@ -17,11 +17,11 @@
         <li>
             <img class="profile-icon" src="<?php echo $imagePath; ?>"
                 alt="Profile Icon">
-            <a href="">
+            <button class="no-style-btn profile-btn" data-bs-toggle="modal" data-bs-target="#viewProfileModal">
                 <span>
                     <?php echo isset($_SESSION['organization_name']) ? $_SESSION['organization_name'] : 'Organization'; ?>
                 </span>
-            </a>
+            </button>
         </li>
         <li
             class="<?= ($currentPage == 'dashboard_page.php') ? 'active' : '' ?>">

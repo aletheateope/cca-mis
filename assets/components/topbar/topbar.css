@@ -11,6 +11,26 @@
   }
 }
 
+.notification {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  width: 20rem;
+  height: 40vh;
+
+  background-color: var(--primary-background);
+  padding: 1rem;
+
+  .body {
+    flex-grow: 1;
+  }
+
+  .footer {
+    text-align: center;
+  }
+}
+
 .topbar-modal {
   .modal-body .container-fluid {
     > .row {

@@ -274,6 +274,9 @@ check_role('Organization');
     <!-- Topbar -->
     <?php include_once BASE_PATH . '/assets/components/topbar/topbar_modal.php'?>
 
+    <!-- View Profile Modal -->
+    <?php include_once BASE_PATH . '/assets/components/sidebar/org_modal.php'; ?>
+
     <!-- FOOTER LINKS -->
     <?php require_once BASE_PATH . '/assets/components/footer_links.php'; ?>
 

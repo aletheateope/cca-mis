@@ -111,20 +111,21 @@
 
 .sidebar > ul > li:nth-child(2) {
   margin-bottom: 16px;
-  gap: 4px;
+  gap: 6px;
   display: flex;
   align-items: center;
   padding: 0;
 }
 
-.sidebar > ul > li:last-child {
-  margin-top: auto;
-}
-
-.sidebar > ul > li > a:nth-child(2) {
+.sidebar .profile-btn {
   font-size: var(--large);
   font-weight: var(--semi-bold);
+  text-decoration: underline;
   text-wrap: wrap;
+}
+
+.sidebar > ul > li:last-child {
+  margin-top: auto;
 }
 
 .sidebar .sub-menu {

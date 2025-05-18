@@ -54,9 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $gender = $genderMap[$gender_value] ?? 'Male';
 
-    require_once BASE_PATH . '/assets/sql/plmun_program.php';
-
-
+    if ($program !== null) {
+        $program_id = 'prg' . str_pad($program, 2, '0', STR_PAD_LEFT);
+    }
+    
     $conn->begin_transaction();
     try {
         $stmt1 = $conn->prepare("INSERT INTO student (student_number, first_name, middle_name, last_name, birthdate, age, gender, mobile_number, email, address) VALUES (?,?,?,?,?,?,?,?,?,?)");
