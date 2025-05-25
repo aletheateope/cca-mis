@@ -31,7 +31,11 @@ check_role(['Director', 'VPSLD']);
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include_once BASE_PATH . '/assets/components/sidebar/director/sidebar.php' ?>
+                <?php if ($_SESSION['user_role'] === 'Director') {
+                    include_once BASE_PATH . '/assets/components/sidebar/director/sidebar.php';
+                } elseif ($_SESSION['user_role'] === 'VPSLD') {
+                    include_once BASE_PATH . '/assets/components/sidebar/vpsld/sidebar.php';
+                }?>
             </div>
             <main class="col main-content">
                 <div class="row page-header">
@@ -194,9 +198,9 @@ check_role(['Director', 'VPSLD']);
                                         <h5>Date Left</h5>
                                         <p>
                                             <?php
-                                                echo $membership_organization_row['date_left']
-                                                ? date("F d, Y", strtotime($membership_organization_row['date_left']))
-                                                : '----';?>
+                                                                echo $membership_organization_row['date_left']
+                                                                ? date("F d, Y", strtotime($membership_organization_row['date_left']))
+                                                                : '----';?>
                                         </p>
                                     </div>
                                 </div>
@@ -259,7 +263,7 @@ check_role(['Director', 'VPSLD']);
                                 </div>
                                 <div class="row participation-table">
                                     <div class="col">
-                                        <table class="table" <?php if ($result_documents->num_rows == 0) {
+                                        <table class="table" <?php if ($result_participation->num_rows == 0) {
                                             echo 'style="height: 100%;"';
                                         } ?>>
                                             <thead>

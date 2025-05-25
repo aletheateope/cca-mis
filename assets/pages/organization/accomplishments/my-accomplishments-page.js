@@ -1,5 +1,9 @@
 import { createNotyf } from "../../../components/notyf.js";
 import { initializeFancybox } from "../../../components/fancybox.js";
+import { formatDate, formatTime } from "../../../components/formatDate.js";
+
+// FANCYBOX
+initializeFancybox();
 
 // SUCCESS MESSAGE
 const submissionStatus = localStorage.getItem("submissionStatus");
@@ -457,9 +461,6 @@ tippy(".readEvents", {
   placement: "top",
 });
 
-// FANCYBOX
-initializeFancybox();
-
 const pageBody = document.querySelector(".page-body");
 
 // VIEW ACTIVITY
@@ -481,24 +482,6 @@ pageBody.addEventListener("click", async function (e) {
 
       if (data.success) {
         const { start_date, end_date, start_time, end_time } = data.result;
-
-        const formatDate = (dateStr) =>
-          new Date(dateStr).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "2-digit",
-          });
-
-        const formatTime = (timeStr) => {
-          const [hour, minute] = timeStr.split(":");
-          const date = new Date();
-          date.setHours(+hour, +minute);
-          return date.toLocaleTimeString([], {
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
-          });
-        };
 
         const formattedStartDate = formatDate(start_date);
         const formattedEndDate = formatDate(end_date);

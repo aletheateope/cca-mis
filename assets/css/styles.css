@@ -215,6 +215,22 @@ table {
   color: var(--info);
 }
 
+.info {
+  color: var(--info) !important;
+}
+
+.warning {
+  color: var(--warning) !important;
+}
+
+.success {
+  color: var(--success) !important;
+}
+
+.danger {
+  color: var(--danger) !important;
+}
+
 /* GALLERY */
 .gallery-container {
   display: grid;

@@ -3,8 +3,6 @@ header("Content-Type: application/json");
 
 require_once '../../../../sql/base_path.php';
 
-require_once BASE_PATH . '/assets/sql/conn.php';
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode([
         'success' => false,
@@ -13,9 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$input = json_decode(file_get_contents('php://input'), true);
+$data = json_decode(file_get_contents('php://input'), true);
 
-if (!isset($input['publicKey'])) {
+if (!isset($data['publicKey'])) {
     echo json_encode([
         'success' => false,
         'message' => 'Public key is required'
@@ -23,48 +21,25 @@ if (!isset($input['publicKey'])) {
     exit;
 }
 
-$publicKey = $input['publicKey'];
+$public_key = $data['publicKey'];
 
-session_start();
+require_once BASE_PATH . '/assets/sql/conn.php';
 
-if (!isset($_SESSION['user_id'])) {
+$stmt = $conn->prepare("SELECT activity_id
+                        FROM key_activity
+                        WHERE public_key = ?");
+$stmt->bind_param("s", $public_key);
+
+if (!$stmt->execute()) {
     echo json_encode([
         'success' => false,
-        'message' => 'User not logged in'
+        'message' => 'Failed to execute statement'
     ]);
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
-
-$stmt = $conn->prepare("SELECT activity_id FROM key_activity WHERE public_key = ?");
-$stmt->bind_param("s", $publicKey);
-$stmt->execute();
 $stmt->bind_result($activity_id);
 $stmt->fetch();
-$stmt->close();
-
-if (!$activity_id) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Activity not found'
-    ]);
-    exit;
-}
-
-$stmt = $conn->prepare("SELECT 1 FROM accomplishment_report ar WHERE ar.activity_id = ? AND ar.organization_id = ?");
-$stmt->bind_param("ii", $activity_id, $user_id);
-$stmt->execute();
-$stmt->store_result();
-
-if ($stmt->num_rows == 0) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Activity not found'
-    ]);
-    exit;
-}
-
 $stmt->close();
 
 $stmt = $conn->prepare("SELECT 
@@ -81,7 +56,15 @@ $stmt = $conn->prepare("SELECT
                             ON ec.event_id = aa.event_id
                         WHERE aa.activity_id = ?");
 $stmt->bind_param("i", $activity_id);
-$stmt->execute();
+
+if (!$stmt->execute()) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Failed to execute statement'
+    ]);
+    exit;
+}
+
 $result = $stmt->get_result()->fetch_assoc();
 
 $stmt->close();
@@ -90,7 +73,15 @@ $stmt = $conn->prepare("SELECT ag.path AS image
                         FROM activity_gallery ag
                         WHERE ag.activity_id = ?");
 $stmt->bind_param("i", $activity_id);
-$stmt->execute();
+
+if (!$stmt->execute()) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Failed to execute statement'
+    ]);
+    exit;
+}
+
 $resultSet = $stmt->get_result();
 $gallery = $resultSet->fetch_all(MYSQLI_ASSOC);
 

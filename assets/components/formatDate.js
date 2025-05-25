@@ -11,3 +11,14 @@ export function formatDate(dateStr) {
     day: "2-digit",
   });
 }
+
+export function formatTime(timeStr) {
+  const [hour, minute] = timeStr.split(":");
+  const date = new Date();
+  date.setHours(+hour, +minute);
+  return date.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}

@@ -21,6 +21,9 @@ session_start();
 
     <?php require_once BASE_PATH . '/assets/components/header_links.php' ?>
 
+    <!-- SPLIDE.JS -->
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+
     <!-- FANCYBOX -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
 
@@ -49,7 +52,8 @@ session_start();
                 <div class="row page-body">
                     <div class="col">
                         <?php foreach ($accomplishments as $year => $months) { ?>
-                        <div class="row container">
+                        <div class="row container"
+                            data-year="<?php echo $year?>">
                             <div class="col">
                                 <div class="row header">
                                     <div class="col-12">
@@ -62,7 +66,8 @@ session_start();
                                         <?php $accordionId = "accordion-" . $year . "-" . $month;?>
                                         <?php $collapseId = "collapse-" . $year . "-" . $month;?>
                                         <div class="accordion accordion-accomplishments"
-                                            id="<?php echo $accordionId?>">
+                                            id="<?php echo $accordionId?>"
+                                            data-month="<?php echo $organizations[0]['month_id'] ?>">
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header">
                                                     <button class="accordion-button collapsed" type="button"
@@ -141,149 +146,125 @@ session_start();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="container-fluid activity-details">
-                        <section class="container-fluid section">
-                            <div class="row">
-                                <div class="col">
-                                    <h3>Activity Overview</h3>
-                                </div>
+                    <div class="container-fluid">
+                        <div class="slider-container">
+                            <div class="container-fluid slider-item activity-list-container">
+                                <ul class="list-group">
+                                </ul>
                             </div>
-                            <div class="container-fluid wrapper">
-                                <div class="row">
+                            <div class="container-fluid slider-item activity-details">
+                                <div class="row header">
                                     <div class="col">
-                                        <h5>Title</h5>
-                                        <p id="activityTitle">Youth Art Showcase</p>
+                                        <h2>Activity Accomplishment</h2>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="no-style-btn" id="goBack">Go Back</button>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Description</h5>
-                                        <p id="activityDescription">A community outreach initiative aimed at providing
-                                            educational materials to underprivileged children.</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Location</h5>
-                                        <p id="activityLocation">Barangay San Isidro, Quezon City</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Date</h5>
-                                        <p id="activityDate">August 18, 2024</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="container-fluid section">
-                            <div class="row">
-                                <div class="col">
-                                    <h3>Participants</h3>
-                                </div>
-                            </div>
-                            <div class="container-fluid wrapper">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Target Number of Participants</h5>
-                                        <p id="activityTargetParticipants">6</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Participating Members</h5>
-                                        <p id="activityParticipatingMembers">
-                                            3 <button class="no-style-btn view-list-btn">[View List]</button>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="container-fluid section">
-                            <div class="row">
-                                <div class="col">
-                                    <h3>Activity Insights</h3>
-                                </div>
-                            </div>
-                            <div class="container-fluid wrapper">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Objectives</h5>
-                                        <p id="activityObjectives">To distribute school supplies and provide educational
-                                            support to 200 children in need.</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Challenges and Solutions</h5>
-                                        <p id="activityChallengesSolutions">The main challenge was the lack of supplies,
-                                            which we overcame by partnering with local art suppliers for donations.</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Lesson Learned</h5>
-                                        <p id="activityLessonLearned">Preparation and clear communication with local
-                                            vendors are essential for securing resources on time.</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Suggestions</h5>
-                                        <p id="activitySuggestions">Plan for additional backup supplies in case of
-                                            last-minute shortages.</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Remarks</h5>
-                                        <p id="activityRemarks"><i class="bi bi-emoji-frown remark-type-two"></i>
-                                            Accomplished but did not meet the target number of members.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="container-fluid section">
-                            <div class="row">
-                                <div class="col">
-                                    <h3>Budget</h3>
-                                </div>
-                            </div>
-                            <div class="container-fluid wrapper">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5>Budget Utilized</h5>
-                                        <p id="activityBudgetUtilized">0.00</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="container-fluid section">
-                            <div class="accordion gallery-accordion" id="activityGalleryAccordion">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#collapseGallery"
-                                            aria-expanded="true" aria-controls="collapseGallery">
-                                            Gallery
-                                        </button>
-                                    </h2>
-                                    <div id="collapseGallery" class="accordion-collapse collapse"
-                                        data-bs-parent="#activityGalleryAccordion">
-                                        <div class="accordion-body">
-                                            <div class="gallery-container activity-gallery">
-                                                <div class="gallery-item">
-                                                    <a href="/cca/uploads/activity_gallery/1747150888_682368280a161.jpg"
-                                                        data-fancybox="gallery">
-                                                        <img src="/cca/uploads/activity_gallery/1747150888_682368280a161.jpg"
-                                                            alt="Activity Image" />
-                                                    </a>
-                                                </div>
-                                            </div>
+                                <div class="container-fluid activity-gallery">
+                                    <div class="splide">
+                                        <div class="splide__track">
+                                            <ul class="splide__list">
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
-                        </section>
+                                <div class="container-fluid body">
+                                    <section class="container-fluid section">
+                                        <h3>Activity Overview</h3>
+                                        <div class="container-fluid wrapper">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>Title</h5>
+                                                    <p id="activityTitle">Test</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>Description</h5>
+                                                    <p id="activityDescription">Test</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>Location</h5>
+                                                    <p id="activityLocation">Test</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>Date</h5>
+                                                    <p id="activityDate">Test</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section class="container-fluid section">
+                                        <h3>Participants</h3>
+                                        <div class="container-fluid wrapper">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>Target Number of Participants</h5>
+                                                    <p id="activityTargetParticipants">Test</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>Participating Members</h5>
+                                                    <p id="activityParticipatingMembers">Test</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section class="container-fluid section">
+                                        <h3>Budget</h3>
+                                        <div class="container-fluid wrapper">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>Budget Utilized</h5>
+                                                    <p id="activityBudgetUtilized">Test</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section class="container-fluid section">
+                                        <h3>Activity Insights</h3>
+                                        <div class="container-fluid wrapper">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>Objectives</h5>
+                                                    <p id="activityObjectives">Test</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>Challenges and Solutions</h5>
+                                                    <p id="activityChallengesSolutions">Test</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>Lesson Learned</h5>
+                                                    <p id="activityLessonLearned">Test</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>Suggestions</h5>
+                                                    <p id="activitySuggestions">Test</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>Remarks</h5>
+                                                    <p id="activityRemarks">Test</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -294,7 +275,10 @@ session_start();
     </div>
 
     <!-- FOOTER LINKS -->
-    <?php require_once BASE_PATH . '/assets/components/footer_links.php'; ?>
+    <?php require_once BASE_PATH . '/assets/components/footer_links.php' ?>
+
+    <!-- SPLIDE.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 
     <!-- FANCYBOX -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>

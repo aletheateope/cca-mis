@@ -25,10 +25,6 @@ check_role('Organization');
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
 
     <link rel="stylesheet" href="my-accomplishments-page.css">
-
-    <!-- GOOGLE MATERIAL SYMBOLS -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=book_5" />
 </head>
 
 <body>
@@ -87,9 +83,6 @@ check_role('Organization');
                                                                 data-month="<?php echo $month['id']?>"
                                                                 data-year="<?php echo $year?>">
                                                                 <i class="bi bi-filetype-pdf"></i>
-                                                            </button>
-                                                            <button class="readEvents no-style-btn  ">
-                                                                <span class="material-symbols-outlined">book_5</span>
                                                             </button>
                                                         </div>
                                                     </div>

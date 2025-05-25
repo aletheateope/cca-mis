@@ -1,4 +1,14 @@
 import { initializeFancybox } from "../../../components/fancybox.js";
+import { formatDate, formatTime } from "../../../components/formatDate.js";
+
+// FANCYBOX
+initializeFancybox();
+
+const splide = new Splide(".splide", {
+  height: "25rem",
+  perPage: 3,
+  gap: "1rem",
+}).mount();
 
 // ACCORDION
 document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
@@ -381,16 +391,269 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// FANCYBOX
-initializeFancybox();
-
 const pageBody = document.querySelector(".page-body");
 
-// ACTIVITY GALLERY AUTO SCROLL
-document.addEventListener("DOMContentLoaded", function () {
-  const collapseGallery = document.getElementById("collapseGallery");
+const activityModal = document.getElementById("viewActivityModal");
 
-  collapseGallery.addEventListener("shown.bs.collapse", function () {
-    collapseGallery.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
+const sliderContainer = activityModal.querySelector(".slider-container");
+const sliderItems = sliderContainer.querySelectorAll(".slider-item");
+
+function slideOne() {
+  sliderContainer.style.transform = "translateX(0%)";
+  const firstItemHeight = sliderItems[0].offsetHeight;
+  sliderContainer.style.height = firstItemHeight + "px";
+}
+
+function slideTwo() {
+  sliderContainer.style.transform = "translateX(-100%)";
+  const secondItemHeight = sliderItems[1].offsetHeight;
+  sliderContainer.style.height = secondItemHeight + "px";
+}
+
+slideOne();
+
+// PAGE BODY
+pageBody.addEventListener("click", async function (e) {
+  const container = e.target.closest(".container");
+  const accordion = e.target.closest(".accordion");
+
+  const listItem = e.target.closest(".accordion-body li");
+
+  const ul = document.querySelector(".view-activity-modal .modal-body ul");
+
+  const title = activityModal.querySelector(".modal-title");
+
+  if (listItem) {
+    const organization = listItem.dataset.id;
+    const month = accordion.dataset.month;
+    const year = container.dataset.year;
+
+    try {
+      const response = await fetch("sql/modal_title.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ organization, month }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        title.textContent = `${data.organization} - ${data.month}, ${year}`;
+      }
+    } catch (error) {
+      console.error("Error fetching organization:", error);
+    }
+
+    try {
+      const response = await fetch("sql/fetch_activity.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ month, year, organization }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        const html = data.activities
+          .map(
+            (activity) => `
+              <li class="list-group-item activity-list" data-id="${activity.public_key}">
+                <div class="row">
+                  <div class="col">
+                    ${activity.title}
+                  </div>
+                  <div class="col-auto">
+                    <i class="bi bi-chevron-right"></i>
+                  </div>
+                </div>
+              </li>
+            `
+          )
+          .join("");
+
+        ul.innerHTML = html;
+
+        activityModal.addEventListener(
+          "shown.bs.modal",
+          function () {
+            requestAnimationFrame(() => {
+              slideOne();
+            });
+          },
+          {
+            once: true,
+          }
+        );
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+});
+
+// ACTIVITY MODAL
+activityModal.addEventListener("click", async function (e) {
+  const list = e.target.closest(".activity-list");
+  const goBack = e.target.closest("#goBack");
+
+  // VIEW ACTIVITY DETAILS
+  if (list) {
+    const publicKey = list.dataset.id;
+
+    try {
+      const response = await fetch("sql/fetch_activity_details.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ publicKey }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        const { start_date, end_date, start_time, end_time } = data.result;
+
+        const formattedStartDate = formatDate(start_date);
+        const formattedEndDate = formatDate(end_date);
+
+        let formattedStartTime = start_time ? formatTime(start_time) : "";
+        let formattedEndTime = end_time ? formatTime(end_time) : "";
+
+        let dateString = "";
+
+        // Case 1: start and end dates are the same
+        if (start_date === end_date) {
+          if (start_time && end_time) {
+            // Same date, with time
+            dateString = `${formattedStartDate} · ${formattedStartTime} - ${formattedEndTime}`;
+          } else {
+            // Same date, no time
+            dateString = `${formattedStartDate}`;
+          }
+        } else {
+          // Different dates
+          if (start_time && end_time) {
+            dateString = `${formattedStartDate} · ${formattedStartTime} - ${formattedEndDate} · ${formattedEndTime}`;
+          } else {
+            dateString = `${formattedStartDate} - ${formattedEndDate}`;
+          }
+        }
+
+        const elementIds = {
+          title: "activityTitle",
+          description: "activityDescription",
+          location: "activityLocation",
+          date: "activityDate",
+
+          targetParticipants: "activityTargetParticipants",
+          actualParticipants: "activityParticipatingMembers",
+
+          budgetUtilized: "activityBudgetUtilized",
+
+          objectives: "activityObjectives",
+          challengesSolutions: "activityChallengesSolutions",
+          lessonLearned: "activityLessonLearned",
+          suggestions: "activitySuggestions",
+          remarks: "activityRemarks",
+        };
+
+        const elements = Object.fromEntries(
+          Object.entries(elementIds).map(([key, id]) => [
+            key,
+            document.getElementById(id),
+          ])
+        );
+
+        function getValueOrDefault(value) {
+          return value === null ? "---" : value;
+        }
+
+        const actualParticipants = data.result.actual_participants;
+
+        // Update element values
+        elements.title.textContent = data.result.title;
+        elements.description.textContent = data.result.description;
+        elements.location.textContent = data.result.location;
+        elements.date.textContent = dateString;
+
+        elements.targetParticipants.textContent =
+          data.result.target_participants;
+
+        if (actualParticipants > 0) {
+          elements.actualParticipants.innerHTML = `
+            ${actualParticipants} <button class="no-style-btn view-list-btn">[View List]</button>
+          `;
+        } else {
+          elements.actualParticipants.innerHTML = `
+            ${actualParticipants}
+          `;
+        }
+
+        elements.objectives.textContent = getValueOrDefault(
+          data.result.objectives
+        );
+        elements.challengesSolutions.textContent = getValueOrDefault(
+          data.result.challenges_solutions
+        );
+        elements.lessonLearned.textContent = getValueOrDefault(
+          data.result.lesson_learned
+        );
+        elements.suggestions.textContent = getValueOrDefault(
+          data.result.suggestions
+        );
+
+        elements.remarks.innerHTML =
+          data.result.remarks === 1
+            ? `<i class="bi bi-emoji-smile remark-type-one"></i> Accomplished`
+            : `<i class="bi bi-emoji-frown remark-type-two"></i> Accomplished but did not meet the target number of members.`;
+
+        elements.budgetUtilized.textContent = data.result.budget_utilized;
+
+        const galleryContainer = document.querySelector(".activity-gallery ul");
+
+        if (data.gallery && data.gallery.length > 0) {
+          splide.destroy();
+
+          const galleryHTML = data.gallery
+            .map(
+              (galleryPath) => `
+                <li class="splide__slide">
+                  <a href="${galleryPath}" data-fancybox="gallery">
+                    <img src="${galleryPath}" alt="Activity Image" />
+                  </a>
+                </li>
+              `
+            )
+            .join("");
+
+          galleryContainer.innerHTML = galleryHTML;
+
+          splide.mount();
+        } else {
+        }
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    slideTwo();
+  }
+
+  if (goBack) {
+    slideOne();
+  }
+});
+
+activityModal.addEventListener("hidden.bs.modal", function () {
+  slideOne();
 });

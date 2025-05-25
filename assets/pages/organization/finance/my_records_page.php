@@ -98,20 +98,26 @@ check_role('Organization');
                                         <h3>Latest Recorded Financial Status</h3>
                                         <h4>As of March 2025</h4>
                                         <table class="table table-balance-summary">
-                                            <thead>
+                                            <tbody>
                                                 <tr>
                                                     <td>Total Credit</td>
                                                     <td>21,500</td>
+                                                    <td class="success"><i class="bi bi-caret-up-fill"></i></td>
+                                                    <td class="success">17%</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Total Expenses</td>
-                                                    <td>10,000</td>
+                                                    <td> 10,000 </td>
+                                                    <td class="danger"><i class="bi bi-caret-up-fill"></i></td>
+                                                    <td class="danger">20%</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Final Balance</td>
                                                     <td>11,500</td>
+                                                    <td class="success"><i class="bi bi-caret-up-fill"></i></td>
+                                                    <td class="success">5%</td>
                                                 </tr>
-                                            </thead>
+                                            </tbody>
                                         </table>
                                         <h5>Record Compared to <button class="no-style-btn">February 2025</button></h5>
                                     </div>
