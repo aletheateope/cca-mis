@@ -1,3 +1,5 @@
+import { formatNumber } from "../../../components/formatter/formatNumber.js";
+
 // PAGE RELOAD WARNING
 function beforeUnloadHandler(event) {
   event.preventDefault();
@@ -30,7 +32,7 @@ function startingFund() {
     .then((response) => response.json())
     .then((data) => {
       let count = data.count;
-      let startingFund = data.startingFund;
+      let startingFund = formatNumber(data.startingFund);
 
       // If only one occurrence exists, remove readonly
       if (count === 1) {
@@ -83,10 +85,6 @@ function cleave() {
     );
     let totalExpenses = getFloatValue("costExpenses");
     let finalFunding = totalCredit - totalExpenses;
-
-    function formatNumber(value) {
-      return value.toLocaleString({ minimumFractionDigits: 2 });
-    }
 
     document.getElementById("totalCredit").value = formatNumber(totalCredit);
     document.getElementById("totalExpenses").value =

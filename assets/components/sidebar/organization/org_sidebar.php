@@ -15,9 +15,10 @@
             </button>
         </li>
         <li>
-            <img class="profile-icon" src="<?php echo $imagePath; ?>"
-                alt="Profile Icon">
             <button class="no-style-btn profile-btn" data-bs-toggle="modal" data-bs-target="#viewProfileModal">
+                <img class="profile-icon"
+                    src="<?php echo $imagePath; ?>"
+                    alt="Profile Icon">
                 <span>
                     <?php echo isset($_SESSION['organization_name']) ? $_SESSION['organization_name'] : 'Organization'; ?>
                 </span>
@@ -98,4 +99,5 @@
     </ul>
 </aside>
 <!-- OWN SCRIPT (SIDEBAR) -->
-<script src="/cca/assets/components/sidebar/organization/sidebar.js"></script>
+<script src="/cca/assets/components/sidebar/sidebar.js"></script>
+<script src="/cca/assets/components/sidebar/organization/orgSidebar.js"></script>

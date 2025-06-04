@@ -14,6 +14,8 @@
   --active-background: #2d642b;
   --active-text: #ffffff;
 
+  --dark-active-bg: #075a07;
+
   /* Semantic Colors */
   --success: #0c9515;
   --danger: #ba1515;
@@ -21,8 +23,14 @@
   --info: #153da3;
 
   /* Colors */
+  --blue: #0f1c7e;
   --pink: #ad2454;
   --purple: #8219a8;
+  --orange: #ffa734;
+
+  --dark-blue: #18204f;
+  --dark-red: #8c0c0c;
+  --dark-orange: #d5840c;
 
   /* finance table colors */
   --gray: #575757;

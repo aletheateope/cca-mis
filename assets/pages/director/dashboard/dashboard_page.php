@@ -29,7 +29,7 @@ check_role('Director');
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include_once BASE_PATH . '/assets/components/sidebar/director/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/director/director_sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
@@ -51,7 +51,7 @@ check_role('Director');
                                 <div class="row">
                                     <div class="col">
                                         <a
-                                            href="../members/members_page.php?organization=<?php echo $row_active_members['name'] ?>">
+                                            href="../../admin/members/members_page.php?organization=<?php echo $row_active_members['name'] ?>">
                                             <img src="<?php echo $row_active_members['profile'] ?>"
                                                 alt="Prfile Image">
                                             <h3><?php echo $row_active_members['name'] ?>

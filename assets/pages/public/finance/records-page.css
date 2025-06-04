@@ -154,15 +154,9 @@ h2 {
 
 .statement-summary-modal {
   .financial-statement {
-    --orange: #ffd084;
-    --yellow: #fcfc83;
-    --green: #b4dab7;
-    --blue: #96abdf;
-
     padding: 1rem;
 
     --border-weight: 2px;
-    --border-color: #575757;
 
     > .col {
       display: flex;
@@ -176,19 +170,21 @@ h2 {
       .header {
         > .col {
           .row:first-child {
-            border: var(--border-weight) solid var(--border-color);
+            border: var(--border-weight) solid var(--gray);
           }
-          .row:last-child {
-            background-color: var(--orange);
 
-            border-bottom: var(--border-weight) solid var(--border-color);
-            border-left: var(--border-weight) solid var(--border-color);
-            border-right: var(--border-weight) solid var(--border-color);
+          .row:last-child {
+            background-color: var(--light-orange);
+
+            border-bottom: var(--border-weight) solid var(--gray);
+            border-left: var(--border-weight) solid var(--gray);
+            border-right: var(--border-weight) solid var(--gray);
 
             h4 {
               font-weight: var(--medium);
             }
           }
+
           .col {
             padding: 0.5rem;
             text-align: center;
@@ -197,42 +193,44 @@ h2 {
       }
 
       .table {
-        border: var(--border-weight) solid var(--border-color);
+        border: var(--border-weight) solid var(--gray);
 
         margin-bottom: 0;
 
         tr td:last-child {
-          border-left: 1px solid var(--border-color);
+          border-left: 1px solid var(--gray);
         }
       }
 
       .table:first-of-type {
         tr:first-child {
-          border: 1px solid var(--border-color);
-          background-color: var(--orange);
+          border: 1px solid var(--gray);
+          background-color: var(--light-orange);
         }
+
         tr:nth-child(9) {
-          border: 1px solid var(--border-color);
-          background-color: var(--yellow);
+          border: 1px solid var(--gray);
+          background-color: var(--light-yellow);
         }
+
         tr:last-child {
-          border: 1px solid var(--border-color);
-          background-color: var(--green);
+          border: 1px solid var(--gray);
+          background-color: var(--light-green);
         }
       }
 
       .table:last-of-type {
         tr:first-child {
-          border: 1px solid var(--border-color);
-          background-color: var(--yellow);
+          border: 1px solid var(--gray);
+          background-color: var(--light-yellow);
         }
         tr:nth-child(2) {
-          border: 1px solid var(--border-color);
-          background-color: var(--green);
+          border: 1px solid var(--gray);
+          background-color: var(--light-green);
         }
         tr:last-child {
-          border: 1px solid var(--border-color);
-          background-color: var(--blue);
+          border: 1px solid var(--gray);
+          background-color: var(--light-blue);
         }
       }
     }

@@ -1,9 +1,6 @@
-import {
-  onShow,
-  onHide,
-} from "../../../components/sweetalert2/alertAnimation.js";
+import { onShow, onHide } from "../../../components/alerts/sweetalert2/swal.js";
 
-import { createNotyf } from "../../../components/notyf.js";
+import { createNotyf } from "../../../components/alerts/notyf.js";
 
 const notyf = createNotyf();
 
@@ -122,9 +119,11 @@ document
 // ADMIN TABLE
 adminTable.addEventListener("click", async (e) => {
   const publicKey = e.target.closest("tr").dataset.id;
+  const editBtn = e.target.closest(".edit-btn");
+  const deleteBtn = e.target.closest(".delete-btn");
 
   // EDIT ADMIN
-  if (e.target.closest(".edit-btn")) {
+  if (editBtn) {
     try {
       const response = await fetch("sql/fetch_admin_data.php", {
         method: "POST",
@@ -137,6 +136,7 @@ adminTable.addEventListener("click", async (e) => {
       }
 
       const data = await response.json();
+
       if (data.success) {
         const role = data.result.role;
         const firstName = data.result.first_name;
@@ -156,7 +156,7 @@ adminTable.addEventListener("click", async (e) => {
   }
 
   // DELETE ADMIN
-  if (e.target.closest(".delete-btn")) {
+  if (deleteBtn) {
     try {
       const response = await fetch("sql/get_admin_name.php", {
         method: "POST",
@@ -257,8 +257,9 @@ adminTable.addEventListener("click", async (e) => {
 // ORGANIZATION TABLE
 organizationTable.addEventListener("click", async (e) => {
   const publicKey = e.target.closest("tr").dataset.id;
+  const editBtn = e.target.closest(".edit-btn");
 
-  if (e.target.closest(".edit-btn")) {
+  if (editBtn) {
     try {
       const response = await fetch("sql/fetch_organization_data.php", {
         method: "POST",

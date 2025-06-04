@@ -1,6 +1,11 @@
-import { generateFileName } from "../../../components/fileNameGenerator.js";
-import { formatDate } from "../../../components/formatDate.js";
+import { generateFileName } from "../../../components/formatter/fileNameGenerator.js";
+import { formatDate } from "../../../components/formatter/formatDate.js";
+import { formatNumber } from "../../../components/formatter/formatNumber.js";
 import { initializeFancybox } from "../../../components/fancybox.js";
+import { downloadElement } from "../../../components/captureElement.js";
+
+// FANCYBOX
+initializeFancybox();
 
 // ACCORDION
 document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
@@ -280,10 +285,10 @@ document.addEventListener("DOMContentLoaded", function () {
           const tableData = data.data.map((item) => [
             item.year,
             item.month,
-            item.starting_fund,
-            item.total_credit,
-            item.total_expenses,
-            item.final_funding,
+            formatNumber(item.starting_fund),
+            formatNumber(item.total_credit),
+            formatNumber(item.total_expenses),
+            formatNumber(item.final_funding),
           ]);
 
           function generateTable() {
@@ -334,16 +339,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// FANCYBOX
-initializeFancybox();
-
 // FINANCIAL STATEMENT (SUMMARY)
 document
   .querySelector(".page-body")
-  .addEventListener("click", async function (event) {
-    const accordion = event.target.closest(".accordion-finance");
-    const li = event.target.closest(".accordion-finance .accordion-body li");
-    const generateBtn = event.target.closest(".fetchRecordSum");
+  .addEventListener("click", async function (e) {
+    const accordion = e.target.closest(".accordion-finance");
+    const li = e.target.closest(".accordion-finance .accordion-body li");
+    const generateBtn = e.target.closest(".fetchStatementBtn");
 
     if (li) {
       const publicKey = li.getAttribute("data-id");
@@ -381,7 +383,8 @@ document
           };
 
           for (const [id, value] of Object.entries(fields)) {
-            document.getElementById(id).textContent = value;
+            const formatted = isNaN(value) ? value : formatNumber(value);
+            document.getElementById(id).textContent = formatted;
           }
 
           const elementsMap = {
@@ -390,8 +393,9 @@ document
           };
 
           for (const [selector, value] of Object.entries(elementsMap)) {
+            const formatted = formatNumber(value);
             document.querySelectorAll(selector).forEach((el) => {
-              el.textContent = value;
+              el.textContent = formatted;
             });
           }
 
@@ -468,8 +472,9 @@ document
           };
 
           for (const [id, value] of Object.entries(fields)) {
+            const formatted = isNaN(value) ? value : formatNumber(value);
             const el = document.getElementById(id);
-            if (el) el.textContent = value;
+            if (el) el.textContent = formatted;
           }
 
           document.querySelectorAll(".academicYear").forEach((el) => {
@@ -477,11 +482,11 @@ document
           });
 
           document.querySelectorAll(".totalCredit").forEach((el) => {
-            el.textContent = result.data.total_credit;
+            el.textContent = formatNumber(result.data.total_credit);
           });
 
           document.querySelectorAll(".totalExpenses").forEach((el) => {
-            el.textContent = result.data.total_expenses;
+            el.textContent = formatNumber(result.data.total_expenses);
           });
         } else {
           alert(result.message);
@@ -492,21 +497,4 @@ document
     }
   });
 
-// HTML2CANVAS DOWNLOAD AS IMAGE
-document.getElementById("download").addEventListener("click", function () {
-  const captureElement = document.getElementById("capture");
-
-  html2canvas(captureElement, {
-    scale: 2,
-  }).then((canvas) => {
-    let image = canvas.toDataURL("image/jpeg", 0.95);
-    let fileName = `${generateFileName(10)}.jpg`;
-
-    let link = document.createElement("a");
-    link.href = image;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  });
-});
+downloadElement({ triggerId: "download", captureId: "capture" });

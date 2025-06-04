@@ -31,7 +31,7 @@ check_role('Organization');
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/org_sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
@@ -323,6 +323,12 @@ check_role('Organization');
                                 </div>
                             </div>
                             <div class="container-fluid wrapper">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Budget Given</h5>
+                                        <p id="activityBudgetGiven">---</p>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col">
                                         <h5>Budget Utilized</h5>

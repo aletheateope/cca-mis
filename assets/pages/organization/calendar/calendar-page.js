@@ -1,8 +1,5 @@
-import { createNotyf } from "../../../components/notyf.js";
-import {
-  onShow,
-  onHide,
-} from "../../../components/sweetalert2/alertAnimation.js";
+import { createNotyf } from "../../../components/alerts/notyf.js";
+import { onShow, onHide } from "../../../components/alerts/sweetalert2/swal.js";
 
 const notyf = createNotyf();
 
@@ -11,6 +8,7 @@ let eventTippy = null;
 
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
+
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: "dayGridMonth",
     height: "100%",
@@ -23,7 +21,29 @@ document.addEventListener("DOMContentLoaded", function () {
       others: {
         icon: "bi bi-three-dots-vertical others",
         click: function () {
-          alert("Custom button clicked!"); // Custom action
+          const btn = document.querySelector(".fc-others-button");
+
+          if (!btn._tippy) {
+            tippy(btn, {
+              content: `
+                <div class="container-fluid tippy-selection">
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <button class="no-style-btn" data-bs-toggle="modal" data-bs-target="#eventRequestModal">My Requests</button>
+                    </li>
+                  </ul>
+                </div>
+              `,
+              theme: "light",
+              allowHTML: true,
+              arrow: false,
+              trigger: "manual",
+              interactive: true,
+              placement: "bottom-end",
+              zIndex: 1050,
+            });
+          }
+          btn._tippy.show();
         },
       },
     },

@@ -79,3 +79,114 @@
     }
   }
 }
+
+/* MODAL */
+
+/* Budget Approval Modal */
+.budget-approval-modal {
+  .modal-body > .container-fluid {
+    min-height: 30vh;
+
+    .action-group {
+      justify-content: center;
+      align-items: unset;
+
+      button {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 10px;
+        padding-right: 10px;
+
+        border-radius: var(--border-radius);
+
+        color: var(--active-text);
+      }
+
+      .approve-btn,
+      .reject-btn {
+        width: 3rem;
+      }
+
+      .approve-btn {
+        font-size: 22px;
+      }
+
+      .reject-btn {
+        font-size: 16px;
+        -webkit-text-stroke: 0.1px;
+      }
+
+      .change-amount-btn {
+        background-color: var(--blue);
+        border: 1px solid var(--dark-blue);
+        font-size: var(--very-small);
+      }
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      tr {
+        th:last-child {
+          text-align: center;
+        }
+      }
+    }
+
+    tbody {
+      a {
+        color: var(--primary-text);
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      tr {
+        td:first-child {
+          max-width: 100px;
+
+          overflow: hidden;
+
+          button {
+            width: 100%;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            text-align: start;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+
+        td:last-child {
+          width: 100px;
+        }
+      }
+    }
+  }
+}
+
+/* Change Amount Modal */
+.change-budget-amount-modal {
+  .modal-body > .container-fluid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    label {
+      font-weight: var(--semi-bold);
+    }
+
+    .row > .col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+}

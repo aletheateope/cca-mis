@@ -1,6 +1,9 @@
-import { createNotyf } from "../../../components/notyf.js";
+import { createNotyf } from "../../../components/alerts/notyf.js";
 import { initializeFancybox } from "../../../components/fancybox.js";
-import { formatDate, formatTime } from "../../../components/formatDate.js";
+import {
+  formatDate,
+  formatTime,
+} from "../../../components/formatter/formatDate.js";
 
 // FANCYBOX
 initializeFancybox();
@@ -473,9 +476,7 @@ pageBody.addEventListener("click", async function (e) {
     try {
       const response = await fetch("sql/fetch_activity.php", {
         method: "POST",
-        body: JSON.stringify({
-          publicKey,
-        }),
+        body: JSON.stringify({ publicKey }),
       });
 
       const data = await response.json();
@@ -524,6 +525,7 @@ pageBody.addEventListener("click", async function (e) {
           suggestions: "activitySuggestions",
           remarks: "activityRemarks",
 
+          budgetGiven: "activityBudgetGiven",
           budgetUtilized: "activityBudgetUtilized",
         };
 
@@ -535,7 +537,7 @@ pageBody.addEventListener("click", async function (e) {
         );
 
         function getValueOrDefault(value) {
-          return value === null ? "---" : value;
+          return value === null ? "N/A" : value;
         }
 
         const actualParticipants = data.result.actual_participants;
@@ -576,6 +578,9 @@ pageBody.addEventListener("click", async function (e) {
             ? `<i class="bi bi-emoji-smile remark-type-one"></i> Accomplished`
             : `<i class="bi bi-emoji-frown remark-type-two"></i> Accomplished but did not meet the target number of members.`;
 
+        elements.budgetGiven.textContent = getValueOrDefault(
+          data.result.budget_given
+        );
         elements.budgetUtilized.textContent = data.result.budget_utilized;
 
         const galleryContainer = document.querySelector(".activity-gallery");

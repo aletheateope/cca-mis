@@ -1,5 +1,8 @@
+import {
+  formatDate,
+  formatTime,
+} from "../../../components/formatter/formatDate.js";
 import { initializeFancybox } from "../../../components/fancybox.js";
-import { formatDate, formatTime } from "../../../components/formatDate.js";
 
 // FANCYBOX
 initializeFancybox();
@@ -557,6 +560,7 @@ activityModal.addEventListener("click", async function (e) {
           targetParticipants: "activityTargetParticipants",
           actualParticipants: "activityParticipatingMembers",
 
+          budgetGiven: "activityBudgetGiven",
           budgetUtilized: "activityBudgetUtilized",
 
           objectives: "activityObjectives",
@@ -574,7 +578,7 @@ activityModal.addEventListener("click", async function (e) {
         );
 
         function getValueOrDefault(value) {
-          return value === null ? "---" : value;
+          return value === null ? "N/A" : value;
         }
 
         const actualParticipants = data.result.actual_participants;
@@ -616,6 +620,9 @@ activityModal.addEventListener("click", async function (e) {
             ? `<i class="bi bi-emoji-smile remark-type-one"></i> Accomplished`
             : `<i class="bi bi-emoji-frown remark-type-two"></i> Accomplished but did not meet the target number of members.`;
 
+        elements.budgetGiven.textContent = getValueOrDefault(
+          data.result.budget_given
+        );
         elements.budgetUtilized.textContent = data.result.budget_utilized;
 
         const galleryContainer = document.querySelector(".activity-gallery ul");

@@ -55,3 +55,33 @@
     color: var(--primary-text);
   }
 }
+
+.tippy-selection {
+  ul {
+    border-radius: 0;
+    li {
+      padding: 0;
+      border: 0;
+
+      border-radius: var(--border-radius) !important;
+      overflow: hidden;
+    }
+  }
+
+  button {
+    font-weight: var(--medium);
+
+    width: 100%;
+
+    text-align: left;
+
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    &:hover {
+      background-color: var(--hovered);
+    }
+  }
+}

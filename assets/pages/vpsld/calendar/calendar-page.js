@@ -1,3 +1,13 @@
+import { createNotyf } from "../../../components/alerts/notyf.js";
+import { onShow, onHide } from "../../../components/alerts/sweetalert2/swal.js";
+
+const notyf = createNotyf();
+
+const cleave = new Cleave("#inputBudgetAmount", {
+  numeral: true,
+  numeralThousandsGroupStyle: "thousand",
+});
+
 // FULL CALENDAR
 let eventTippy = null;
 
@@ -9,13 +19,17 @@ document.addEventListener("DOMContentLoaded", function () {
     headerToolbar: {
       left: "prev,next today",
       center: "title",
-      right: "dayGridMonth,listYear others",
+      right: "dayGridMonth,listYear budgetApprovals",
     },
     customButtons: {
-      others: {
-        icon: "bi bi-three-dots-vertical others",
+      budgetApprovals: {
+        text: "Budget Approvals",
         click: function () {
-          alert("Custom button clicked!"); // Custom action
+          const modal = new bootstrap.Modal(
+            document.getElementById("budgetApprovalModal")
+          );
+
+          modal.show();
         },
       },
     },
@@ -153,3 +167,244 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   calendar.render();
 });
+
+const tableBody = document.querySelector(".budget-approval-modal tbody");
+
+async function fetchEventInfo(publicKey) {
+  try {
+    const response = await fetch("sql/fetch_event_info.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: publicKey }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const result = await response.json();
+
+    if (result.success) {
+      return {
+        title: result.title,
+        organization: result.organization,
+        amountRequested: result.amount_requested,
+      };
+    } else {
+      console.log("result.message");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching budget requests:", error);
+  }
+}
+
+tableBody.addEventListener("click", async function (e) {
+  const publicKey = e.target.closest("tr").dataset.id;
+  const row = e.target.closest("tr");
+
+  const approveBtn = e.target.closest(".approve-btn");
+  const rejectBtn = e.target.closest(".reject-btn");
+
+  const changeAmountBtn = e.target.closest(".change-amount-btn");
+
+  if (approveBtn) {
+    Swal.fire({
+      title: "Processing...",
+      text: "Please wait while we process your request.",
+      allowOutsideClick: false,
+      showClass: {
+        popup: onShow,
+      },
+      hideClass: {
+        popup: onHide,
+      },
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      const response = await fetch("sql/approve_budget_request.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: publicKey }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const result = await response.json();
+
+      Swal.close();
+      if (result.success) {
+        row.remove();
+        notyf.success("Event approved successfully.");
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: `${result.message}`,
+          icon: "error",
+          showClass: {
+            popup: onShow,
+          },
+          hideClass: {
+            popup: onHide,
+          },
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  if (rejectBtn) {
+    Swal.fire({
+      title: "Processing...",
+      text: "Please wait while we process your request.",
+      allowOutsideClick: false,
+      showClass: {
+        popup: onShow,
+      },
+      hideClass: {
+        popup: onHide,
+      },
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      const response = await fetch("sql/reject_budget_request.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: publicKey }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const result = await response.json();
+
+      Swal.close();
+      if (result.success) {
+        row.remove();
+        notyf.success("Event rejected successfully.");
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: `${result.message}`,
+          icon: "error",
+          showClass: {
+            popup: onShow,
+          },
+          hideClass: {
+            popup: onHide,
+          },
+        });
+      }
+    } catch (error) {
+      Swal.close();
+      console.error(error);
+    }
+  }
+
+  if (changeAmountBtn) {
+    const eventInfo = await fetchEventInfo(publicKey);
+
+    const inputPublicKey = document.getElementById("inputPublicKey");
+
+    const title = document.getElementById("eventTitle");
+    const organization = document.getElementById("eventOrganization");
+    const inputAmount = document.getElementById("inputBudgetAmount");
+
+    inputPublicKey.value = publicKey;
+
+    title.textContent = eventInfo.title;
+    organization.textContent = eventInfo.organization;
+    inputAmount.value = eventInfo.amountRequested;
+  }
+});
+
+// Change Budget Amount
+document
+  .getElementById("changeBudgetAmountForm")
+  .addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    const modalElement = document.getElementById("changeBudgetAmountModal");
+    const thisModal = bootstrap.Modal.getInstance(modalElement);
+
+    const budgetApprovalModal = new bootstrap.Modal("#budgetApprovalModal");
+
+    const publicKey = document.getElementById("inputPublicKey").value;
+    const row = document.querySelector(
+      `.budget-approval-modal tbody tr[data-id="${publicKey}"]`
+    );
+
+    Swal.fire({
+      title: "Processing...",
+      text: "Please wait while we process your request.",
+      allowOutsideClick: false,
+      showClass: {
+        popup: onShow,
+      },
+      hideClass: {
+        popup: onHide,
+      },
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      const response = await fetch("sql/approve_budget_request.php", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const result = await response.json();
+
+      Swal.close();
+      if (result.success) {
+        row.remove();
+
+        thisModal.hide();
+
+        modalElement.addEventListener(
+          "hidden.bs.modal",
+          function () {
+            budgetApprovalModal.show();
+          },
+          { once: true }
+        );
+
+        this.reset();
+
+        notyf.success("Event approved successfully.");
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: `${result.message}`,
+          icon: "error",
+          showClass: {
+            popup: onShow,
+          },
+          hideClass: {
+            popup: onHide,
+          },
+        });
+      }
+    } catch (error) {
+      Swal.close();
+      console.error(error);
+    }
+  });

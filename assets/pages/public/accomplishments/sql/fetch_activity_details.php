@@ -49,7 +49,8 @@ $stmt = $conn->prepare("SELECT
                         COALESCE(ec.start_date, aa.start_date) AS start_date,
                         COALESCE(ec.end_date, aa.end_date) AS end_date,
                         ec.start_time, ec.end_time,
-                        aa.target_participants, aa.actual_participants, aa.objectives, aa.challenges_solutions, aa.lesson_learned, aa.suggestions,
+                        ec.budget_given, aa.target_participants,
+                        aa.actual_participants, aa.objectives, aa.challenges_solutions, aa.lesson_learned, aa.suggestions,
                         aa.budget_utilized, remarks
 			            FROM activity_accomplishment aa
                         LEFT JOIN event_calendar ec

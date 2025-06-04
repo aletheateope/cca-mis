@@ -11,6 +11,8 @@ check_role('Organization');
 
 <?php require_once 'sql/display_record.php'?>
 
+<?php require_once 'sql/latest_statement.php'?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,7 +33,7 @@ check_role('Organization');
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/org_sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
@@ -50,44 +52,54 @@ check_role('Organization');
                         <!-- FINANCIAL SUMMARY -->
                         <div class="row finance-overview">
                             <div class="col container">
-                                <h3>March 2025</h3>
+                                <h3><?php echo $month . ", " . $year?>
+                                </h3>
                                 <table class="table table-inflow">
                                     <tbody>
                                         <tr>
                                             <td>Starting Fund</td>
-                                            <td>20,000</td>
+                                            <td><?php echo number_format($starting_fund, 2)?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Credit From Weekly Contribution</td>
-                                            <td>500</td>
+                                            <td><?php echo number_format($weekly_contribution, 2)?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Revenue From Internal Projects</td>
-                                            <td>0.00</td>
+                                            <td><?php echo number_format($internal_projects, 2)?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Revenue From External Projects</td>
-                                            <td>0.00</td>
+                                            <td><?php echo number_format($external_projects, 2)?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Credit for Internal Initiative Funding</td>
-                                            <td>0.00</td>
+                                            <td><?php echo number_format($initiative_funding, 2)?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Credit From Donations/Sponsorships</td>
-                                            <td>300</td>
+                                            <td><?php echo number_format($donations_sponsorships, 2)?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Credit From Adviser</td>
-                                            <td>300</td>
+                                            <td><?php echo number_format($adviser_credit, 2)?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Credit From Carri</td>
-                                            <td>400</td>
+                                            <td><?php echo number_format($carri_credit, 2)?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Total Credit</td>
-                                            <td>21,500</td>
+                                            <td><?php echo number_format($total_credit, 2)?>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -96,30 +108,33 @@ check_role('Organization');
                                 <div class="row container">
                                     <div class="col">
                                         <h3>Latest Recorded Financial Status</h3>
-                                        <h4>As of March 2025</h4>
+                                        <h4>
+                                            As of
+                                            <?php echo $month . ", " . $year?>
+                                        </h4>
                                         <table class="table table-balance-summary">
                                             <tbody>
                                                 <tr>
                                                     <td>Total Credit</td>
-                                                    <td>21,500</td>
-                                                    <td class="success"><i class="bi bi-caret-up-fill"></i></td>
-                                                    <td class="success">17%</td>
+                                                    <td><?php echo number_format($total_credit, 2)?>
+                                                    </td>
+                                                    <?php displayPercentageRow($total_credit_percentage)?>
                                                 </tr>
                                                 <tr>
                                                     <td>Total Expenses</td>
-                                                    <td> 10,000 </td>
-                                                    <td class="danger"><i class="bi bi-caret-up-fill"></i></td>
-                                                    <td class="danger">20%</td>
+                                                    <td><?php echo number_format($total_expenses, 2)?>
+                                                    </td>
+                                                    <?php displayPercentageRow($total_expenses_percentage, true)?>
                                                 </tr>
                                                 <tr>
                                                     <td>Final Balance</td>
-                                                    <td>11,500</td>
-                                                    <td class="success"><i class="bi bi-caret-up-fill"></i></td>
-                                                    <td class="success">5%</td>
+                                                    <td><?php echo number_format($final_funding, 2)?>
+                                                    </td>
+                                                    <?php displayPercentageRow($final_funding_percentage)?>
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <h5>Record Compared to <button class="no-style-btn">February 2025</button></h5>
+                                        <?php echo $compare_heading?>
                                     </div>
                                 </div>
                                 <div class="row container">
@@ -131,7 +146,7 @@ check_role('Organization');
                                                     id="horizontalWaterfall"></canvas>
                                             </div>
                                         </div>
-                                        <p>46.51% of Funds Left</p>
+                                        <p id="fundsLeft">46.51% of Funds Left</p>
                                     </div>
                                 </div>
                             </div>
@@ -157,7 +172,7 @@ check_role('Organization');
                                         <h4><?php echo $month['name'] . ", " . $month['year'] ?>
                                         </h4>
                                         <button class="no-style-btn generateIMG" data-bs-toggle="modal"
-                                            data-bs-target="#generateIMGModal"
+                                            data-bs-target="#statementSummaryModal"
                                             data-month="<?php echo $month['id']?>"
                                             data-year="<?php echo $month['year']?>">
                                             <i class="bi bi-image"></i>
@@ -251,11 +266,11 @@ check_role('Organization');
                                 <table class="table">
                                     <tbody>
                                         <tr>
-                                            <td colspan="2" class="text-center" id="recordMonthYear">January, 2020</td>
+                                            <td colspan="2" class="text-center" id="recordMonthYear">Month, Year</td>
                                         </tr>
                                         <tr>
                                             <td colspan="2" class="text-center">Update As Of: <span
-                                                    id="recordDate">January 20, 2020</span></td>
+                                                    id="recordDate">Month Day, Year</span></td>
                                         </tr>
                                         <tr>
                                             <td colspan="2"></td>
@@ -265,39 +280,39 @@ check_role('Organization');
                                         </tr>
                                         <tr>
                                             <td class="text-end">Starting Fund</td>
-                                            <td id="recordStartingFund">Test</td>
+                                            <td id="recordStartingFund">0.00</td>
                                         </tr>
                                         <tr>
                                             <td>Credit From Weekly Contribution</td>
-                                            <td id="recordWeeklyContribution">Test</td>
+                                            <td id="recordWeeklyContribution">0.00</td>
                                         </tr>
                                         <tr>
                                             <td>Revenue From Internal Projects</td>
-                                            <td id="recordInternalProjects">Test</td>
+                                            <td id="recordInternalProjects">0.00</td>
                                         </tr>
                                         <tr>
                                             <td>Revenue From External Projects</td>
-                                            <td id="recordExternalProjects">Test</td>
+                                            <td id="recordExternalProjects">0.00</td>
                                         </tr>
                                         <tr>
                                             <td>Credit for Internal Initiative Funding</td>
-                                            <td id="recordInternalInitiativeFunding">Test</td>
+                                            <td id="recordInternalInitiativeFunding">0.00</td>
                                         </tr>
                                         <tr>
                                             <td>Credit From Donations/Sponsorships</td>
-                                            <td id="recordDonationsSponsorships">Test</td>
+                                            <td id="recordDonationsSponsorships">0.00</td>
                                         </tr>
                                         <tr>
                                             <td>Credit From Adviser</td>
-                                            <td id="recordAdviserCredit">Test</td>
+                                            <td id="recordAdviserCredit">0.00</td>
                                         </tr>
                                         <tr>
                                             <td>Credit From Carri</td>
-                                            <td id="recordCarriCredit">Test</td>
+                                            <td id="recordCarriCredit">0.00</td>
                                         </tr>
                                         <tr>
                                             <td class="text-end">Total Credit</td>
-                                            <td class="recordTotalCredit">Test</td>
+                                            <td class="recordTotalCredit">0.00</td>
                                         </tr>
                                         <tr>
                                             <td colspan="2"></td>
@@ -307,11 +322,11 @@ check_role('Organization');
                                         </tr>
                                         <tr>
                                             <td>Cost and Expenses</td>
-                                            <td class="recordTotalExpenses">Test</td>
+                                            <td class="recordTotalExpenses">0.00</td>
                                         </tr>
                                         <tr>
                                             <td class="text-end">Total Expenses</td>
-                                            <td class="recordTotalExpenses">Test</td>
+                                            <td class="recordTotalExpenses">0.00</td>
                                         </tr>
                                         <tr>
                                             <td colspan="2"></td>
@@ -321,15 +336,15 @@ check_role('Organization');
                                         </tr>
                                         <tr>
                                             <td class="text-end">Total Credit</td>
-                                            <td class="recordTotalCredit">Test</td>
+                                            <td class="recordTotalCredit">0.00</td>
                                         </tr>
                                         <tr>
                                             <td class="text-end">Total Expenses</td>
-                                            <td class="recordTotalExpenses">Test</td>
+                                            <td class="recordTotalExpenses">0.00</td>
                                         </tr>
                                         <tr>
                                             <td class="text-end">Final Funding Less All Expenses</td>
-                                            <td id="recordFinalFunding">Test</td>
+                                            <td id="recordFinalFunding">0.00</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -354,7 +369,7 @@ check_role('Organization');
     </div>
 
     <!-- HTML2CANVAS -->
-    <div class="modal fade generate-img-modal" id="generateIMGModal" tabindex="-1">
+    <div class="modal fade statement-summary-modal" id="statementSummaryModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -363,7 +378,7 @@ check_role('Organization');
                 </div>
                 <div class="modal-body">
                     <div class="containter-fluid">
-                        <div class="row finance-img" id="capture">
+                        <div class="row financial-statement" id="capture">
                             <div class="col">
                                 <div class="row header">
                                     <div class="col">

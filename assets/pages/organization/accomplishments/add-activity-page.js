@@ -42,6 +42,7 @@ document
             { id: "inputLocation", eventKey: "location" },
             { id: "inputStartDate", eventKey: "start" },
             { id: "inputEndDate", eventKey: "end" },
+            { id: "budgetGiven", eventKey: "budgetGiven" },
           ];
 
           fields.forEach((field) => {

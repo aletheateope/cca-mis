@@ -12,14 +12,16 @@
             </button>
         </li>
         <li>
-            <img class="profile-icon" src="/cca/assets/img/CCA/cca.png" alt="">
             <button class="no-style-btn profile-btn" data-bs-toggle="modal" data-bs-target="#viewProfileModal">
-                <span>VPSLD</span>
+                <img class="profile-icon" src="/cca/assets/img/CCA/cca.png" alt="">
+                <span>
+                    Director
+                </span>
             </button>
         </li>
         <li
             class="<?= ($currentPage == 'dashboard_page.php') ? 'active' : ''?>">
-            <a href="/cca/assets/pages/vpsld/dashboard/dashboard_page.php">
+            <a href="/cca/assets/pages/director/dashboard/dashboard_page.php">
                 <i class="icon bi bi-grid-1x2-fill"></i>
                 <span>Dashboard</span>
             </a>
@@ -33,7 +35,7 @@
         </li>
         <li
             class="<?= ($currentPage == 'calendar_page.php') ? 'active' : ''?>">
-            <a href="/cca/assets/pages/vpsld/calendar/calendar_page.php">
+            <a href="/cca/assets/pages/director/calendar/calendar_page.php">
                 <i class="icon bi bi-calendar-event-fill" id="calendarBtn"></i>
                 <span>Calendar</span>
             </a>
@@ -52,6 +54,13 @@
                 <span>Accomplishments</span>
             </a>
         </li>
+        <li
+            class="<?= ($currentPage == 'accounts_page.php') ? 'active' : ''?>">
+            <a href="/cca/assets/pages/director/accounts/accounts_page.php">
+                <i class="icon bi bi-person-fill" id="accountsBtn"></i>
+                <span>Accounts</span>
+            </a>
+        </li>
         <li>
             <a href="#" id="logoutBtn">
                 <i class="icon bi bi-box-arrow-left" id="logout"></i>
@@ -62,4 +71,5 @@
 </aside>
 
 <!-- OWN SCRIPT (SIDEBAR)-->
-<script src="/cca/assets/components/sidebar/vpsld/sidebar.js"></script>
+<script src="/cca/assets/components/sidebar/sidebar.js"></script>
+<script src="/cca/assets/components/sidebar/director/directorSidebar.js"></script>

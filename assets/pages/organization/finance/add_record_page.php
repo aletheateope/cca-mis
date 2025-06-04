@@ -39,7 +39,7 @@ check_role('Organization');
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/org_sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
@@ -253,7 +253,7 @@ check_role('Organization');
     <script src="https://unpkg.com/filepond-plugin-file-rename/dist/filepond-plugin-file-rename.js"></script>
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 
-    <script src="add-record-page.js"></script>
+    <script type="module" src="add-record-page.js"></script>
 
     <script>
         console.log(

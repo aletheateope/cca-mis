@@ -35,7 +35,7 @@ check_role('Organization');
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/org_sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
@@ -201,6 +201,25 @@ check_role('Organization');
                                     </div>
                                 </div>
                             </div>
+                            <div class="container-fluid container">
+                                <h3>Budget</h3>
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="budgetGiven" class="form-label">Budget Given</label>
+                                            <input type="text" class="form-control" id="budgetGiven" placeholder="0"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="inputBudgetUtilized" class="form-label">Budget Utilized</label>
+                                            <input type="text" name="budget_utilized" class="form-control"
+                                                id="inputBudgetUtilized" placeholder="0" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row container">
                                 <div class="col">
                                     <h3>Activity Insights</h3>
@@ -230,9 +249,6 @@ check_role('Organization');
                                                 id="inputEventSuggestions"></textarea>
                                         </div>
                                     </div>
-                                    <label for="inputBudgetUtilized" class="form-label">Budget Utilized</label>
-                                    <input type="text" name="budget_utilized" class="form-control"
-                                        id="inputBudgetUtilized" placeholder="0" required>
                                 </div>
                             </div>
                             <div class="row container">

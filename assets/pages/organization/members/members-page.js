@@ -1,22 +1,8 @@
-import { createNotyf } from "../../../components/notyf.js";
-
-import {
-  onShow,
-  onHide,
-} from "../../../components/sweetalert2/alertAnimation.js";
+import { formatDate } from "../../../components/formatter/formatDate.js";
+import { onShow, onHide } from "../../../components/alerts/sweetalert2/swal.js";
+import { createNotyf } from "../../../components/alerts/notyf.js";
 
 const notyf = createNotyf();
-
-function formatDate(dateString) {
-  if (!dateString) return "---";
-
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
 
 const tableBody = document.querySelector(".members tbody");
 
@@ -529,53 +515,3 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 });
-
-// $(document).ready(function () {
-//   // FILEPOND
-//   FilePond.registerPlugin(FilePondPluginFileValidateType);
-//   FilePond.registerPlugin(FilePondPluginFileRename);
-
-//   const inputElement = document.getElementById("uploadStudentDocument");
-//   const pond = FilePond.create(inputElement, {
-//     acceptedFileTypes: ["image/png", "image/jpeg", "application/pdf"],
-
-//     fileRenameFunction: (file) => {
-//       const extension = file.name.slice(file.name.lastIndexOf(".")); // Get file extension
-//       const baseName = file.name.slice(0, file.name.lastIndexOf(".")); // Get filename without extension
-
-//       const newBaseName = window.prompt("Enter new filename", baseName); // Prompt for new name
-
-//       return newBaseName ? newBaseName + extension : file.name;
-//     },
-//   });
-
-//   // ADD MEMBER TO DATABASE
-//   $("#addMemberForm").on("submit", function (e) {
-//     e.preventDefault();
-
-//     const formData = new FormData(this);
-
-//     pond.getFiles().forEach((fileItem) => {
-//       const file = fileItem.file;
-//       const renamedFile = new File([file], fileItem.filename, {
-//         type: file.type,
-//       }); // Use renamed filename
-//       formData.append(`document[]`, renamedFile);
-//     });
-
-//     $.ajax({
-//       url: "sql/add-member.php",
-//       type: "POST",
-//       data: formData,
-//       contentType: false,
-//       processData: false,
-//       success: function (response) {
-//         alert(response);
-//       },
-//       error: function (xhr, status, error) {
-//         console.log("Error details:", xhr.responseText);
-//         alert("Error: " + error);
-//       },
-//     });
-//   });
-// });

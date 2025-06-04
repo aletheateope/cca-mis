@@ -109,7 +109,7 @@ function tooltip() {
     },
   });
 
-  tippy("#logoutBtn", {
+  tippy("#logOutBtn", {
     content: "Log Out",
     theme: "light-no-border",
     arrow: false,

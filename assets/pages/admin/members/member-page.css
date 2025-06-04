@@ -101,24 +101,6 @@ body {
   }
 }
 
-tbody {
-  tr {
-    td:last-child {
-      width: 100px;
-    }
-  }
-
-  .action-group {
-    display: flex;
-    flex-direction: row;
-
-    justify-content: center;
-    align-items: center;
-
-    gap: 1rem;
-  }
-}
-
 .participation {
   height: 25rem;
 

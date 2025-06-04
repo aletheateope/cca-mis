@@ -76,35 +76,43 @@
 }
 
 .login-btn {
+  background-color: var(--primary-background);
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   border: solid 1px var(--border-color);
   padding: 0;
   font-size: var(--default);
-  background-color: var(--primary-background);
-}
 
-.login-btn span {
-  padding-left: 12px;
-  padding-right: 12px;
-  font-size: var(--default);
-}
+  transition: 0.2s ease;
 
-.google-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50 px;
-  width: 50px;
-  padding: 6px;
-}
-
-.login-btn:hover {
-  border: solid 1px var(--border-color);
-  background-color: #4464cf;
-  color: var(--active-text);
   .google-icon {
     background-color: var(--primary-background);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 50px;
+    width: 50px;
+    padding: 6px;
+  }
+
+  span {
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: var(--default);
+  }
+
+  &:hover {
+    border: solid 1px var(--border-color);
+    background-color: #4464cf;
+    color: var(--active-text);
+  }
+
+  &:focus-visible {
+    outline: solid 1px var(--primary-text);
   }
 }

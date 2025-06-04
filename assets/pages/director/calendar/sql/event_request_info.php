@@ -14,8 +14,7 @@ if(!isset($data['id'])) {
 
 $publicKey = strval($data["id"]);
 
-$sql = "SELECT event_request_id FROM key_event WHERE public_key = ?";
-$stmt = $conn->prepare($sql);
+$stmt = $conn->prepare("SELECT event_request_id FROM key_event WHERE public_key = ?");
 $stmt->bind_param("s", $publicKey);
 $stmt->execute();
 $result = $stmt->get_result()->fetch_assoc();
@@ -32,15 +31,23 @@ if(!$requestEventID) {
     exit;
 }
 
-$sql = "SELECT title FROM event_request WHERE event_request_id = ?";
-$stmt = $conn->prepare($sql);
+$stmt->close();
+
+$stmt = $conn->prepare("SELECT ao.name AS organization, title
+                        FROM event_request er
+                        INNER JOIN account_organization ao
+                            ON ao.organization_id = er.organization_id
+                        WHERE event_request_id = ?");
 $stmt->bind_param("i", $requestEventID);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    echo json_encode(["title" => $row['title']]);
+    echo json_encode([
+        "title" => $row['title'],
+        "organization" => $row['organization']
+    ]);
 } else {
     echo json_encode(["error" => "Event not found"]);
 }

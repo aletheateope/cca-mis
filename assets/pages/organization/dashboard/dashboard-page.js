@@ -1,9 +1,6 @@
-import { generateFileName } from "../../../components/fileNameGenerator.js";
+import { generateFileName } from "../../../components/formatter/fileNameGenerator.js";
 
-import {
-  onShow,
-  onHide,
-} from "../../../components/sweetalert2/alertAnimation.js";
+import { onShow, onHide } from "../../../components/alerts/sweetalert2/swal.js";
 
 const getColor = (varName) =>
   getComputedStyle(document.documentElement).getPropertyValue(varName);

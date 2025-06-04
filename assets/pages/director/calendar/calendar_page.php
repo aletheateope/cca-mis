@@ -21,6 +21,14 @@ check_role('Director');
 
     <?php require_once BASE_PATH . '/assets/components/header_links.php' ?>
 
+    <!-- FILEPOND -->
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+        rel="stylesheet" />
+
+    <link href="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="calendar-page.css">
 </head>
 
@@ -28,7 +36,7 @@ check_role('Director');
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include_once BASE_PATH . '/assets/components/sidebar/director/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/director/director_sidebar.php' ?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
@@ -65,7 +73,8 @@ check_role('Director');
                 <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                 <?php if (is_null($row['start_time']) && is_null($row['end_time'])) { ?>
                 <!-- All Day -->
-                <div class="row event-request-card">
+                <div class="row event-request-card"
+                    data-id="<?php echo $row['public_key']?>">
                     <div class="col">
                         <div class="row title">
                             <div class="col">
@@ -96,12 +105,12 @@ check_role('Director');
 
                                 <div class="row date">
                                     <div class="col">
-                                        <h5>Start Date</h5>
+                                        <h5 class="inactive-text">Start Date</h5>
                                         <p><?php echo date("F j, Y", strtotime($row['start_date']))?>
                                         </p>
                                     </div>
                                     <div class="col">
-                                        <h5>End Date</h5>
+                                        <h5 class="inactive-text">End Date</h5>
                                         <p><?php echo date("F j, Y", strtotime($row['end_date']))?>
                                         </p>
                                     </div>
@@ -110,19 +119,28 @@ check_role('Director');
                         </div>
                         <div class="row button-row">
                             <div class="col">
-                                <button type="button" class="approve-btn no-style-btn"
-                                    data-id="<?php echo $row['public_key']?>">Approve</button>
+                                <div class="wrapper-btn">
+                                    <button class="approve-btn">Approve</button>
+                                    <button class="approve-plus-btn" title="More"><i
+                                            class="bi bi-three-dots-vertical"></i></button>
+                                </div>
                             </div>
                             <div class="col">
-                                <button type="button" class="reject-btn no-style-btn"
-                                    data-id="<?php echo $row['public_key']?>">Reject</button>
+                                <button class="reject-btn">Reject</button>
+                            </div>
+                            <div class="col-auto">
+                                <button class="return-btn" title="Return Request" data-bs-toggle="modal"
+                                    data-bs-target="#returnEventRequestModal">
+                                    <i class="bi bi-reply-fill"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <?php } else { ?>
                 <!-- Normal -->
-                <div class="row event-request-card">
+                <div class="row event-request-card"
+                    data-id="<?php echo $row['public_key']?>">
                     <div class="col">
                         <div class="row title default">
                             <div class="col-auto profile-container">
@@ -148,7 +166,7 @@ check_role('Director');
                                     <div class="col">
                                         <div class="row">
                                             <div class="col">
-                                                <h5>Start Date</h5>
+                                                <h5 class="inactive-text">Start Date</h5>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -167,7 +185,7 @@ check_role('Director');
                                     <div class="col">
                                         <div class="row">
                                             <div class="col">
-                                                <h5>End Date</h5>
+                                                <h5 class="inactive-text">End Date</h5>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -185,12 +203,20 @@ check_role('Director');
                         </div>
                         <div class="row button-row">
                             <div class="col">
-                                <button type="button" class="approve-btn no-style-btn"
-                                    data-id="<?php echo $row['public_key']?>">Approve</button>
+                                <div class="wrapper-btn">
+                                    <button class="approve-btn">Approve</button>
+                                    <button class="approve-plus-btn" title="More"><i
+                                            class="bi bi-three-dots-vertical"></i></button>
+                                </div>
                             </div>
                             <div class="col">
-                                <button type="button" class="reject-btn no-style-btn"
-                                    data-id="<?php echo $row['public_key']?>">Reject</button>
+                                <button class="reject-btn">Reject</button>
+                            </div>
+                            <div class="col-auto">
+                                <button class="return-btn" title="Return Request" data-bs-toggle="modal"
+                                    data-bs-target="#returnEventRequestModal">
+                                    <i class="bi bi-reply-fill"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -269,10 +295,128 @@ check_role('Director');
         </div>
     </form>
 
+    <!-- Request Budget Modal -->
+    <form id="requestBudgetForm" enctype="multipart/form-data">
+        <div class="modal fade request-budget-modal" id="requestBudgetModal" tabindex="-1"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Request Event Budget</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <input type="hidden" name="public_key" class="form-control"
+                                id="eventRequestPublicKeyBudget">
+                            <div class="container-fluid wrapper">
+                                <div class="row">
+                                    <div class="col">
+                                        <h3 id="eventRequestTitleBudget">Event Request Title</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p>From: <span id="eventRequestOrganizationBudget">Organization</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container-fluid">
+                                <div class="container-fluid wrapper">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h4>Request Letter</h4>
+                                        </div>
+                                    </div>
+                                    <div class="container-fluid">
+                                        <input type="file" name="req_letter[]" id="letterUpload"
+                                            accept="application/pdf" multiple />
+                                    </div>
+                                </div>
+                                <div class="container-fluid wrapper">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="inputBudgetAmount" class="form-label">Amount</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="text" name="budget" class="form-control" id="inputBudgetAmount"
+                                                required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Send Request</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Return Event Request Modal -->
+    <form id="returnEventRequestForm" enctype="multipart/form-data">
+        <div class="modal fade return-event-request-modal" id="returnEventRequestModal" tabindex="-1"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Return Event Request</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <input type="hidden" name="public_key" class="form-control" id="eventRequestPublicKey">
+                            <div class="container-fluid wrapper">
+                                <div class="row">
+                                    <div class="col">
+                                        <h3 id="eventRequestTitle">Event Request Title</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p>From: <span id="eventRequestOrganization">Organization</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container-fluid wrapper">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="inputMessage" class="form-label">Message</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <textarea class="form-control" name="message" id="inputMessage"
+                                            required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
     <?php require_once BASE_PATH . '/assets/components/footer_links.php' ?>
 
     <!-- FULLCALENDAR -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+    <!-- FILEPOND -->
+    <script src="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js">
+    </script>
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 
     <script type="module" src="calendar-page.js"></script>
 

@@ -1,7 +1,12 @@
-import { generateFileName } from "../../../components/fileNameGenerator.js";
-import { createNotyf } from "../../../components/notyf.js";
-import { formatDate } from "../../../components/formatDate.js";
+import { generateFileName } from "../../../components/formatter/fileNameGenerator.js";
+import { formatDate } from "../../../components/formatter/formatDate.js";
+import { formatNumber } from "../../../components/formatter/formatNumber.js";
+import { createNotyf } from "../../../components/alerts/notyf.js";
+import { downloadElement } from "../../../components/captureElement.js";
 import { initializeFancybox } from "../../../components/fancybox.js";
+
+// FANCYBOX
+initializeFancybox();
 
 // SUCCESS MESSAGE
 const submissionStatus = localStorage.getItem("submissionStatus");
@@ -199,7 +204,7 @@ document
 
         window.location.href = "add_record_page.php?ref=" + encodedRef;
       } else {
-        alert("Error: " + result.error);
+        alert(result.message);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -218,46 +223,80 @@ const green = getComputedStyle(document.documentElement)
   .trim();
 
 //   HORIZONTAL WATERFALL CHART
-const ctx = document.getElementById("horizontalWaterfall").getContext("2d");
+const ctx = document.getElementById("horizontalWaterfall");
 
-new Chart(ctx, {
-  type: "bar",
-  data: {
-    labels: ["Credit", "Expense", "Final Balance"],
-    datasets: [
-      {
-        label: "Hidden Base",
-        data: [0, 46.51, 0],
-        backgroundColor: "rgba(0, 0, 0, 0)",
-      },
-      {
-        label: "Values",
-        data: [100, 53.49, 46.51],
-        backgroundColor: [blue, red, green],
-      },
-    ],
-  },
-  options: {
-    indexAxis: "y",
-    scales: {
-      x: {
-        max: 100,
-        stacked: true,
-        reverse: true,
-      },
-      y: { stacked: true },
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { enabled: false },
-    },
-    animation: {
-      duration: 0,
-    },
-  },
-});
+async function generateChart() {
+  try {
+    const response = await fetch("sql/latest_fs_flow.php");
+
+    if (!response.ok) {
+      console.error("Failed to fetch data");
+      return;
+    }
+
+    const data = await response.json();
+
+    if (data.success) {
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Credit", "Expense", "Final Balance"],
+          datasets: [
+            {
+              label: "Hidden Base",
+              data: [0, data.finalFunding, 0],
+              backgroundColor: "rgba(0, 0, 0, 0)",
+            },
+            {
+              label: "Values",
+              data: [data.totalCredit, data.expenses, data.finalFunding],
+              backgroundColor: [blue, red, green],
+            },
+          ],
+        },
+        options: {
+          indexAxis: "y",
+          scales: {
+            x: {
+              max: 100,
+              stacked: true,
+              reverse: true,
+            },
+            y: { stacked: true },
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  let value = context.parsed.x;
+                  return value + "%";
+                },
+              },
+              filter: function (tooltipItem) {
+                return tooltipItem.dataset.label !== "Hidden Base";
+              },
+            },
+          },
+          animation: {
+            duration: 0,
+          },
+        },
+      });
+
+      document.getElementById("fundsLeft").textContent =
+        data.finalFunding + "% of Funds Left";
+    } else {
+      console.error(data.message);
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+
+generateChart();
 
 // JSPDF
 document.addEventListener("DOMContentLoaded", function () {
@@ -460,10 +499,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const tableData = data.map((item) => [
           item.year,
           item.month,
-          item.starting_fund,
-          item.total_credit,
-          item.total_expenses,
-          item.final_funding,
+          formatNumber(item.starting_fund),
+          formatNumber(item.total_credit),
+          formatNumber(item.total_expenses),
+          formatNumber(item.final_funding),
         ]);
 
         function generateTable() {
@@ -520,69 +559,15 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// FANCYBOX
-initializeFancybox();
-
 // VIEW RECORD
 const pageBody = document.querySelector(".page-body");
 
 pageBody.addEventListener("click", async function (e) {
   const li = e.target.closest(".financial-records .list-group li");
   const generateIMG = e.target.closest(".generateIMG");
+  const prevRecord = e.target.closest("#prevRecord");
 
-  if (generateIMG) {
-    console.log("generateIMG");
-    const month = generateIMG.getAttribute("data-month");
-    const year = generateIMG.getAttribute("data-year");
-
-    try {
-      const response = await fetch(
-        `sql/fetch_statement.php?month=${month}&year=${year}`
-      );
-
-      const data = await response.json();
-
-      if (!data.error) {
-        document.getElementById("date").textContent = new Date(
-          data.date_updated
-        ).toLocaleDateString("en-US");
-        document.querySelectorAll(".academicYear").forEach((el) => {
-          el.textContent = data.academic_year;
-        });
-        document.getElementById("startingFund").textContent =
-          data.starting_fund;
-        document.getElementById("weeklyContribution").textContent =
-          data.weekly_contribution;
-        document.getElementById("internalProjects").textContent =
-          data.internal_projects;
-        document.getElementById("externalProjects").textContent =
-          data.external_projects;
-        document.getElementById("internalInitiativeFunding").textContent =
-          data.initiative_funding;
-        document.getElementById("donationsSponsorships").textContent =
-          data.donations_sponsorships;
-        document.getElementById("adviserCredit").textContent =
-          data.adviser_credit;
-        document.getElementById("carriCredit").textContent = data.carri_credit;
-        document.querySelectorAll(".totalCredit").forEach((el) => {
-          el.textContent = data.total_credit;
-        });
-        document.querySelectorAll(".totalExpenses").forEach((el) => {
-          el.textContent = data.total_expenses;
-        });
-        document.getElementById("finalFunding").textContent =
-          data.final_funding;
-      } else {
-        console.log("Error:", data.error);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
-
-  if (li) {
-    const publicKey = li.dataset.id;
-
+  async function fetchRecord(publicKey) {
     try {
       const response = await fetch("sql/fetch_record.php", {
         method: "POST",
@@ -614,7 +599,8 @@ pageBody.addEventListener("click", async function (e) {
         };
 
         for (const [id, value] of Object.entries(fields)) {
-          document.getElementById(id).textContent = value;
+          const formatted = isNaN(value) ? value : formatNumber(value);
+          document.getElementById(id).textContent = formatted;
         }
 
         const elementsMap = {
@@ -623,8 +609,9 @@ pageBody.addEventListener("click", async function (e) {
         };
 
         for (const [selector, value] of Object.entries(elementsMap)) {
+          const formatted = formatNumber(value);
           document.querySelectorAll(selector).forEach((el) => {
-            el.textContent = value;
+            el.textContent = formatted;
           });
         }
 
@@ -665,23 +652,72 @@ pageBody.addEventListener("click", async function (e) {
       console.error("Error fetching record:", error);
     }
   }
+
+  if (prevRecord) {
+    const publicKey = prevRecord.dataset.id;
+
+    fetchRecord(publicKey);
+  }
+
+  if (generateIMG) {
+    console.log("generateIMG");
+    const month = generateIMG.getAttribute("data-month");
+    const year = generateIMG.getAttribute("data-year");
+
+    try {
+      const response = await fetch(
+        `sql/fetch_statement.php?month=${month}&year=${year}`
+      );
+
+      const data = await response.json();
+
+      if (!data.error) {
+        document.getElementById("date").textContent = new Date(
+          data.date_updated
+        ).toLocaleDateString("en-US");
+        document.querySelectorAll(".academicYear").forEach((el) => {
+          el.textContent = data.academic_year;
+        });
+
+        const fieldMap = {
+          startingFund: data.starting_fund,
+          weeklyContribution: data.weekly_contribution,
+          internalProjects: data.internal_projects,
+          externalProjects: data.external_projects,
+          internalInitiativeFunding: data.initiative_funding,
+          donationsSponsorships: data.donations_sponsorships,
+          adviserCredit: data.adviser_credit,
+          carriCredit: data.carri_credit,
+          finalFunding: data.final_funding,
+        };
+
+        for (const [id, value] of Object.entries(fieldMap)) {
+          document.getElementById(id).textContent = formatNumber(value);
+        }
+
+        const multiFieldMap = {
+          ".totalCredit": data.total_credit,
+          ".totalExpenses": data.total_expenses,
+        };
+
+        for (const [selector, value] of Object.entries(multiFieldMap)) {
+          document
+            .querySelectorAll(selector)
+            .forEach((el) => (el.textContent = formatNumber(value)));
+        }
+      } else {
+        console.log("Error:", data.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  if (li) {
+    const publicKey = li.dataset.id;
+
+    fetchRecord(publicKey);
+  }
 });
 
-// HTML2CANVAS DOWNLOAD AS IMAGE
-document.getElementById("download").addEventListener("click", function () {
-  const captureElement = document.getElementById("capture");
-
-  html2canvas(captureElement, {
-    scale: 2,
-  }).then((canvas) => {
-    let image = canvas.toDataURL("image/jpeg", 0.95);
-    let fileName = `${generateFileName(10)}.jpg`;
-
-    let link = document.createElement("a");
-    link.href = image;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  });
-});
+downloadElement({ triggerId: "download", captureId: "capture" });

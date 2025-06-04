@@ -9,6 +9,8 @@ check_role('Organization');
 // include_once BASE_PATH . '/assets/sql/temporary_session.php'
 ?>
 
+<?php require_once 'sql/display_event_requests.php'?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +29,7 @@ check_role('Organization');
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php';?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/org_sidebar.php';?>
             </div>
             <div class="col main-content">
                 <div class="row page-header">
@@ -121,6 +123,72 @@ check_role('Organization');
 
     <!-- View Profile Modal -->
     <?php include_once BASE_PATH . '/assets/components/sidebar/org_modal.php'; ?>
+
+    <!-- Event Request Modal -->
+    <div class="modal fade" id="eventRequestModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">My Event Requests</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pending-tab" data-bs-toggle="tab"
+                                    data-bs-target="#pending-tab-pane" type="button" role="tab"
+                                    aria-controls="pending-tab-pane" aria-selected="true">Pending</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="returned-tab" data-bs-toggle="tab"
+                                    data-bs-target="#returned-tab-pane" type="button" role="tab"
+                                    aria-controls="returned-tab-pane" aria-selected="false">Returned</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="pending-tab-pane" role="tabpanel"
+                                aria-labelledby="pending-tab" tabindex="0">
+                                <div class="container-fluid">
+                                    <table class="table">
+                                        <thead>
+                                            <th>Title</th>
+                                            <th>Date Requested</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="returned-tab-pane" role="tabpanel"
+                                aria-labelledby="returned-tab" tabindex="0">
+                                <div class="container-fluid">
+                                    <table class="table">
+                                        <thead>
+                                            <th>Title</th>
+                                            <th>Message</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- FOOTER LINKS -->
     <?php require_once BASE_PATH . '/assets/components/footer_links.php';?>

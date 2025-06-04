@@ -35,11 +35,11 @@ session_start();
         <div class="row">
             <div class="col-auto">
                 <?php if ($_SESSION['user_role'] === 'Organization') {
-                    include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php';
+                    include_once BASE_PATH . '/assets/components/sidebar/organization/org_sidebar.php';
                 } elseif ($_SESSION['user_role'] === 'Director') {
-                    include_once BASE_PATH . '/assets/components/sidebar/director/sidebar.php';
+                    include_once BASE_PATH . '/assets/components/sidebar/director/director_sidebar.php';
                 } elseif ($_SESSION['user_role'] === 'VPSLD') {
-                    include_once BASE_PATH . '/assets/components/sidebar/vpsld/sidebar.php';
+                    include_once BASE_PATH . '/assets/components/sidebar/vpsld/vpsld_sidebar.php';
                 }?>
             </div>
             <div class="col main-content">
@@ -219,6 +219,12 @@ session_start();
                                     <section class="container-fluid section">
                                         <h3>Budget</h3>
                                         <div class="container-fluid wrapper">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>Budget Given</h5>
+                                                    <p id="activityBudgetGiven">Test</p>
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col">
                                                     <h5>Budget Utilized</h5>

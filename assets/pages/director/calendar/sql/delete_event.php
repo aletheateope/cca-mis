@@ -36,6 +36,8 @@ $result = $stmt->get_result()->fetch_assoc();
 
 $eventID = $result["event_id"];
 
+$stmt->close();
+
 $stmt = $conn->prepare("SELECT event_request_id, google_event_id, user_id FROM event_calendar WHERE event_id = ?");
 $stmt->bind_param("i", $eventID);
 $stmt->execute();
@@ -44,6 +46,28 @@ $result = $stmt->get_result()->fetch_assoc();
 $event_request_id = $result["event_request_id"];
 $google_event_id = $result["google_event_id"];
 $user_id = $result["user_id"];
+
+$stmt->close();
+
+$stmt = $conn->prepare("SELECT request_letter_path AS path FROM event_budget_request WHERE event_id = ?");
+$stmt->bind_param("i", $eventID);
+
+if(!$stmt->execute()) {
+    echo json_encode(["success" => false, "message" => "Failed to get request letter path."]);
+    exit;
+}
+
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+
+    $file_path = $_SERVER['DOCUMENT_ROOT'] . $row["path"];
+
+    if (file_exists($file_path)) {
+        unlink($file_path);
+    }
+}
 
 $calendar = $calendarID[$user_id] ?? $directorCalendarID;
 

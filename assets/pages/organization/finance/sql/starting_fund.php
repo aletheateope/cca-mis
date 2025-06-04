@@ -3,9 +3,9 @@ require_once '../../../../sql/base_path.php';
 
 header('Content-Type: application/json');
 
-session_start();
-
 require_once BASE_PATH . '/assets/sql/conn.php';
+
+session_start();
 
 $statement_report_id = $_SESSION['statement_report_id'];
 $user_id = $_SESSION['user_id'];
@@ -60,3 +60,5 @@ if ($statement_report_id && $user_id) {
 }
 
 echo json_encode($response);
+
+//

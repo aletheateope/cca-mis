@@ -1,8 +1,5 @@
 /* MAIN CONTENT */
 .main-content {
-  display: flex;
-  flex-direction: column;
-
   height: 100vh;
 
   .page-body {
@@ -53,10 +50,8 @@
         .actions-column {
           width: 100px;
 
-          .actions {
-            display: flex;
+          .action-group {
             justify-content: center;
-            gap: 1rem;
 
             i {
               font-size: 20px;

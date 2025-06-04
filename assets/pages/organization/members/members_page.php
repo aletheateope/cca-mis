@@ -31,7 +31,7 @@ check_role('Organization');
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/sidebar.php' ?>
+                <?php include_once BASE_PATH . '/assets/components/sidebar/organization/org_sidebar.php' ?>
             </div>
 
             <main class="col main-content">
@@ -90,8 +90,9 @@ check_role('Organization');
                                             <tbody>
                                                 <?php $member_index = 1?>
                                                 <?php while  ($row = mysqli_fetch_assoc($active_members)) {?>
-                                                <tr
-                                                    data-id="<?= $row['public_key']?>">
+                                                <tr data-id="<?= $row['public_key']?>"
+                                                    data-bs-toggle-disabled="modal"
+                                                    data-bs-target-disabled="#memberDetailsModal">
                                                     <td>
                                                         <div class="form-check">
                                                             <input type="checkbox" class="form-check-input"
@@ -112,7 +113,7 @@ check_role('Organization');
                                                         <?php echo date('F d, Y', strtotime($row['date_joined']))?>
                                                     </td>
                                                     <td class="actions-column">
-                                                        <div class="actions">
+                                                        <div class="action-group">
                                                             <button class="no-style-btn edit-btn" title="Edit"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#editMemberModal">
@@ -288,7 +289,7 @@ check_role('Organization');
     <!-- View Profile Modal -->
     <?php include_once BASE_PATH . '/assets/components/sidebar/org_modal.php'; ?>
 
-    <!-- ADD MEMBER MODAL -->
+    <!-- Add Member Modal -->
     <form id="addMemberForm" enctype="multipart/form-data">
         <div class="add-member-modal modal fade" id="addMemberModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -484,6 +485,7 @@ check_role('Organization');
         </div>
     </form>
 
+    <!-- Edit Member Modal -->
     <div class="modal fade" id="editMemberModal" tabindex="-1" aria-labelledby="editMemberModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -508,6 +510,27 @@ check_role('Organization');
             </div>
         </div>
     </div>
+
+    <!-- Member Details Modal -->
+    <div class="modal fade" id="memberDetailsModal" tabindex="-1" aria-labelledby="memberDetailsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="memberDetailsModalLabel">Member Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <?php require_once BASE_PATH . '/assets/components/footer_links.php'?>
 

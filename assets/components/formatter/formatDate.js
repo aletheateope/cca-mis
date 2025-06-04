@@ -1,9 +1,7 @@
 export function formatDate(dateStr) {
-  const date = new Date(dateStr);
+  if (!dateStr) return "N/A";
 
-  if (isNaN(date)) {
-    throw new Error("Invalid date string");
-  }
+  const date = new Date(dateStr);
 
   return date.toLocaleDateString("en-US", {
     year: "numeric",

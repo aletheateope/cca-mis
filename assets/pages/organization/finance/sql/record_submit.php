@@ -1,7 +1,8 @@
 <?php
+header("Content-Type: application/json");
+
 require_once '../../../../sql/base_path.php';
 
-header("Content-Type: application/json");
 
 $receiptDirectory = BASE_PATH . '/uploads/receipt/';
 
@@ -85,30 +86,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $finalFunding,
         $statement_id,
     );
-
-    if (!$stmt->execute()) {
-        echo json_encode(["success" => false, "message" => "Error: " . $stmt->error]);
-        exit;
-    }
-    $stmt->close();
-
-    require_once BASE_PATH . '/assets/sql/public_key.php';
-
-    $count = 1;
-
-    do {
-        $public_key = generatePublicKey();
-    
-        $stmtKey = $conn->prepare("SELECT COUNT(*) FROM key_statement WHERE public_key = ?");
-        $stmtKey->bind_param("s", $public_key);
-        $stmtKey->execute();
-        $stmtKey->bind_result($count);
-        $stmtKey->fetch();
-        $stmtKey->close();
-    } while ($count > 0);
-
-    $stmt = $conn->prepare("INSERT INTO key_statement (statement_id, public_key) VALUES (?, ?)");
-    $stmt->bind_param("is", $statement_id, $public_key);
 
     if (!$stmt->execute()) {
         echo json_encode(["success" => false, "message" => "Error: " . $stmt->error]);

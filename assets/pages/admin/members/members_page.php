@@ -31,9 +31,9 @@ check_role(['Director', 'VPSLD']);
         <div class="row">
             <div class="col-auto">
                 <?php if ($_SESSION['user_role'] === 'Director') {
-                    include_once BASE_PATH . '/assets/components/sidebar/director/sidebar.php';
+                    include_once BASE_PATH . '/assets/components/sidebar/director/director_sidebar.php';
                 } elseif ($_SESSION['user_role'] === 'VPSLD') {
-                    include_once BASE_PATH . '/assets/components/sidebar/vpsld/sidebar.php';
+                    include_once BASE_PATH . '/assets/components/sidebar/vpsld/vpsld_sidebar.php';
                 }?>
             </div>
             <main class="col main-content">
@@ -274,7 +274,7 @@ check_role(['Director', 'VPSLD']);
 
     <?php require_once BASE_PATH . '/assets/components/footer_links.php'; ?>
 
-    <script src="members-page.js"></script>
+    <script type="module" src="members-page.js"></script>
 
     <script>
         var sessionID =

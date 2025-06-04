@@ -1,6 +1,6 @@
 <?php
 if (!isset($_GET['ref'])) {
-    header("Location: finance-page.php");
+    header("Location: my_records_page.php");
     exit;
 }
 
@@ -9,14 +9,14 @@ $encodedRef = $_GET['ref'];
 $public_key = base64_decode($encodedRef);
 
 if (empty($public_key)) {
-    header("Location: finance_page.php");
+    header("Location: my_records_page.php");
     exit;
 }
 
 require_once BASE_PATH . '/assets/sql/conn.php';
 
 if (!isset($_SESSION['statement_report_id'])) {
-    header("Location: finance_page.php");
+    header("Location: my_records_page.php");
     exit();
 }
 
@@ -28,7 +28,7 @@ $check->execute();
 $result = $check->get_result();
 
 if ($result->num_rows == 0) {
-    header("Location: finance_page.php");
+    header("Location: my_records_page.php");
     exit;
 }
 

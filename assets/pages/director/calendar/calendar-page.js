@@ -1,9 +1,20 @@
-import {
-  onShow,
-  onHide,
-} from "../../../components/sweetalert2/alertAnimation.js";
+import { onShow, onHide } from "../../../components/alerts/sweetalert2/swal.js";
+import { createNotyf } from "../../../components/alerts/notyf.js";
 
-import { createNotyf } from "../../../components/notyf.js";
+const notyf = createNotyf();
+
+FilePond.registerPlugin(FilePondPluginPdfPreview);
+FilePond.registerPlugin(FilePondPluginFileValidateType);
+
+const inputElement = document.getElementById("letterUpload");
+const pond = FilePond.create(inputElement, {
+  acceptedFileTypes: ["application/pdf"],
+});
+
+const cleave = new Cleave("#inputBudgetAmount", {
+  numeral: true,
+  numeralThousandsGroupStyle: "thousand",
+});
 
 let eventTippy = null;
 let calendar;
@@ -210,7 +221,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (data.success) {
                       info.event.remove();
-                      const notyf = createNotyf();
                       notyf.success("Event deleted successfully.");
                     } else {
                       Swal.fire({
@@ -397,7 +407,6 @@ document
       Swal.close();
 
       if (data.success) {
-        const notyf = createNotyf();
         notyf.success("The event has been added successfully.");
 
         calendar.addEvent(data.event);
@@ -448,11 +457,50 @@ function eventRequestPanelVisibility() {
   }
 }
 
-// APPROVE EVENT
-document.querySelectorAll(".approve-btn").forEach((button) => {
-  button.addEventListener("click", async function () {
-    const publicKey = this.getAttribute("data-id");
+const eventApprovalPanel = document.querySelector(".event-approval-panel");
 
+// FETCH REQUESTED EVENT TITLE
+async function fetchEventRequestInfo(publicKey) {
+  try {
+    const response = await fetch("sql/event_request_info.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: publicKey }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    if (data.error) {
+      console.error("Error:", data.error);
+      return null;
+    }
+
+    return {
+      title: data.title,
+      organization: data.organization,
+    };
+  } catch (error) {
+    console.error("Error fetching event title:", error);
+    return null;
+  }
+}
+
+eventApprovalPanel.addEventListener("click", async function (e) {
+  const publicKey = e.target.closest(".event-request-card").dataset.id;
+
+  const approveBtn = e.target.closest(".approve-btn");
+  const rejectBtn = e.target.closest(".reject-btn");
+  const returnBtn = e.target.closest(".return-btn");
+
+  const requestBudgetBtn = e.target.closest(".request-budget-btn");
+
+  // APPROVE EVENT
+  if (approveBtn) {
     Swal.fire({
       title: "Processing...",
       text: "Please wait while we approve the event.",
@@ -486,10 +534,9 @@ document.querySelectorAll(".approve-btn").forEach((button) => {
       Swal.close();
 
       if (data.success) {
-        const notyf = createNotyf();
         notyf.success("The requested event has been approved successfully.");
 
-        this.closest(".event-request-card").remove();
+        e.target.closest(".event-request-card").remove();
         eventRequestPanelVisibility();
 
         calendar.addEvent(data.event);
@@ -524,45 +571,38 @@ document.querySelectorAll(".approve-btn").forEach((button) => {
       });
       console.error("Error:", error);
     }
-  });
-});
-
-// FETCH REQUESTED EVENT TITLE
-async function fetchRequestEventTitle(publicKey) {
-  try {
-    const response = await fetch("sql/request_event_title.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: publicKey }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    if (data.error) {
-      console.error("Error:", data.error);
-      return null;
-    }
-
-    return data.title;
-  } catch (error) {
-    console.error("Error fetching event title:", error);
-    return null;
   }
-}
 
-// REJECT REQUESTED EVENT
-document.querySelectorAll(".reject-btn").forEach((button) => {
-  button.addEventListener("click", async function () {
-    const publicKey = this.getAttribute("data-id");
+  if (requestBudgetBtn) {
+    const eventInfo = await fetchEventRequestInfo(publicKey);
 
-    const eventTitle = await fetchRequestEventTitle(publicKey);
+    const eventRequestTitle = document.getElementById(
+      "eventRequestTitleBudget"
+    );
+    const eventRequestOrganization = document.getElementById(
+      "eventRequestOrganizationBudget"
+    );
 
-    if (!eventTitle) {
+    const inputPublicKey = document.getElementById(
+      "eventRequestPublicKeyBudget"
+    );
+
+    if (!eventInfo) {
+      console.log("Failed to fetch event request.");
+      return;
+    }
+
+    inputPublicKey.value = publicKey;
+
+    eventRequestTitle.textContent = eventInfo.title;
+    eventRequestOrganization.textContent = eventInfo.organization;
+  }
+
+  // REJECT EVENT
+  if (rejectBtn) {
+    const eventInfo = await fetchEventRequestInfo(publicKey);
+
+    if (!eventInfo) {
       Swal.fire({
         title: "Error",
         text: "Failed to fetch event title",
@@ -581,7 +621,7 @@ document.querySelectorAll(".reject-btn").forEach((button) => {
     }
 
     Swal.fire({
-      title: `Are you sure you want to reject the requested event titled "${eventTitle}"?`,
+      title: `Are you sure you want to reject the requested event titled "${eventInfo.title}"?`,
       text: "Rejecting this event will remove it from the request list. Continue?",
       icon: "warning",
       showCancelButton: true,
@@ -632,9 +672,10 @@ document.querySelectorAll(".reject-btn").forEach((button) => {
           Swal.close();
 
           if (result.success) {
-            const notyf = createNotyf();
             notyf.success("Requested event rejected successfully.");
-            this.closest(".event-request-card").remove();
+
+            e.target.closest(".event-request-card").remove();
+
             eventRequestPanelVisibility();
           } else {
             swal.fire({
@@ -658,8 +699,195 @@ document.querySelectorAll(".reject-btn").forEach((button) => {
         }
       }
     });
-  });
+  }
+
+  if (returnBtn) {
+    const eventInfo = await fetchEventRequestInfo(publicKey);
+    const inputPublicKey = document.getElementById("eventRequestPublicKey");
+
+    if (!eventInfo) {
+      return;
+    }
+
+    const title = document.getElementById("eventRequestTitle");
+    const organization = document.getElementById("eventRequestOrganization");
+
+    inputPublicKey.value = publicKey;
+    title.textContent = eventInfo.title;
+    organization.textContent = eventInfo.organization;
+  }
 });
+
+document
+  .getElementById("returnEventRequestForm")
+  .addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const modalElement = document.getElementById("returnEventRequestModal");
+    const modal = bootstrap.Modal.getInstance(modalElement);
+
+    Swal.fire({
+      title: "Processing...",
+      text: "Please wait while we delete the event.",
+      allowOutsideClick: false,
+      showClass: {
+        popup: onShow,
+      },
+      hideClass: {
+        popup: onHide,
+      },
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      const response = await fetch("sql/return_event.php", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("HTTP error!");
+      }
+
+      const result = await response.json();
+
+      Swal.close();
+      if (result.success) {
+        const publicKey = document.getElementById(
+          "eventRequestPublicKey"
+        ).value;
+
+        const card = document.querySelector(
+          `.event-request-card[data-id="${publicKey}"]`
+        );
+
+        if (card) card.remove();
+        notyf.success("Event returned successfully.");
+        modal.hide();
+        this.reset();
+        eventRequestPanelVisibility();
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: `${result.message}`,
+          icon: "error",
+          showClass: {
+            popup: onShow,
+          },
+          hideClass: {
+            popup: onHide,
+          },
+        });
+      }
+    } catch (error) {
+      Swal.close();
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to return the event, please try again.",
+        icon: "error",
+        showClass: {
+          popup: onShow,
+        },
+        hideClass: {
+          popup: onHide,
+        },
+      });
+    }
+  });
+
+tippy(".approve-plus-btn", {
+  content: `
+    <div class="container-fluid tippy-selection">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <button class="no-style-btn request-budget-btn" data-bs-toggle="modal" data-bs-target="#requestBudgetModal">Request Budget for this Event</button>
+            </li>
+        </ul>
+    </div>
+  `,
+  placement: "bottom-end",
+  theme: "light",
+  arrow: false,
+  allowHTML: true,
+  interactive: true,
+  zIndex: 1050,
+  trigger: "click",
+});
+
+// SUBMIT BUDGET REQUEST
+document
+  .getElementById("requestBudgetForm")
+  .addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    pond.getFiles().forEach((fileItem) => {
+      formData.append("req_letter[]", fileItem.file);
+    });
+
+    Swal.fire({
+      title: "Processing...",
+      text: "Please wait while we process your request.",
+      allowOutsideClick: false,
+      showClass: {
+        popup: onShow,
+      },
+      hideClass: {
+        popup: onHide,
+      },
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      const response = await fetch("sql/submit_event_budget_request.php", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("HTTP error!");
+      }
+
+      const submit = await response.json();
+
+      Swal.close();
+      if (submit.success) {
+        const publicKey = document.getElementById(
+          "eventRequestPublicKeyBudget"
+        ).value;
+
+        const card = document.querySelector(
+          `.event-request-card[data-id="${publicKey}"]`
+        );
+
+        if (card) card.remove();
+
+        eventRequestPanelVisibility();
+
+        calendar.addEvent(submit.event);
+
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("requestBudgetModal")
+        );
+        modal.hide();
+
+        notyf.success("Budget request submitted successfully.");
+        this.reset();
+        pond.removeFiles();
+      } else {
+        alert(submit.message);
+      }
+    } catch (error) {
+      Swal.close();
+      console.error("Error details:", error);
+    }
+  });
 
 // document.addEventListener("DOMContentLoaded", function () {
 //   function adjustEventApprovalPanel() {

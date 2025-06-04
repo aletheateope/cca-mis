@@ -22,7 +22,7 @@
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
 <!-- OWN SCRIPT (SWEET ALERT 2) -->
-<script type="module" src="/cca/assets/components/sweetalert2/alert.js"></script>
+<!-- <script type="module" src="/cca/assets/components/alerts/sweetalert2/swal.js"></script> -->
 
 <!-- CLEAVE.JS -->
 <script src="/cca/node_modules/cleave.js/dist/cleave.min.js"></script>

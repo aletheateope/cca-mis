@@ -156,10 +156,11 @@
 }
 
 /* Generate Image Modal */
-.generate-img-modal {
-  .finance-img {
+.statement-summary-modal {
+  .financial-statement {
     padding: 1rem;
     --border-weight: 2px;
+
     > .col {
       display: flex;
       flex-direction: column;
@@ -174,6 +175,7 @@
           .row:first-child {
             border: var(--border-weight) solid var(--gray);
           }
+
           .row:last-child {
             background-color: var(--light-orange);
 
@@ -185,6 +187,7 @@
               font-weight: var(--medium);
             }
           }
+
           .col {
             padding: 0.5rem;
             text-align: center;

@@ -32,9 +32,9 @@ check_role(['Director', 'VPSLD']);
         <div class="row">
             <div class="col-auto">
                 <?php if ($_SESSION['user_role'] === 'Director') {
-                    include_once BASE_PATH . '/assets/components/sidebar/director/sidebar.php';
+                    include_once BASE_PATH . '/assets/components/sidebar/director/director_sidebar.php';
                 } elseif ($_SESSION['user_role'] === 'VPSLD') {
-                    include_once BASE_PATH . '/assets/components/sidebar/vpsld/sidebar.php';
+                    include_once BASE_PATH . '/assets/components/sidebar/vpsld/vpsld_sidebar.php';
                 }?>
             </div>
             <main class="col main-content">
@@ -196,11 +196,10 @@ check_role(['Director', 'VPSLD']);
                                     </div>
                                     <div class="col">
                                         <h5>Date Left</h5>
-                                        <p>
-                                            <?php
-                                                                echo $membership_organization_row['date_left']
-                                                                ? date("F d, Y", strtotime($membership_organization_row['date_left']))
-                                                                : '----';?>
+                                        <p><?php
+                                            echo $membership_organization_row['date_left']
+                                            ? date("F d, Y", strtotime($membership_organization_row['date_left']))
+                                            : 'N/A';?>
                                         </p>
                                     </div>
                                 </div>
@@ -219,7 +218,6 @@ check_role(['Director', 'VPSLD']);
                                             <thead>
                                                 <tr>
                                                     <th>File Name</th>
-                                                    <th class="text-center">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -230,16 +228,6 @@ check_role(['Director', 'VPSLD']);
                                                         <button class="no-style-btn">
                                                             <?php echo $document_row['file_name']?>
                                                         </button>
-                                                    </td>
-                                                    <td>
-                                                        <div class="action-group">
-                                                            <button class="no-style-btn edit-btn">
-                                                                <i class="bi bi-pencil-square"></i>
-                                                            </button>
-                                                            <button class="no-style-btn delete-btn">
-                                                                <i class="bi bi-trash-fill"></i>
-                                                            </button>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                                 <?php }?>
@@ -270,7 +258,6 @@ check_role(['Director', 'VPSLD']);
                                                 <tr>
                                                     <th>Event Title</th>
                                                     <th>Date</th>
-                                                    <th class="text-center">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -280,13 +267,6 @@ check_role(['Director', 'VPSLD']);
                                                     <td><?php echo $participation_row['event_title']?>
                                                     </td>
                                                     <td><?php echo date("F d, Y", strtotime($participation_row['date']))?>
-                                                    </td>
-                                                    <td>
-                                                        <div class="action-group">
-                                                            <button class="no-style-btn delete-btn">
-                                                                <i class="bi bi-trash-fill"></i>
-                                                            </button>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                                 <?php }?>
@@ -328,7 +308,6 @@ check_role(['Director', 'VPSLD']);
                                 <th>Event Title</th>
                                 <th>Recognition</th>
                                 <th>Date</th>
-                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -340,16 +319,6 @@ check_role(['Director', 'VPSLD']);
                                 <td><?php echo $all_recognition_row['recognition']?>
                                 </td>
                                 <td><?php echo date("F d, Y", strtotime($all_recognition_row['date']))?>
-                                </td>
-                                <td>
-                                    <div class="action-group">
-                                        <button class="no-style-btn edit-btn">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        <button class="no-style-btn delete-btn">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
-                                    </div>
                                 </td>
                             </tr>
                             <?php }?>

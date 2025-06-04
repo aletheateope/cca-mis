@@ -20,21 +20,22 @@ $stmt->fetch();
 
 $stmt->close();
 
-$stmt = $conn->prepare("SELECT title, description, location, start_date, end_date FROM event_calendar WHERE event_id = ?");
+$stmt = $conn->prepare("SELECT title, description, location, start_date, end_date, budget_given FROM event_calendar WHERE event_id = ?");
 $stmt->bind_param("i", $event_id);
 $stmt->execute();
-$stmt->bind_result($title, $description, $location, $start_date, $end_date);
-$stmt->fetch();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
 
 $stmt->close();
 
 echo json_encode([
     "success" => true,
     "event" => [
-        "title" => $title,
-        "description" => $description,
-        "location" => $location,
-        "start" => $start_date,
-        "end" => $end_date
+        "title" => $row["title"],
+        "description" => $row["description"],
+        "location" => $row["location"],
+        "start" => $row["start_date"],
+        "end" => $row["end_date"],
+        "budgetGiven" => $row["budget_given"]
     ]
 ]);

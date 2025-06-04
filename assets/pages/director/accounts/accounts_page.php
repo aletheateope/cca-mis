@@ -24,7 +24,7 @@ check_role('Director');
     <div class="container-fluid">
         <div class="row">
             <div class="col-auto">
-                <?php include BASE_PATH . '/assets/components/sidebar/director/sidebar.php' ?>
+                <?php include BASE_PATH . '/assets/components/sidebar/director/director_sidebar.php' ?>
             </div>
             <main class="col main-content">
                 <div class="row page-header">
