@@ -21,8 +21,9 @@ check_role('Organization');
 
     <?php require_once BASE_PATH . '/assets/components/header_links.php' ?>
 
-    <link rel="stylesheet" href="calendar-page.css">
+    <link rel="stylesheet" href="/cca/assets/components/media-query/calendar.css">
 
+    <link rel="stylesheet" href="calendar-page.css">
 </head>
 
 <body>

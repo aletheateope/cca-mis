@@ -497,4 +497,8 @@ document
     }
   });
 
-downloadElement({ triggerId: "download", captureId: "capture" });
+downloadElement({
+  triggerId: "download",
+  captureId: "capture",
+  generateFileName,
+});

@@ -28,11 +28,9 @@ check_role('Organization');
     <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
         rel="stylesheet" />
 
-    <link rel="stylesheet" href="/cca/assets/components/add-page.css">
+    <link rel="stylesheet" href="/cca/assets/components/media-query/add-page.css">
 
     <link rel="stylesheet" href="add-record-page.css">
-
-    <link rel="stylesheet" href="/cca/assets/components/media-query.css">
 </head>
 
 <body>

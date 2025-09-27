@@ -29,3 +29,32 @@
     gap: 2rem;
   }
 }
+
+/* MEDIA QUERIES */
+/* Mobile */
+@media (max-width: 576px) {
+}
+
+/* Large Phone */
+@media (min-width: 576px) {
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+}
+
+/* Large Desktop */
+@media (min-width: 992px) {
+}
+
+/* Extra Large Desktop */
+@media (min-width: 1200px) {
+  .main-content {
+    margin-left: 10rem;
+    margin-right: 10rem;
+  }
+}
+
+/* Extra Extra Large Desktop */
+@media (min-width: 1400px) {
+}

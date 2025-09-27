@@ -24,11 +24,9 @@ check_role('Organization');
     <!-- SPLIDE.JS -->
     <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="/cca/assets/components/add-page.css">
+    <link rel="stylesheet" href="/cca/assets/components/media-query/add-page.css">
 
     <link rel="stylesheet" href="add-activity-page.css">
-
-    <link rel="stylesheet" href="/cca/assets/components/media-query.css">
 </head>
 
 <body>

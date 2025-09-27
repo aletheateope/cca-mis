@@ -1,14 +1,23 @@
 /* MEDIA QUERIES */
 /* Mobile */
 @media (max-width: 576px) {
+  .calendar-container {
+    height: 100vh;
+  }
 }
 
 /* Large Phone */
 @media (min-width: 576px) {
+  .calendar-container {
+    height: 100vh;
+  }
 }
 
 /* Tablet */
 @media (min-width: 768px) {
+  .calendar-container {
+    height: 100%;
+  }
 }
 
 /* Large Desktop */
@@ -17,10 +26,6 @@
 
 /* Extra Large Desktop */
 @media (min-width: 1200px) {
-  .main-content {
-    margin-left: 10rem;
-    margin-right: 10rem;
-  }
 }
 
 /* Extra Extra Large Desktop */

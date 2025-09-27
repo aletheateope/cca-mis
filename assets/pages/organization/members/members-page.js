@@ -388,10 +388,16 @@ inputs.forEach((input) => input.addEventListener("input", checkFields));
 
 // Copy name to the title
 nextButton.addEventListener("click", () => {
-  const fullName = `${document.getElementById("inputFirstName").value}
-                    ${document.getElementById("inputMiddleName").value}
-                    ${document.getElementById("inputLastName").value}`.trim();
-  document.getElementById("memberName").textContent = fullName;
+  const fullName = [
+    document.getElementById("inputFirstName").value,
+    document.getElementById("inputMiddleName").value,
+    document.getElementById("inputLastName").value,
+  ]
+    .map((name) => name.trim())
+    .filter(Boolean)
+    .join(" ");
+
+  document.getElementById("memberFullName").textContent = fullName;
 });
 
 // ENABLE DATE LEFT INTPUT IF STATUS "EXITED" OR "TERMINATED"

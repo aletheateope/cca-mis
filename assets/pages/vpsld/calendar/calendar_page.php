@@ -21,6 +21,8 @@ check_role('VPSLD');
 
     <?php require_once BASE_PATH . '/assets/components/header_links.php' ?>
 
+    <link rel="stylesheet" href="/cca/assets/components/media-query/calendar.css">
+
     <link rel="stylesheet" href="calendar-page.css">
 
 </head>
@@ -88,7 +90,7 @@ check_role('VPSLD');
                                             request_letter.pdf
                                         </a>
                                     </td>
-                                    <td><?php echo $row['amount_requested']?>
+                                    <td><?php echo number_format($row['amount_requested'], 2)?>
                                     </td>
                                     <td>
                                         <div class="action-group">

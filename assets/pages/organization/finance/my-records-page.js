@@ -720,4 +720,8 @@ pageBody.addEventListener("click", async function (e) {
   }
 });
 
-downloadElement({ triggerId: "download", captureId: "capture" });
+downloadElement({
+  triggerId: "download",
+  captureId: "capture",
+  generateFileName,
+});

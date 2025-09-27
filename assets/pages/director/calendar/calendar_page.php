@@ -29,6 +29,8 @@ check_role('Director');
     <link href="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css"
         rel="stylesheet">
 
+    <link rel="stylesheet" href="/cca/assets/components/media-query/calendar.css">
+
     <link rel="stylesheet" href="calendar-page.css">
 </head>
 

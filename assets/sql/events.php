@@ -5,12 +5,13 @@ header('Content-Type: application/json');
 
 require_once BASE_PATH . '/assets/sql/conn.php';
 
-$sql = 'SELECT public_key, title, description, location, start_date, end_date, start_time, end_time, COALESCE(name,role) AS scheduled_by, ec.user_id, account.role
+$sql = 'SELECT public_key, title, description, location, start_date, end_date, start_time, end_time, budget_given,
+        COALESCE(ao.name, a.role) AS scheduled_by, ec.user_id, a.role
         FROM event_calendar ec
         LEFT JOIN account_organization ao
             ON ao.organization_id = ec.user_id 
-        LEFT JOIN account 
-            ON account.user_id = ec.user_id
+        LEFT JOIN account a
+            ON a.user_id = ec.user_id
         INNER JOIN key_event ke
             ON ke.event_id = ec.event_id';
 $result = $conn->query($sql);
@@ -47,6 +48,7 @@ while ($row = $result->fetch_assoc()) {
         'extendedProps' => [
             'description' => $row['description'],
             'location' => $row['location'],
+            'budget' => $row['budget_given'],
 
             'scheduled_by' => $row['scheduled_by'],
         ],

@@ -1,5 +1,11 @@
 import { onShow, onHide } from "../../../components/alerts/sweetalert2/swal.js";
 import { createNotyf } from "../../../components/alerts/notyf.js";
+import {
+  formatDate,
+  formatTime,
+} from "../../../components/formatter/formatDate.js";
+import { formatNumber } from "../../../components/formatter/formatNumber.js";
+import { getEventDetails } from "../../../components/fullcalendar/eventDetails.js";
 
 const notyf = createNotyf();
 
@@ -76,80 +82,32 @@ document.addEventListener("DOMContentLoaded", function () {
       const startDate = info.event.start;
       const endDate = info.event.end ? info.event.end : startDate; // If endDate is null, use startDate
 
-      const formatDate = (date, isAllDay) => {
+      const formatDateTime = (date, isAllDay) => {
         if (!date) return "N/A";
 
-        const options = { year: "numeric", month: "long", day: "2-digit" };
-        const formattedDate = date.toLocaleDateString("en-US", options);
-
         if (isAllDay) {
-          return formattedDate;
+          return formatDate(date);
         }
 
-        const timeOptions = {
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true,
-        };
-        const formattedTime = date.toLocaleTimeString("en-US", timeOptions);
-
-        return `${formattedDate} - ${formattedTime}`;
+        return `${formatDate(date)} - ${formatTime(
+          date.toTimeString().slice(0, 5)
+        )}`;
       };
-      const formattedStart = formatDate(startDate, isAllDay);
-      const formattedEnd = formatDate(endDate, isAllDay);
+
+      const formattedStart = formatDateTime(startDate, isAllDay);
+      const formattedEnd = formatDateTime(endDate, isAllDay);
+
+      const admin = true;
 
       eventTippy = tippy(info.el, {
         theme: "light",
-        content: `
-          <div class="container-fluid">
-            <div class="row tippy-event-details">
-              <div class="col">
-                <div class="row header">
-                  <div class="col">
-                    <h3>Event Details</h3>
-                    <div class="action-group">
-                      <button class="no-style-btn edit-btn">
-                        <i class="bi bi-pencil-square"></i>
-                      </button>
-                      <button class="no-style-btn delete-btn">
-                        <i class="bi bi-trash-fill"></i>
-                      </button>
-                      <button class="no-style-btn options-btn">
-                        <i class="bi bi-three-dots-vertical"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="row title">
-                  <div class="col">
-                    <h4>${info.event.title}</h4>
-                    <h6>${info.event.extendedProps.scheduled_by}</h6>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <p>${info.event.extendedProps.description}</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <p>${info.event.extendedProps.location}</p>
-                  </div>
-                </div>
-                <div class="row date">
-                  <div class="col">
-                    <h5>Start Date</h5>
-                    <p>${formattedStart}</p>
-                  </div>
-                  <div class="col">
-                    <h5>End Date</h5>
-                    <p>${formattedEnd}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        `,
+        content: getEventDetails(
+          info,
+          formattedStart,
+          formattedEnd,
+          formatNumber,
+          admin
+        ),
         arrow: false,
         maxWidth: 400,
         allowHTML: true,
@@ -275,9 +233,9 @@ document.addEventListener("DOMContentLoaded", function () {
       tippy(".options-btn", {
         theme: "light",
         content: `
-          <div class="tippy-no-bullets tippy-options">
-            <ul>
-              <li><button class="no-style-btn cancel-event-btn">Cancel Event</button></li>
+          <div class="container-fluid tippy-selection">
+            <ul class="list-group">
+              <li class="list-group-item"><button class="no-style-btn cancel-event-btn">Cancel Event</button></li>
             </ul>
           </div>
         `,

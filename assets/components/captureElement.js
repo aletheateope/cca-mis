@@ -1,6 +1,4 @@
-import { generateFileName } from "./formatter/fileNameGenerator.js";
-
-export function downloadElement({ triggerId, captureId }) {
+export function downloadElement({ triggerId, captureId, generateFileName }) {
   const trigger = document.getElementById(triggerId);
   const captureElement = document.getElementById(captureId);
 
