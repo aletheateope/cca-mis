@@ -1,8 +1,8 @@
 # Folders
 node_modules
-
 uploads
-
 vendor
 
 # Files
+.env
+codestash.txt
