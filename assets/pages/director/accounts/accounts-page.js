@@ -7,49 +7,24 @@ const notyf = createNotyf();
 const adminTable = document.querySelector(".admin-table tbody");
 const organizationTable = document.querySelector(".organization-table tbody");
 
-async function refreshAdminTable() {
-  adminTable.innerHTML = "";
+// ROLE SELECTION
+const roleSelect = document.getElementById("role-select");
+const adminField = document.getElementById("admin-field");
+const orgField = document.getElementById("org-field");
 
-  try {
-    const response = await fetch("sql/refresh_admin_table.php");
+function toggleFields() {
+  const value = roleSelect.value;
 
-    if (!response.ok) {
-      throw new Error("Failed to refresh admin table");
-    }
-
-    const result = await response.json();
-
-    result.forEach((admin) => {
-      const name = admin.first_name + " " + admin.last_name;
-
-      const row = document.createElement("tr");
-      row.setAttribute("data-id", admin.public_key);
-      row.innerHTML = `
-        <td>${name}</td>
-        <td>${admin.email}</td>
-        <td>${admin.role}</td>
-        <td>
-          <div class="actions-group">
-            <button
-              class="no-style-btn edit-btn"
-              data-bs-toggle="modal"
-              data-bs-target="#editAdminModal"
-            >
-              <i class="bi bi-pencil-square"></i>
-            </button>
-            <button class="no-style-btn delete-btn">
-              <i class="bi bi-trash-fill"></i>
-            </button>
-          </div>
-        </td>
-      `;
-
-      adminTable.appendChild(row);
-    });
-  } catch (error) {
-    console.log(error);
+  if (value === "3") {
+    adminField.classList.add("d-none");
+    orgField.classList.remove("d-none");
+  } else {
+    adminField.classList.remove("d-none");
+    orgField.classList.add("d-none");
   }
 }
+
+roleSelect.addEventListener("change", toggleFields);
 
 // ADD USER
 document
@@ -89,7 +64,49 @@ document
       Swal.close();
 
       if (result.success) {
-        refreshAdminTable();
+        const row = document.createElement("tr");
+        row.setAttribute("data-id", result.data.public_key);
+        const admin_name = result.data.first_name + " " + result.data.last_name;
+
+        if (result.data.role == 3) {
+          row.innerHTML = `
+            <td>${result.data.name}</td>
+            <td>${result.data.email}</td>
+            <td>
+              <button
+                class="no-style-btn edit-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#editOrganizationModal"
+              >
+                <i class="bi bi-pencil-square"></i>
+              </button>
+            </td>
+          `;
+
+          organizationTable.appendChild(row);
+        } else {
+          row.innerHTML = `
+            <td class="admin-name">${admin_name}</td>
+            <td>${result.data.email}</td>
+            <td>${result.data.role_name}</td>
+            <td>
+              <div class="actions-group">
+                <button
+                  class="no-style-btn edit-btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editAdminModal"
+                >
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="no-style-btn delete-btn">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </div>
+            </td>
+          `;
+
+          adminTable.appendChild(row);
+        }
 
         const modal = bootstrap.Modal.getInstance(
           document.getElementById("addUserModal")
@@ -98,6 +115,8 @@ document
 
         this.reset();
         notyf.success("User added successfully");
+
+        console.log(result);
       } else {
         Swal.fire({
           title: "Error",
@@ -118,9 +137,11 @@ document
 
 // ADMIN TABLE
 adminTable.addEventListener("click", async (e) => {
-  const publicKey = e.target.closest("tr").dataset.id;
+  const row = e.target.closest("tr");
+  const publicKey = row.dataset.id;
   const editBtn = e.target.closest(".edit-btn");
   const deleteBtn = e.target.closest(".delete-btn");
+  const name = row.querySelector(".admin-name").textContent.trim();
 
   // EDIT ADMIN
   if (editBtn) {
@@ -157,106 +178,85 @@ adminTable.addEventListener("click", async (e) => {
 
   // DELETE ADMIN
   if (deleteBtn) {
-    try {
-      const response = await fetch("sql/get_admin_name.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ publicKey }),
-      });
+    Swal.fire({
+      title: `Are you sure you want to remove ${name} from the system?`,
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      reverseButtons: true,
+      showClass: {
+        popup: onShow,
+      },
+      hideClass: {
+        popup: onHide,
+      },
+      customClass: {
+        popup: "swal-container",
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch("sql/delete_user.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ publicKey }),
+          });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch name");
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        const name = data.firstName + " " + data.lastName;
-
-        Swal.fire({
-          title: `Are you sure you want to remove ${name} from the system?`,
-          text: "This action cannot be undone.",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Yes",
-          cancelButtonText: "No",
-          reverseButtons: true,
-          showClass: {
-            popup: onShow,
-          },
-          hideClass: {
-            popup: onHide,
-          },
-          customClass: {
-            popup: "swal-container",
-          },
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            try {
-              const response = await fetch("sql/delete_user.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ publicKey }),
-              });
-
-              if (!response.ok) {
-                throw new Error("Failed to remove admin");
-              }
-
-              Swal.fire({
-                title: "Processing...",
-                text: "Please wait while we delete the admin.",
-                allowOutsideClick: false,
-                showClass: {
-                  popup: onShow,
-                },
-                hideClass: {
-                  popup: onHide,
-                },
-                didOpen: () => {
-                  Swal.showLoading();
-                },
-              });
-
-              const result = await response.json();
-
-              Swal.close();
-
-              if (result.success) {
-                notyf.success("Admin removed successfully");
-
-                e.target.closest("tr").remove();
-              } else {
-                Swal.fire({
-                  title: "Error",
-                  text: `${result.message}`,
-                  icon: "error",
-                  showClass: {
-                    popup: onShow,
-                  },
-                  hideClass: {
-                    popup: onHide,
-                  },
-                });
-              }
-            } catch (error) {
-              Swal.close();
-              console.log(error);
-            }
+          if (!response.ok) {
+            throw new Error("Failed to remove admin");
           }
-        });
-      } else {
-        console.log(result.message);
+
+          Swal.fire({
+            title: "Processing...",
+            text: "Please wait while we delete the admin.",
+            allowOutsideClick: false,
+            showClass: {
+              popup: onShow,
+            },
+            hideClass: {
+              popup: onHide,
+            },
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+
+          const result = await response.json();
+
+          Swal.close();
+
+          if (result.success) {
+            notyf.success("Admin removed successfully");
+
+            e.target.closest("tr").remove();
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: `${result.message}`,
+              icon: "error",
+              showClass: {
+                popup: onShow,
+              },
+              hideClass: {
+                popup: onHide,
+              },
+            });
+          }
+        } catch (error) {
+          Swal.close();
+          console.log(error);
+        }
       }
-    } catch (error) {
-      console.log(error);
-    }
+    });
   }
 });
 
 // ORGANIZATION TABLE
 organizationTable.addEventListener("click", async (e) => {
-  const publicKey = e.target.closest("tr").dataset.id;
+  const row = e.target.closest("tr");
+  const publicKey = row.dataset.id;
   const editBtn = e.target.closest(".edit-btn");
 
   if (editBtn) {

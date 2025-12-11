@@ -1,4 +1,5 @@
-<?php require_once BASE_PATH . '/assets/sql/conn.php';
+<?php
+require_once BASE_PATH . '/assets/sql/conn.php';
 
 $stmt = $conn->prepare("SELECT pi.path AS profile, ao.name, COUNT(so.student_number) AS member_count
                         FROM account_organization ao

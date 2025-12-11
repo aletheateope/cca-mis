@@ -55,7 +55,7 @@ check_role('Director');
                                         <?php while ($row_admin = $result_admin->fetch_assoc()) { ?>
                                         <tr
                                             data-id="<?php echo $row_admin['public_key']?>">
-                                            <td>
+                                            <td class="admin-name">
                                                 <?php echo $row_admin['first_name'] . ' ' . $row_admin['last_name'] ?>
                                             </td>
                                             <td>
@@ -65,7 +65,7 @@ check_role('Director');
                                                 <?php echo $row_admin['role'] ?>
                                             </td>
                                             <td>
-                                                <div class="actions-group">
+                                                <div class="action-group">
                                                     <button class="no-style-btn edit-btn" data-bs-toggle="modal"
                                                         data-bs-target="#editAdminModal">
                                                         <i class="bi bi-pencil-square"></i>
@@ -135,30 +135,41 @@ check_role('Director');
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5">Add User Admin</h1>
+                        <h1 class="modal-title fs-5">Add User</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col">
-                                    <label for="selectRole" class="form-label">Role</label>
-                                    <select class="form-select" id="selectRole" name="role">
+                                    <label for="role-select" class="form-label">Role</label>
+                                    <select class="form-select" id="role-select" name="role">
                                         <option value="1" selected>Director</option>
                                         <option value="2">VPSLD</option>
+                                        <option value="3">Organization</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="inputAdminFirstName" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" id="inputAdminFirstName" name="first_name">
+                            <div class="d-flex flex-column gap-4" id="admin-field">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="inputAdminFirstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="inputAdminFirstName"
+                                            name="first_name">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="inputAdminLastName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="inputAdminLastName"
+                                            name="last_name">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row d-none" id="org-field">
                                 <div class="col">
-                                    <label for="inputAdminLastName" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" id="inputAdminLastName" name="last_name">
+                                    <label for="inputEmail" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="inputOrgName" name="name">
                                 </div>
                             </div>
                             <div class="row">

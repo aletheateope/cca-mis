@@ -13,11 +13,19 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 $role = $_POST['role'] ?? null;
 $first_name = $_POST['first_name'] ?? null;
 $last_name = $_POST['last_name'] ?? null;
+$name = $_POST['name'] ?? null;
 $email = $_POST['email'] ?? null;
 
-if (empty($role) || empty($first_name) || empty($last_name) || empty($email)) {
-    echo json_encode(['success' => false, 'message' => 'All fields are required']);
-    exit;
+if ($role == 3) {
+    if (empty($name) || empty($email)) {
+        echo json_encode(['success' => false, 'message' => 'All fields are required']);
+        exit;
+    }
+} else {
+    if (empty($first_name) || empty($last_name) || empty($email)) {
+        echo json_encode(['success' => false, 'message' => 'All fields are required']);
+        exit;
+    }
 }
 
 $stmt = $conn->prepare("SELECT email FROM account WHERE email = ?");
@@ -34,7 +42,8 @@ $stmt->close();
 
 $roles = [
     1 => "Director",
-    2 => "VPSLD"
+    2 => "VPSLD",
+    3 => "Organization"
 ];
 
 $role_name = $roles[$role] ?? null;
@@ -56,8 +65,13 @@ $user_id = $conn->insert_id;
 
 $stmt->close();
 
-$stmt = $conn->prepare("INSERT INTO account_admin (admin_id, first_name, last_name, date_created) VALUES (?, ?, ?, NOW())");
-$stmt->bind_param("iss", $user_id, $first_name, $last_name);
+if ($role == 3) {
+    $stmt = $conn->prepare("INSERT INTO account_organization (user_id, name) VALUES (?, ?)");
+    $stmt->bind_param("is", $user_id, $name);
+} else {
+    $stmt = $conn->prepare("INSERT INTO account_admin (user_id, first_name, last_name, date_created) VALUES (?, ?, ?, NOW())");
+    $stmt->bind_param("iss", $user_id, $first_name, $last_name);
+}
 
 if (!$stmt->execute()) {
     echo json_encode(['success' => false, 'message' => 'Failed to add user' . $conn->error]);
@@ -97,8 +111,10 @@ if($stmt->execute()) {
                 'public_key' => $public_key,
                 'first_name' => $first_name,
                 'last_name' => $last_name,
+                'name' => $name,
                 'email' => $email,
                 'role' => $role,
+                'role_name' => $role_name
             ]
         ]);
         $stmt->close();

@@ -20,7 +20,7 @@ $public_key = $data['publicKey'];
 $stmt = $conn->prepare("SELECT a.email, a.role, aa.first_name, aa.last_name
                         FROM account a
                         INNER JOIN account_admin aa
-                            ON aa.admin_id = a.user_id
+                            ON aa.user_id = a.user_id
                         INNER JOIN key_user ku
                             ON ku.user_id = a.user_id
                         WHERE ku.public_key = ?");
