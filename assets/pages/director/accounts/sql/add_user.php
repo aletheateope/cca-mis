@@ -2,8 +2,25 @@
 header('Content-Type: application/json');
 
 require_once '../../../../sql/base_path.php';
-
+require_once BASE_PATH . '/assets/sql/dotenv.php';
 require_once BASE_PATH . '/assets/sql/conn.php';
+
+require_once BASE_PATH . '/assets/sql/google_calendar/service_account.php';
+require_once BASE_PATH . '/assets/sql/public_key.php';
+
+function addCalendarAcl($service, $calendarId, $email, $role)
+{
+    $rule = new Google_Service_Calendar_AclRule();
+    $rule->setRole($role);
+
+    $scope = new Google_Service_Calendar_AclRuleScope();
+    $scope->setType('user');
+    $scope->setValue($email);
+
+    $rule->setScope($scope);
+    $service->acl->insert($calendarId, $rule);
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
@@ -28,18 +45,6 @@ if ($role == 3) {
     }
 }
 
-$stmt = $conn->prepare("SELECT email FROM account WHERE email = ?");
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$stmt->store_result();
-
-if ($stmt->num_rows > 0) {
-    echo json_encode(['success' => false, 'message' => 'Email already exists']);
-    exit;
-}
-
-$stmt->close();
-
 $roles = [
     1 => "Director",
     2 => "VPSLD",
@@ -53,76 +58,96 @@ if (!$role_name) {
     exit;
 }
 
-$stmt = $conn->prepare("INSERT INTO account (email, role) VALUES (?, ?)");
-$stmt->bind_param("ss", $email, $role_name);
-
-if (!$stmt->execute()) {
-    echo json_encode(['success' => false, 'message' => 'Failed to add user' . $conn->error]);
-    exit;
-}
-
-$user_id = $conn->insert_id;
-
-$stmt->close();
-
-if ($role == 3) {
-    $stmt = $conn->prepare("INSERT INTO account_organization (user_id, name) VALUES (?, ?)");
-    $stmt->bind_param("is", $user_id, $name);
-} else {
-    $stmt = $conn->prepare("INSERT INTO account_admin (user_id, first_name, last_name, date_created) VALUES (?, ?, ?, NOW())");
-    $stmt->bind_param("iss", $user_id, $first_name, $last_name);
-}
-
-if (!$stmt->execute()) {
-    echo json_encode(['success' => false, 'message' => 'Failed to add user' . $conn->error]);
-    exit;
-}
-
-$stmt->close();
-
-$stmt = $conn->prepare("INSERT INTO profile_image (user_id) VALUES (?)");
-$stmt->bind_param("i", $user_id);
-
-if($stmt->execute()) {
+$conn->begin_transaction();
+try {
+    $stmt = $conn->prepare("INSERT INTO account (email, role) VALUES (?, ?)");
+    $stmt->bind_param("ss", $email, $role_name);
+    $stmt->execute();
+    $user_id = $conn->insert_id;
     $stmt->close();
-    
-    require_once BASE_PATH . '/assets/sql/public_key.php';
 
-    $count = 1;
+    if ($role == 3) {
+        $stmt = $conn->prepare("INSERT INTO account_organization (user_id, name) VALUES (?, ?)");
+        $stmt->bind_param("is", $user_id, $name);
+        $stmt->execute();
+        $organization_id = $stmt->insert_id;
+        $stmt->close();
+    } else {
+        $stmt = $conn->prepare("INSERT INTO account_admin (user_id, first_name, last_name, date_created) VALUES (?, ?, ?, NOW())");
+        $stmt->bind_param("iss", $user_id, $first_name, $last_name);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    $stmt = $conn->prepare("INSERT INTO profile_image (user_id) VALUES (?)");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->close();
 
     do {
         $public_key = generatePublicKey();
-    
-        $stmtKey = $conn->prepare("SELECT COUNT(*) FROM key_user WHERE public_key = ?");
-        $stmtKey->bind_param("s", $public_key);
-        $stmtKey->execute();
-        $stmtKey->bind_result($count);
-        $stmtKey->fetch();
-        $stmtKey->close();
-    } while ($count > 0);
+        $stmt = $conn->prepare("UPDATE account SET public_key = ? WHERE user_id = ?");
+        $stmt->bind_param("si", $public_key, $user_id);
+        try {
+            $stmt->execute();
+            $stmt->close();
+            break;
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062) {
+                continue;
+            } else {
+                throw $e;
+            }
+        }
+    } while (true);
 
-    $stmt = $conn->prepare("INSERT INTO key_user (user_id, public_key) VALUES (?, ?)");
-    $stmt->bind_param("is", $user_id, $public_key);
 
-    if($stmt->execute()) {
-        echo json_encode([
-            'success' => true,
-            'data' => [
-                'public_key' => $public_key,
-                'first_name' => $first_name,
-                'last_name' => $last_name,
-                'name' => $name,
-                'email' => $email,
-                'role' => $role,
-                'role_name' => $role_name
-            ]
-        ]);
-        $stmt->close();
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to add user' . $conn->error]);
-        $stmt->close();
-    }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Failed to add user' . $conn->error]);
-    $stmt->close();
+    $conn->commit();
+} catch (Exception $e) {
+    $conn->rollback();
+    echo json_encode(['success' => false, 'message' => 'Failed to create user']);
+    exit;
 }
+
+try {
+    $client = googleClient();
+    $service = new Google_Service_Calendar($client);
+    $calendar = new Google_Service_Calendar_Calendar();
+    $calendar->setSummary($name);
+    $calendar->setTimeZone('Asia/Manila');
+
+    $createdCalendar = $service->calendars->insert($calendar);
+    $calendarId = $createdCalendar->getId();
+
+    $stmt = $conn->prepare("UPDATE account_organization SET google_calendar_id = ? WHERE organization_id = ?");
+    $stmt->bind_param("si", $calendarId, $organization_id);
+    if(!$stmt->execute()) {
+        echo json_encode(['success' => false, 'message' => 'Failed to add user']);
+        exit;
+    }
+    $stmt->close();
+
+    try {
+        addCalendarAcl($service, $calendarId, $_ENV['CALENDAR_GMAIL'], 'owner');
+        addCalendarAcl($service, $calendarId, $email, 'reader');
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'Failed to share calendar: ' . $e->getMessage()]);
+        exit;
+    }
+} catch (Exception $e) {
+    echo json_encode(['success' => false, 'message' => 'Calendar creation failed: ' . $e->getMessage()]);
+    exit;
+}
+
+echo json_encode([
+    'success' => true,
+    'data' => [
+        'public_key' => $public_key,
+        'first_name' => $first_name,
+        'last_name' => $last_name,
+        'name' => $name,
+        'email' => $email,
+        'role' => $role,
+        'role_name' => $role_name
+    ]
+]);

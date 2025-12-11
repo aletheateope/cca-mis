@@ -3,7 +3,8 @@ header("content-type: application/json");
 
 require_once '../../../../sql/base_path.php';
 
-require_once 'google_calendar/service_account.php';
+require_once BASE_PATH . '/assets/sql/dotenv.php';
+require_once BASE_PATH . '/assets/sql/google_calendar/service_account.php';
 
 session_start();
 
@@ -17,8 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     ]);
     exit;
 }
-
-require_once 'google_calendar/calendar_id.php';
 
 require_once BASE_PATH . '/assets/sql/conn.php';
 
@@ -46,7 +45,7 @@ if ($stmt->execute()) {
     try {
         $client = googleClient();
         $service = new Calendar($client);
-        $calendarId = $directorCalendarID;
+        $calendarId = $_ENV['DIRECTOR_CALENDAR_ID'];
 
         $eventData = [
              'summary' => $title,

@@ -32,6 +32,21 @@ document
   .addEventListener("submit", async function (e) {
     e.preventDefault();
 
+    Swal.fire({
+      title: "Processing...",
+      text: "Please wait while we add the user.",
+      allowOutsideClick: false,
+      showClass: {
+        popup: onShow,
+      },
+      hideClass: {
+        popup: onHide,
+      },
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     const formData = new FormData(this);
 
     try {
@@ -43,21 +58,6 @@ document
       if (!response.ok) {
         throw new Error("Error");
       }
-
-      Swal.fire({
-        title: "Processing...",
-        text: "Please wait while we add the user.",
-        allowOutsideClick: false,
-        showClass: {
-          popup: onShow,
-        },
-        hideClass: {
-          popup: onHide,
-        },
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
 
       const result = await response.json();
 
@@ -117,11 +117,8 @@ document
           document.getElementById("addUserModal")
         );
         modal.hide();
-
         this.reset();
         notyf.success("User added successfully");
-
-        console.log(result);
       } else {
         Swal.fire({
           title: "Error",
