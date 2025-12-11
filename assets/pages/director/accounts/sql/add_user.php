@@ -62,7 +62,16 @@ $conn->begin_transaction();
 try {
     $stmt = $conn->prepare("INSERT INTO account (email, role) VALUES (?, ?)");
     $stmt->bind_param("ss", $email, $role_name);
-    $stmt->execute();
+    try {
+        $stmt->execute();
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() === 1062) { // Duplicate entry
+            echo json_encode(['success' => false, 'message' => 'Email already exists']);
+            exit;
+        } else {
+            throw $e;
+        }
+    }
     $user_id = $conn->insert_id;
     $stmt->close();
 
@@ -109,34 +118,36 @@ try {
     exit;
 }
 
-try {
-    $client = googleClient();
-    $service = new Google_Service_Calendar($client);
-    $calendar = new Google_Service_Calendar_Calendar();
-    $calendar->setSummary($name);
-    $calendar->setTimeZone('Asia/Manila');
-
-    $createdCalendar = $service->calendars->insert($calendar);
-    $calendarId = $createdCalendar->getId();
-
-    $stmt = $conn->prepare("UPDATE account_organization SET google_calendar_id = ? WHERE organization_id = ?");
-    $stmt->bind_param("si", $calendarId, $organization_id);
-    if(!$stmt->execute()) {
-        echo json_encode(['success' => false, 'message' => 'Failed to add user']);
-        exit;
-    }
-    $stmt->close();
-
+if ($role == 3) {
     try {
-        addCalendarAcl($service, $calendarId, $_ENV['CALENDAR_GMAIL'], 'owner');
-        addCalendarAcl($service, $calendarId, $email, 'reader');
+        $client = googleClient();
+        $service = new Google_Service_Calendar($client);
+        $calendar = new Google_Service_Calendar_Calendar();
+        $calendar->setSummary($name);
+        $calendar->setTimeZone('Asia/Manila');
+
+        $createdCalendar = $service->calendars->insert($calendar);
+        $calendarId = $createdCalendar->getId();
+
+        $stmt = $conn->prepare("UPDATE account_organization SET google_calendar_id = ? WHERE organization_id = ?");
+        $stmt->bind_param("si", $calendarId, $organization_id);
+        if(!$stmt->execute()) {
+            echo json_encode(['success' => false, 'message' => 'Failed to add user']);
+            exit;
+        }
+        $stmt->close();
+
+        try {
+            addCalendarAcl($service, $calendarId, $_ENV['CALENDAR_GMAIL'], 'owner');
+            addCalendarAcl($service, $calendarId, $email, 'reader');
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => 'Failed to share calendar']);
+            exit;
+        }
     } catch (Exception $e) {
-        echo json_encode(['success' => false, 'message' => 'Failed to share calendar: ' . $e->getMessage()]);
+        echo json_encode(['success' => false, 'message' => 'Calendar creation failed' ]);
         exit;
     }
-} catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'Calendar creation failed: ' . $e->getMessage()]);
-    exit;
 }
 
 echo json_encode([
