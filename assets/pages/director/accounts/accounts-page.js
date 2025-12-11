@@ -1,4 +1,8 @@
-import { onShow, onHide } from "../../../components/alerts/sweetalert2/swal.js";
+import {
+  swalLoadingAlert,
+  swalConfirmAlert,
+  swalErrorAlert,
+} from "../../../components/alerts/sweetalert2/swal.js";
 
 import { createNotyf } from "../../../components/alerts/notyf.js";
 
@@ -32,20 +36,7 @@ document
   .addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    Swal.fire({
-      title: "Processing...",
-      text: "Please wait while we add the user.",
-      allowOutsideClick: false,
-      showClass: {
-        popup: onShow,
-      },
-      hideClass: {
-        popup: onHide,
-      },
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
+    swalLoadingAlert("Processing...", "Please wait while we add the user.");
 
     const formData = new FormData(this);
 
@@ -70,7 +61,7 @@ document
 
         if (result.data.role == 3) {
           row.innerHTML = `
-            <td>${result.data.name}</td>
+            <td class="org-name">${result.data.name}</td>
             <td>${result.data.email}</td>
             <td>
               <div class="action-group">
@@ -120,17 +111,7 @@ document
         this.reset();
         notyf.success("User added successfully");
       } else {
-        Swal.fire({
-          title: "Error",
-          text: result.message,
-          icon: "error",
-          showClass: {
-            popup: onShow,
-          },
-          hideClass: {
-            popup: onHide,
-          },
-        });
+        swalErrorAlert(result.message);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -180,78 +161,42 @@ adminTable.addEventListener("click", async (e) => {
 
   // DELETE ADMIN
   if (deleteBtn) {
-    Swal.fire({
+    const confirmed = await swalConfirmAlert({
       title: `Are you sure you want to remove ${name} from the system?`,
       text: "This action cannot be undone.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-      reverseButtons: true,
-      showClass: {
-        popup: onShow,
-      },
-      hideClass: {
-        popup: onHide,
-      },
-      customClass: {
-        popup: "swal-container",
-      },
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await fetch("sql/delete_user.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ publicKey }),
-          });
-
-          if (!response.ok) {
-            throw new Error("Failed to remove admin");
-          }
-
-          Swal.fire({
-            title: "Processing...",
-            text: "Please wait while we delete the admin.",
-            allowOutsideClick: false,
-            showClass: {
-              popup: onShow,
-            },
-            hideClass: {
-              popup: onHide,
-            },
-            didOpen: () => {
-              Swal.showLoading();
-            },
-          });
-
-          const result = await response.json();
-
-          Swal.close();
-
-          if (result.success) {
-            notyf.success("Admin removed successfully");
-
-            e.target.closest("tr").remove();
-          } else {
-            Swal.fire({
-              title: "Error",
-              text: `${result.message}`,
-              icon: "error",
-              showClass: {
-                popup: onShow,
-              },
-              hideClass: {
-                popup: onHide,
-              },
-            });
-          }
-        } catch (error) {
-          Swal.close();
-          console.log(error);
-        }
-      }
     });
+
+    if (confirmed) {
+      swalLoadingAlert(
+        "Processing...",
+        "Please wait while we delete the admin."
+      );
+
+      try {
+        const response = await fetch("sql/delete_user.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ publicKey }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to remove admin");
+        }
+
+        const result = await response.json();
+
+        Swal.close();
+        if (result.success) {
+          notyf.success("Admin removed successfully");
+          e.target.closest("tr").remove();
+        } else {
+          swalErrorAlert(result.message);
+        }
+      } catch (error) {
+        Swal.close();
+        console.log(error);
+      }
+    }
   }
 });
 
@@ -294,78 +239,43 @@ organizationTable.addEventListener("click", async (e) => {
   }
 
   if (deleteBtn) {
-    Swal.fire({
+    const confirmed = await swalConfirmAlert({
       title: `Are you sure you want to remove ${name} from the system?`,
       text: "This action cannot be undone.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-      reverseButtons: true,
-      showClass: {
-        popup: onShow,
-      },
-      hideClass: {
-        popup: onHide,
-      },
-      customClass: {
-        popup: "swal-container",
-      },
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await fetch("sql/delete_user.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ publicKey }),
-          });
-
-          if (!response.ok) {
-            throw new Error("Failed to remove the organization");
-          }
-
-          Swal.fire({
-            title: "Processing...",
-            text: "Please wait while we delete the organization.",
-            allowOutsideClick: false,
-            showClass: {
-              popup: onShow,
-            },
-            hideClass: {
-              popup: onHide,
-            },
-            didOpen: () => {
-              Swal.showLoading();
-            },
-          });
-
-          const result = await response.json();
-
-          Swal.close();
-
-          if (result.success) {
-            notyf.success("Organization removed successfully");
-
-            e.target.closest("tr").remove();
-          } else {
-            Swal.fire({
-              title: "Error",
-              text: `${result.message}`,
-              icon: "error",
-              showClass: {
-                popup: onShow,
-              },
-              hideClass: {
-                popup: onHide,
-              },
-            });
-          }
-        } catch (error) {
-          Swal.close();
-          console.log(error);
-        }
-      }
     });
+
+    if (confirmed) {
+      swalLoadingAlert(
+        "Processing...",
+        "Please wait while we delete the organization."
+      );
+
+      try {
+        const response = await fetch("sql/delete_user.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ publicKey }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to remove the organization");
+        }
+
+        const result = await response.json();
+
+        Swal.close();
+        if (result.success) {
+          notyf.success("Organization removed successfully");
+
+          e.target.closest("tr").remove();
+        } else {
+          swalErrorAlert(result.message);
+        }
+      } catch (error) {
+        Swal.close();
+        console.log(error);
+      }
+    }
   }
 });
 
@@ -387,25 +297,14 @@ document
         throw new Error("Error");
       }
 
-      Swal.fire({
-        title: "Processing...",
-        text: "Please wait while we delete the event.",
-        allowOutsideClick: false,
-        showClass: {
-          popup: onShow,
-        },
-        hideClass: {
-          popup: onHide,
-        },
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
+      swalLoadingAlert(
+        "Processing...",
+        "Please wait while we update the organization."
+      );
 
       const result = await response.json();
 
       Swal.close();
-
       if (result.success) {
         const name = result.data.name;
         const email = result.data.email;
@@ -434,17 +333,7 @@ document
         this.reset();
         notyf.success("Organization updated successfully");
       } else {
-        Swal.fire({
-          title: "Error",
-          text: result.message,
-          icon: "error",
-          showClass: {
-            popup: onShow,
-          },
-          hideClass: {
-            popup: onHide,
-          },
-        });
+        swalErrorAlert(result.message);
       }
     } catch (error) {
       Swal.close();

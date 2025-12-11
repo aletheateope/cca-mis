@@ -65,7 +65,7 @@ try {
     try {
         $stmt->execute();
     } catch (mysqli_sql_exception $e) {
-        if ($e->getCode() === 1062) { // Duplicate entry
+        if ($e->getCode() === 1062) {
             echo json_encode(['success' => false, 'message' => 'Email already exists']);
             exit;
         } else {

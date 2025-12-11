@@ -17,13 +17,11 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 $public_key = $data['publicKey'];
 
-$stmt = $conn->prepare("SELECT ku.public_key, a.email, ao.name
+$stmt = $conn->prepare("SELECT public_key, a.email, ao.name
                         FROM account a
                         INNER JOIN account_organization ao
-                            ON ao.organization_id = a.user_id
-                        INNER JOIN key_user ku
-                            ON ku.user_id = a.user_id
-                        WHERE ku.public_key = ?");
+                            ON ao.user_id = a.user_id
+                        WHERE public_key = ?");
 
 $stmt->bind_param("s", $public_key);
 

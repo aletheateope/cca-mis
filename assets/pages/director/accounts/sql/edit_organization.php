@@ -27,11 +27,9 @@ if (empty($public_key) || empty($name)) {
     exit;
 }
 
-$stmt = $conn->prepare("SELECT a.user_id
+$stmt = $conn->prepare("SELECT user_id
                         FROM account a
-                        INNER JOIN key_user ku
-                            ON ku.user_id = a.user_id
-                        WHERE ku.public_key = ? AND a.role = 'Organization'");
+                        WHERE public_key = ? AND a.role = 'Organization'");
 $stmt->bind_param("s", $public_key);
 $stmt->execute();
 $stmt->bind_result($user_id);
