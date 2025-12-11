@@ -20,7 +20,7 @@ $public_key = $data["publicKey"];
 $stmt = $conn->prepare("SELECT a.user_id FROM account a
                         INNER JOIN key_user ku
                             ON ku.user_id = a.user_id
-                        WHERE ku.public_key = ? AND (a.role = 'Director' OR a.role = 'VPSLD')");
+                        WHERE ku.public_key = ?");
 
 $stmt->bind_param("s", $public_key);
 

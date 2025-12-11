@@ -73,13 +73,18 @@ document
             <td>${result.data.name}</td>
             <td>${result.data.email}</td>
             <td>
-              <button
-                class="no-style-btn edit-btn"
-                data-bs-toggle="modal"
-                data-bs-target="#editOrganizationModal"
-              >
-                <i class="bi bi-pencil-square"></i>
-              </button>
+              <div class="action-group">
+                <button
+                  class="no-style-btn edit-btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editOrganizationModal"
+                >
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="no-style-btn delete-btn">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </div>
             </td>
           `;
 
@@ -258,6 +263,8 @@ organizationTable.addEventListener("click", async (e) => {
   const row = e.target.closest("tr");
   const publicKey = row.dataset.id;
   const editBtn = e.target.closest(".edit-btn");
+  const deleteBtn = e.target.closest(".delete-btn");
+  const name = row.querySelector(".org-name").textContent.trim();
 
   if (editBtn) {
     try {
@@ -287,6 +294,81 @@ organizationTable.addEventListener("click", async (e) => {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  if (deleteBtn) {
+    Swal.fire({
+      title: `Are you sure you want to remove ${name} from the system?`,
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      reverseButtons: true,
+      showClass: {
+        popup: onShow,
+      },
+      hideClass: {
+        popup: onHide,
+      },
+      customClass: {
+        popup: "swal-container",
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch("sql/delete_user.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ publicKey }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to remove the organization");
+          }
+
+          Swal.fire({
+            title: "Processing...",
+            text: "Please wait while we delete the organization.",
+            allowOutsideClick: false,
+            showClass: {
+              popup: onShow,
+            },
+            hideClass: {
+              popup: onHide,
+            },
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+
+          const result = await response.json();
+
+          Swal.close();
+
+          if (result.success) {
+            notyf.success("Organization removed successfully");
+
+            e.target.closest("tr").remove();
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: `${result.message}`,
+              icon: "error",
+              showClass: {
+                popup: onShow,
+              },
+              hideClass: {
+                popup: onHide,
+              },
+            });
+          }
+        } catch (error) {
+          Swal.close();
+          console.log(error);
+        }
+      }
+    });
   }
 });
 

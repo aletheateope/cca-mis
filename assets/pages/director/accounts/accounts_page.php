@@ -98,7 +98,7 @@ check_role('Director');
                                         <?php while ($row_organization = $result_organization->fetch_assoc()) { ?>
                                         <tr
                                             data-id="<?php echo $row_organization['public_key']?>">
-                                            <td>
+                                            <td class="org-name">
                                                 <?php echo $row_organization['name'] ?>
                                             </td>
                                             <td>
@@ -109,10 +109,15 @@ check_role('Director');
                                                 }?>
                                             </td>
                                             <td>
-                                                <button class="no-style-btn edit-btn" data-bs-toggle="modal"
-                                                    data-bs-target="#editOrganizationModal">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </button>
+                                                <div class="action-group">
+                                                    <button class="no-style-btn edit-btn" data-bs-toggle="modal"
+                                                        data-bs-target="#editOrganizationModal">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </button>
+                                                    <button class="no-style-btn delete-btn">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                         <?php } ?>
